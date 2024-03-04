@@ -1,6 +1,6 @@
 <div align="center">
     <img src="https://github.com/Mehver/iController/raw/main/%23README/icon/256.png" width="20%"/>
-    <h1>iController <code>v0.1.0</code></h1>
+    <h1>iController <code>v0.1.1</code></h1>
     </tr>
 </div>
 
@@ -9,6 +9,16 @@
 A simple server running on a Windows host, which allows mobile phones on the same local area network to control itself as touchpad and keyboard through a web page after connecting.
 
 一个在Windows主机上运行的简易服务器，同一局域网下的手机连接后可以通过网页实现触摸板和键盘的操作。
+
+### 1.1 Features
+
+- [x] Touchpad
+- [x] Mouse Buttons (Left, Right, Middle)
+- [ ] Keyboard
+- [ ] Mouse Wheel
+- [ ] D-Pad
+
+*Some features are not completed yet, and will be added in the future.*
 
 ## 2 Usage
 
@@ -70,6 +80,7 @@ Make sure you compiled the frontend first (see 3.2), then run `./bin/pack-win.ba
 - Node.js
   - React.js
     - Material UI (https://github.com/mui/material-ui)
+    - Ant Design (https://github.com/ant-design/ant-design)
 - Python
   - Flask (https://flask.palletsprojects.com/en/3.0.x/)
   - PyAutoGUI (https://pyautogui.readthedocs.io/en/latest/)

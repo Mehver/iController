@@ -48,6 +48,28 @@ def receive_coordinates():
     return jsonify({"status": "success", "x": x_percentage, "y": y_percentage})
 
 
+@app.route('/button_signal', methods=['POST'])
+def button_signal():
+    # 读取请求的纯文本数据
+    signal = request.data.decode('utf-8')
+
+    # 根据信号执行相应的鼠标操作
+    if signal == 'L':
+        pyautogui.click(button='left')
+        action = "left click"
+    elif signal == 'M':
+        pyautogui.click(button='middle')
+        action = "middle click"
+    elif signal == 'R':
+        pyautogui.click(button='right')
+        action = "right click"
+    else:
+        return "Invalid signal", 400
+
+    print(f"Performed {action}.")
+    return jsonify({"status": "success", "action": action})
+
+
 if __name__ == '__main__':
     print("""
  _   ___            _             _ _           
@@ -57,8 +79,8 @@ if __name__ == '__main__':
 |_\____/\___/|_| |_|\__|_|  \___/|_|_|\___|_|   
                                                 
 https://github.com/Mehver/iController
-v0.1.0
+v0.1.1
     """)
 
-    pyautogui.FAILSAFE = False  # 禁用pyautogui的自动防故障机制
+    pyautogui.FAILSAFE = False
     app.run(debug=True, port=PORT, host='0.0.0.0')
