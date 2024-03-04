@@ -1,0 +1,1 @@
+docker run -it --rm -p 3000:3000 -v %cd%\..\..:/docker -w /docker node:16-bullseye bash
