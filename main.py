@@ -56,7 +56,8 @@ if __name__ == '__main__':
 | / /__| (_) | | | | |_| | | (_) | | |  __/ |   
 |_\____/\___/|_| |_|\__|_|  \___/|_|_|\___|_|   
                                                 
-
+https://github.com/Mehver/iController
+v0.1.0
     """)
 
     pyautogui.FAILSAFE = False  # 禁用pyautogui的自动防故障机制
