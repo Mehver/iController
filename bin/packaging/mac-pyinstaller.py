@@ -18,7 +18,8 @@ os.makedirs(hooks_dir, exist_ok=True)  # 创建临时钩子目录
 # 构建PyInstaller命令参数
 pyinstaller_args = [
     main_script,
-    # '--onefile',
+    # '--onefile',    # 此模式会卡死，无报错
+    # '--log-level=DEBUG',
     f'--add-data={config_file}{os.pathsep}.',  # 包含config.yaml
     f'--add-data={build_folder}{os.pathsep}build/',  # 包含build文件夹
     f'--additional-hooks-dir={hooks_dir}',
