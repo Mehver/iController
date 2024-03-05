@@ -27,11 +27,11 @@
 
 ### 2.1 下载
 
-从 [Release](https://github.com/Mehver/iController/releases) 页面下载。
+从 [Release](https://github.com/Mehver/iController/releases) 页面下载免安装 zip 压缩包。
 
-对于 `Windows`，目前仅提供了便携式 zip 包，解压后运行 `run.bat` 即可启动，无需任何依赖。
+对于 `Windows`，解压后运行 `run.bat` 即可启动，无需任何依赖。
 
-对于 `macOS`，可以运行 `iController` 启动，同样无需任何依赖。 **注意：由于权限问题，直接下载的 iController 无法被系统信任，目前唯一的解决方法是打开 `设置 > 隐私与安全性 > 开发者工具 > 终端` 这一开关。**
+对于 `macOS`，解压后运行 `iController` 启动，同样无需任何依赖。 **注意：由于权限问题，直接下载的 iController 无法被系统信任，目前唯一的解决方法是打开 `设置 > 隐私与安全性 > 开发者工具 > 终端` 这一开关。**
 
 <img src="https://github.com/Mehver/iController/raw/main/%23README/1.jpg" width="50%">
 

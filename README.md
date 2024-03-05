@@ -31,12 +31,12 @@ Now iController has been supported `macOS`.
 
 ### 2.1 Download
 
-Download from the [Release](https://github.com/Mehver/iController/releases) page.
+Download portable zip package from the [Release](https://github.com/Mehver/iController/releases) page.
 
-For `Windows`, currently only portable zip package is provided, unzip and run `run.bat` to start, no dependencies
+For `Windows`, unzip and run `run.bat` to start, no dependencies
 required.
 
-For `macOS`, you can run `iController` to start, also no dependencies required. **Note: Due to permission issues, the
+For `macOS`, unzip and run `iController` to start, also no dependencies required. **Note: Due to permission issues, the
 directly downloaded iController cannot be trusted by the system, the only solution at present is to open the switch
 of `Settings > Privacy & Security > Developer Tools > Terminal`.**
 
