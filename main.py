@@ -108,7 +108,7 @@ if __name__ == '__main__':
 |_\____/\___/|_| |_|\__|_|  \___/|_|_|\___|_|   
                                                 
 https://github.com/Mehver/iController
-v0.1.2
+v0.2.0
     """)
 
     pyautogui.FAILSAFE = False
