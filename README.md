@@ -78,7 +78,11 @@ to enter the virtual environment.
 
 **Windows**
 
-Make sure you compiled the frontend first (see 3.2), then run `./bin/pack-win.bat` to package the application. It will generate a `pack-<timestamp>` directory in repository root, which contains the application. You can use `run.bat` to start the application.
+Make sure you compiled the frontend first (see 3.2), then run `./bin/packaging/win-zipack.bat` to package the application. It will generate a `pack-<timestamp>` directory in repository root, which contains the application. You can use `run.bat` to start the application.
+
+**macOS**
+
+Make sure you compiled the frontend first (see 3.2), then run `./bin/packaging/mac-pyinstaller.py` (`sudo python ./bin/packaging/mac-pyinstaller.py`) to package the application. It will generate a `pack-<timestamp>` directory in repository root, which contains the application. You can use `iController` to start the application.
 
 ## 4 Built With / Tech Stack
 
