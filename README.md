@@ -36,7 +36,9 @@ Download portable zip package from the [Release](https://github.com/Mehver/iCont
 For `Windows`, unzip and run `run.bat` to start, no dependencies
 required.
 
-For `macOS`, unzip and run `iController` to start, also no dependencies required. **Note: Due to permission issues, the
+For `macOS`, unzip and run `iController` to start, also no dependencies required.
+
+***Note: For `macOS`, due to permission issues, the
 directly downloaded iController cannot be trusted by the system, the only solution at present is to open the switch
 of `Settings > Privacy & Security > Developer Tools > Terminal`.**
 
