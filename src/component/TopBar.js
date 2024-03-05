@@ -13,7 +13,7 @@ class TopBar extends React.Component {
         const titleCss = {
             fontSize: '20px',
             fontWeight: 'bold',
-            color: '#fff',
+            color: '#333',
             float: 'left',
             position: 'relative',
             top: '-14px',

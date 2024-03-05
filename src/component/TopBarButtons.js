@@ -4,18 +4,20 @@ import {EyeOutlined, EyeInvisibleOutlined} from '@ant-design/icons';
 class TopBarButtons extends React.Component {
     constructor(props) {
         super(props);
-        // 初始化状态，buttonSW1为true时显示EyeOutlined图标，为false时显示EyeInvisibleOutlined图标
         this.state = {
             buttonSW1: true,
+            buttonSW2: true,
+            buttonSW3: true,
+            buttonSW4: false,
         };
     }
 
     componentDidMount() {
         let pressButtonEffect = (buttonId) => {
             let button = document.getElementById(buttonId);
-            button.style.backgroundColor = "#fff";
+            button.style.backgroundColor = "#6df";
             setTimeout(function () {
-                button.style.backgroundColor = "#6df";
+                button.style.backgroundColor = "#333";
             }, 100);
         };
 
@@ -42,6 +44,14 @@ class TopBarButtons extends React.Component {
                 buttonSW3: !prevState.buttonSW3,
             }));
         });
+
+        document.getElementById("button-sw4").addEventListener("click", () => {
+            pressButtonEffect("button-sw4");
+            // 切换图标的显示状态
+            this.setState(prevState => ({
+                buttonSW4: !prevState.buttonSW4,
+            }));
+        });
     }
 
     render() {
@@ -56,20 +66,20 @@ class TopBarButtons extends React.Component {
             cursor: 'pointer',
             left: 10,
             width: width_button,
-            backgroundColor: '#6df',
-            border: '2px solid #fff',
-            height: '22px',
+            backgroundColor: '#333',
+            border: '2px solid #6df',
+            height: '23px',
         };
 
         const iconCss = {
             fontSize: iconSize,
-            color: '#fff',
+            color: '#6df',
         };
         const barCss = {
             position: 'absolute',
-            top: '3.4px',
+            top: '3.5px',
             left: '120px',
-            height: '22px',
+            height: '23px',
             backgroundColor: 'transparent',
             overflow: 'hidden',
         };
@@ -82,12 +92,16 @@ class TopBarButtons extends React.Component {
                             <EyeInvisibleOutlined style={iconCss}/>}
                     </button>
                     <button id="button-sw2" style={buttonCss}>
-                        {this.state.buttonSW2 ? <EyeInvisibleOutlined style={iconCss}/> :
-                            <EyeOutlined style={iconCss}/>}
+                        {this.state.buttonSW2 ? <EyeOutlined style={iconCss}/> :
+                            <EyeInvisibleOutlined style={iconCss}/>}
                     </button>
                     <button id="button-sw3" style={buttonCss}>
-                        {this.state.buttonSW3 ? <EyeInvisibleOutlined style={iconCss}/> :
-                            <EyeOutlined style={iconCss}/>}
+                        {this.state.buttonSW3 ? <EyeOutlined style={iconCss}/> :
+                            <EyeInvisibleOutlined style={iconCss}/>}
+                    </button>
+                    <button id="button-sw4" style={buttonCss}>
+                        {this.state.buttonSW4 ? <EyeOutlined style={iconCss}/> :
+                            <EyeInvisibleOutlined style={iconCss}/>}
                     </button>
                 </div>
             </>

@@ -131,6 +131,7 @@ class Touchpad extends Component {
             height: `${screenHeight * 0.84}px`,
             transform: 'translate(-50%, -50%)',
             backgroundColor: 'transparent',
+            color: '#6df',
         };
 
         return (

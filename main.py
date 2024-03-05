@@ -63,6 +63,18 @@ def button_signal():
     elif signal == 'R':
         pyautogui.click(button='right')
         action = "right click"
+    elif signal == 'W':
+        pyautogui.press('up')
+        action = "press up"
+    elif signal == 'A':
+        pyautogui.press('left')
+        action = "press left"
+    elif signal == 'S':
+        pyautogui.press('down')
+        action = "press down"
+    elif signal == 'D':
+        pyautogui.press('right')
+        action = "press right"
     else:
         return "Invalid signal", 400
 
@@ -79,7 +91,7 @@ if __name__ == '__main__':
 |_\____/\___/|_| |_|\__|_|  \___/|_|_|\___|_|   
                                                 
 https://github.com/Mehver/iController
-v0.1.1
+v0.1.2
     """)
 
     pyautogui.FAILSAFE = False

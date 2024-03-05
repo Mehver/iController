@@ -5,7 +5,7 @@ import * as serviceWorker from './serviceWorker';
 import ToolBar from "./component/TopBar";
 import Touchpad from "./component/Touchpad";
 import TopBarButtons from "./component/TopBarButtons";
-import MouseButton from "./component/MouseButton";
+import MouseDPadButtons from "./component/MouseDPadButtons";
 
 // 设置延时函数
 let resizeTimer;
@@ -27,7 +27,7 @@ ReactDOM.render(
             <ToolBar/>
             <TopBarButtons/>
             <Touchpad/>
-            <MouseButton/>
+            <MouseDPadButtons/>
         </header>
     </div>
   </React.StrictMode>,
