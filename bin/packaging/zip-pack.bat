@@ -13,10 +13,7 @@ xcopy .\build .\!folderName!\build /E /I
 xcopy .\venv .\!folderName!\venv /E /I
 copy config.yaml .\!folderName!\
 copy main.py .\!folderName!\
-
-:: 直接创建run.bat文件
-echo @echo off > .\!folderName!\run.bat
-echo cmd /k "cd /d %%~dp0venv\Scripts ^& activate ^& cd /d %%~dp0 ^& python main.py" >> .\!folderName!\run.bat
+copy .\bin\packaging\init\run.bat .\!folderName!\
 
 echo Files and folders have been copied successfully.
 pause
