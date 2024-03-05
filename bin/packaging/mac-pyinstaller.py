@@ -1,3 +1,6 @@
+# 此脚本独立于程序，用于最终打包程序。推荐通过`sudo python ./bin/packaging/mac-pyinstaller.py`执行。
+# This script is independent of the program and is used to package the program.
+# It is recommended to execute it through `sudo python ./bin/packaging/mac-pyinstaller.py`.
 import PyInstaller.__main__
 import shutil
 import os
