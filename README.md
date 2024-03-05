@@ -1,16 +1,20 @@
 <div align="center">
     <img src="https://github.com/Mehver/iController/raw/main/%23README/icon/256.png" width="20%"/>
-    <h1>iController <code>v0.1.2</code></h1>
+    <h1>iController <code>v0.2.0</code></h1>
     </tr>
 </div>
 
 ## 1 Description
 
-A simple server running on a Windows host, which allows mobile phones on the same local area network to control it as touchpad and keyboard through a web page after connecting.
+A simple server running on a `Windows`/`macOS` host, which allows mobile phones on the same local area network to control it as touchpad and keyboard through a web page after connecting.
 
-一个在Windows主机上运行的简易服务器，同一局域网下的手机连接后可以通过网页实现触摸板和键盘的操作。
+一个在 `Windows`/`macOS` 主机上运行的简易服务器，同一局域网下的手机连接后可以通过网页实现触摸板和键盘的操作。
 
-### 1.1 Features
+### 1.1 New Release `v0.2.X`
+
+Now iController has been supported `macOS`.
+
+### 1.2 Features
 
 - [x] Touchpad
 - [x] Mouse Buttons (Left, Right, Middle)
@@ -25,17 +29,17 @@ A simple server running on a Windows host, which allows mobile phones on the sam
 
 ### 2.1 Download
 
-Download from the [Release](https://github.com/Mehver/iController/releases) page. Currently only provide the `iController-vX.X.X-Portable-Win_x64.zip
-` zip file, unzip and start with `run.bat`, no dependencies. After starting, the phone can access the corresponding address according to the prompt. Please ensure that there is no problem with the network connection between the phone and the computer. If there is a problem, please debug the firewall and other settings by yourself. IOS users are recommended to use the "Add to Home Screen" function of Safari.
+Download from the [Release](https://github.com/Mehver/iController/releases) page.
+Currently, only portable zip package is provided. For `Windows`, unzip and run `run.bat` to start, no dependencies required.
+For `macOS`, you can run `iController` to start, also no dependencies required. After starting, the phone can access the corresponding address according to the prompt. Please ensure that there is no problem with the network connection between the phone and the computer. If there is a problem, please debug the firewall and other settings by yourself. IOS users are recommended to use the "Add to Home Screen" function of Safari.
 
-在 [Release](https://github.com/Mehver/iController/releases) 页面下载。目前只提供下载 `iController-vX.X.X-Portable-Win_x64.zip
-` 压缩包，解压后通过 `run.bat` 启动，不依赖任何环境。启动后手机根据提示访问对应地址即可。请确保手机与电脑的网络连接不存在问题，如有问题请自行调试防火墙等设置。IOS用户推荐使用Safari的”添加到主屏幕“功能。
+在 [Release](https://github.com/Mehver/iController/releases) 页面下载。目前仅提供免安装zip。对于 `Windows`，解压后运行 `run.bat` 即可启动，无需任何依赖。对于 `macOS`，可以运行 `iController`，同样无需任何依赖。 启动后手机根据提示访问对应地址即可。请确保手机与电脑的网络连接不存在问题，如有问题请自行调试防火墙等设置。IOS用户推荐使用Safari的”添加到主屏幕“功能。
 
 ### 2.2 Capability
 
-Currently, only `Windows 10 (2024.2)` and `IOS 17` under `Safari` browser have been tested, and other environments have not been tested.
+Currently, only `Windows 10 (2024.2)`/`macOS (13.3)` and `IOS 17` under `Safari` browser have been tested, and other environments have not been tested.
 
-目前仅测试了 `Windows 10 (2024.2)` 与 `IOS 17` 下的 `Safari` 浏览器，其他环境未测试。
+目前仅测试了 `Windows 10 (2024.2)`/`macOS (13.3)` 与 `IOS 17` 下的 `Safari` 浏览器，其他环境未测试。
 
 ## 3 Development
 
@@ -85,6 +89,7 @@ Make sure you compiled the frontend first (see 3.2), then run `./bin/pack-win.ba
 - Python
   - Flask (https://flask.palletsprojects.com/en/3.0.x/)
   - PyAutoGUI (https://pyautogui.readthedocs.io/en/latest/)
+  - PyInstaller (https://www.pyinstaller.org/)
 
 ## 5 Similar Projects
 

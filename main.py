@@ -2,9 +2,25 @@ import yaml
 import struct
 from flask import Flask, request, send_from_directory, jsonify
 import pyautogui
+import sys
+import os
 
-# 默认配置
-CONFIG_PATH = "./config.yaml"
+
+# 默认配置 CONFIG_PATH = "./config.yaml"
+
+# 动态确定配置文件和静态文件夹路径
+def get_resource_path(relative_path):
+    if getattr(sys, 'frozen', False):
+        # 如果是exe文件，使用exe所在目录
+        base_path = sys._MEIPASS
+    else:
+        # 否则使用脚本所在目录
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+
+
+CONFIG_PATH = get_resource_path("config.yaml")
 
 # 读取配置文件
 with open(CONFIG_PATH, "r") as stream:
@@ -13,7 +29,8 @@ with open(CONFIG_PATH, "r") as stream:
 PORT = config['port']
 SENSITIVITY = config.get('sensitivity', 1)  # 如果没有设置灵敏度，则默认为1
 
-app = Flask(__name__, static_folder='build', static_url_path='')
+# app = Flask(__name__, static_folder='build', static_url_path='')
+app = Flask(__name__, static_folder=get_resource_path('build'), static_url_path='')
 
 # 获取屏幕尺寸
 screen_width, screen_height = pyautogui.size()
