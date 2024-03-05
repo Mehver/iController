@@ -40,9 +40,13 @@ For `macOS`, you can run `iController` to start, also no dependencies required. 
 directly downloaded iController cannot be trusted by the system, the only solution at present is to open the switch
 of `Settings > Privacy & Security > Developer Tools > Terminal`.**
 
+<img src="https://github.com/Mehver/iController/raw/main/%23README/1.jpg" width="50%">
+
 After starting, the phone can access the corresponding address according to the prompt. Please ensure that there is no
 problem with the network connection between the phone and the computer. If there is a problem, please debug the firewall
 and other settings by yourself. IOS users are recommended to use the "Add to Home Screen" function of Safari.
+
+<img src="https://github.com/Mehver/iController/raw/main/%23README/0.png" width="50%">
 
 ### 2.2 Capability
 

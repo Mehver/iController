@@ -33,7 +33,11 @@
 
 对于 `macOS`，可以运行 `iController` 启动，同样无需任何依赖。 **注意：由于权限问题，直接下载的 iController 无法被系统信任，目前唯一的解决方法是打开 `设置 > 隐私与安全性 > 开发者工具 > 终端` 这一开关。**
 
+<img src="https://github.com/Mehver/iController/raw/main/%23README/1.jpg" width="50%">
+
 启动后，手机可以根据提示访问对应地址。请确保手机与电脑之间的网络连接没有问题，如果有问题请自行调试防火墙等设置。IOS 用户建议使用 Safari 的“添加到主屏幕”功能。
+
+<img src="https://github.com/Mehver/iController/raw/main/%23README/0.png" width="50%">
 
 ### 2.2 兼容性
 
