@@ -28,17 +28,17 @@ control it as touchpad and keyboard through a web page after connecting.
 
 Download portable application from the [Release](https://github.com/Mehver/iController/releases) page.
 
-***Note: For `macOS`, due to permission issues, the
-directly downloaded iController cannot be trusted by the system, the only solution at present is to open the switch
-of `Settings > Privacy & Security > Developer Tools > Terminal`.**
-
-<img src="https://github.com/Mehver/iController/raw/main/%23README/1.jpg" width="50%">
-
 After starting, the phone can access the corresponding address according to the prompt. Please ensure that there is no
 problem with the network connection between the phone and the computer. If there is a problem, please debug the firewall
 and other settings by yourself. IOS users are recommended to use the "Add to Home Screen" function of Safari.
 
 <img src="https://github.com/Mehver/iController/raw/main/%23README/0.png" width="50%">
+
+***Note: For `macOS`, due to permission issues, the
+directly downloaded iController cannot be trusted by the system, the only solution at present is to open the switch
+of `Settings > Privacy & Security > Developer Tools > Terminal`.**
+
+<img src="https://github.com/Mehver/iController/raw/main/%23README/1.jpg" width="50%">
 
 ### 2.2 Capability
 
@@ -90,14 +90,8 @@ to enter the virtual environment. Or add the virtual environment to your IDE.
 
 ### 3.4 Compile / Package
 
-**Windows**
-
-Directly run `auto-py-to-exe` or use `./bin/packaging/win-onefile.bat` to package the application. Note that after testing, some Python v3.10.x versions may have
+Directly run `auto-py-to-exe` or use `win-onefile.bat` / `mac-onefile.sh` in `./bin/packaging/` to package the application. Note that after testing, some Python v3.10.x versions may have
 mysterious errors. Only Python v3.10.10 is recommended.
-
-**macOS**
-
-Currently, no complete packaging process is set up.
 
 
 ## 4 Built With / Tech Stack
