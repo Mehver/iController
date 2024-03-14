@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import {Component} from 'react';
 
 // 节流函数，限制函数调用频率，避免过多的请求
 function throttle(func, limit) {
@@ -24,6 +24,7 @@ class Touchpad extends Component {
             initialY: 0, // 触摸开始的Y坐标
             screenWidth: window.innerWidth,
             screenHeight: window.innerHeight,
+            buttonSW1: true,
         };
         // 使用throttle包装handleTouchMove方法
         this.handleTouchMove = throttle(this.handleTouchMove.bind(this), 1000 * 0.05); // refreshRate以秒为单位
@@ -32,17 +33,12 @@ class Touchpad extends Component {
     componentDidMount() {
         window.addEventListener('resize', this.updateWindowDimensions);
         document.body.style.overflow = 'hidden';
-    }
 
-    componentWillUnmount() {
-        window.removeEventListener('resize', this.updateWindowDimensions);
-        document.body.style.overflow = '';
-    }
-
-    updateWindowDimensions = () => {
-        this.setState({
-            screenWidth: window.innerWidth,
-            screenHeight: window.innerHeight,
+        document.getElementById("button-sw1").addEventListener("click", () => {
+            // 切换图标的显示状态
+            this.setState(prevState => ({
+                buttonSW1: !prevState.buttonSW1,
+            }));
         });
     }
 
@@ -122,18 +118,22 @@ class Touchpad extends Component {
             width: `${screenWidth * 0.84}px`,
             height: `${screenHeight * 0.84}px`,
             transform: 'translate(-50%, -50%)',
-            backgroundColor: 'transparent', // 背景透明
+            backgroundColor: 'transparent',
+            color: '#6df',
         };
 
         return (
-            <div
-                onTouchStart={this.handleTouchStart}
-                onTouchMove={this.handleTouchMove}
-                onTouchEnd={this.handleTouchEnd}
-                style={touchPadStyle}
-            >
-                Touch coordinates: ({this.state.xPercent}%, {this.state.yPercent}%)
-            </div>
+            <>
+                {this.state.buttonSW1 ? <div
+                    onTouchStart={this.handleTouchStart}
+                    onTouchMove={this.handleTouchMove}
+                    onTouchEnd={this.handleTouchEnd}
+                    style={touchPadStyle}
+                    id={'touchPad'}
+                >
+                    Touch coordinates: ({this.state.xPercent}%, {this.state.yPercent}%)
+                </div> : null}
+            </>
         );
     }
 }

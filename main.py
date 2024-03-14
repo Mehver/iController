@@ -1,19 +1,27 @@
-import yaml
 import struct
 from flask import Flask, request, send_from_directory, jsonify
 import pyautogui
+import sys
+import os
 
-# 默认配置
-CONFIG_PATH = "./config.yaml"
+PORT = 3030
+SENSITIVITY = 0.06
 
-# 读取配置文件
-with open(CONFIG_PATH, "r") as stream:
-    config = yaml.safe_load(stream)
 
-PORT = config['port']
-SENSITIVITY = config.get('sensitivity', 1)  # 如果没有设置灵敏度，则默认为1
+# 动态确定配置文件和静态文件夹路径
+def get_resource_path(relative_path):
+    if getattr(sys, 'frozen', False):
+        # 如果是exe文件，使用exe所在目录
+        base_path = sys._MEIPASS
+    else:
+        # 否则使用脚本所在目录
+        base_path = os.path.abspath(".")
 
-app = Flask(__name__, static_folder='build', static_url_path='')
+    return os.path.join(base_path, relative_path)
+
+
+# app = Flask(__name__, static_folder='build', static_url_path='')
+app = Flask(__name__, static_folder=get_resource_path('build'), static_url_path='')
 
 # 获取屏幕尺寸
 screen_width, screen_height = pyautogui.size()
@@ -48,6 +56,40 @@ def receive_coordinates():
     return jsonify({"status": "success", "x": x_percentage, "y": y_percentage})
 
 
+@app.route('/button_signal', methods=['POST'])
+def button_signal():
+    # 读取请求的纯文本数据
+    signal = request.data.decode('utf-8')
+
+    # 根据信号执行相应的鼠标操作
+    if signal == 'L':
+        pyautogui.click(button='left')
+        action = "left click"
+    elif signal == 'M':
+        pyautogui.click(button='middle')
+        action = "middle click"
+    elif signal == 'R':
+        pyautogui.click(button='right')
+        action = "right click"
+    elif signal == 'W':
+        pyautogui.press('up')
+        action = "press up"
+    elif signal == 'A':
+        pyautogui.press('left')
+        action = "press left"
+    elif signal == 'S':
+        pyautogui.press('down')
+        action = "press down"
+    elif signal == 'D':
+        pyautogui.press('right')
+        action = "press right"
+    else:
+        return "Invalid signal", 400
+
+    print(f"Performed {action}.")
+    return jsonify({"status": "success", "action": action})
+
+
 if __name__ == '__main__':
     print("""
  _   ___            _             _ _           
@@ -56,8 +98,8 @@ if __name__ == '__main__':
 | / /__| (_) | | | | |_| | | (_) | | |  __/ |   
 |_\____/\___/|_| |_|\__|_|  \___/|_|_|\___|_|   
                                                 
-
+https://github.com/Mehver/iController
+v0.2.0
     """)
-
-    pyautogui.FAILSAFE = False  # 禁用pyautogui的自动防故障机制
-    app.run(debug=True, port=PORT, host='0.0.0.0')
+    pyautogui.FAILSAFE = False
+    app.run(debug=False, port=PORT, host='0.0.0.0')
