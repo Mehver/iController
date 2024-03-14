@@ -12,7 +12,7 @@ control it as touchpad and keyboard through a web page after connecting.
 
 一个在 `Windows`/`macOS` 主机上运行的简易服务器，同一局域网下的手机连接后可以通过网页实现触摸板和键盘的操作。
 
-### 1.2 Features
+### 1.1 Features
 
 - [x] Touchpad
 - [x] Mouse Buttons (Left, Right, Middle)
