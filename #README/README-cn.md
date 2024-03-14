@@ -24,13 +24,13 @@
 
 从 [Release](https://github.com/Mehver/iController/releases) 页面下载免安装程序。
 
-***注意：对于 `macOS`，由于权限问题，直接下载的 iController 无法被系统信任，目前唯一的解决方法是打开 `设置 > 隐私与安全性 > 开发者工具 > 终端` 这一开关。**
-
-<img src="https://github.com/Mehver/iController/raw/main/%23README/1.jpg" width="50%">
-
 启动后，手机可以根据提示访问对应地址。请确保手机与电脑之间的网络连接没有问题，如果有问题请自行调试防火墙等设置。IOS 用户建议使用 Safari 的“添加到主屏幕”功能。
 
 <img src="https://github.com/Mehver/iController/raw/main/%23README/0.png" width="50%">
+
+***注意：对于 `macOS`，由于权限问题，直接下载的 iController 无法被系统信任，目前唯一的解决方法是打开 `设置 > 隐私与安全性 > 开发者工具 > 终端` 这一开关。**
+
+<img src="https://github.com/Mehver/iController/raw/main/%23README/1.jpg" width="50%">
 
 ### 2.2 兼容性
 
@@ -81,13 +81,7 @@ source venv/bin/activate
 
 ### 3.4 编译 / 打包
 
-**Windows**
-
-直接运行 `auto-py-to-exe` 或 `./bin/packaging/win-onefile.bat` 打包应用。注意，经过测试，部分 Python v3.10.x 版本可能会出现玄学报错。只有 Python v3.10.10 是推荐的。
-
-**macOS**
-
-暂无搭建完整的打包流程。
+直接运行 `auto-py-to-exe` 或 `./bin/packaging/` 中的 `win-onefile.bat` / `mac-onefile.sh` 打包应用。注意，经过测试，部分 Python v3.10.x 版本可能会出现玄学报错。只有 Python v3.10.10 是推荐的。
 
 ## 4 使用的技术栈
 
