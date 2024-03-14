@@ -1,6 +1,6 @@
-import React from 'react';
+import {Component} from 'react';
 
-class TopBar extends React.Component {
+class TopBar extends Component {
 
     render() {
         const topBarCss = {
@@ -13,7 +13,7 @@ class TopBar extends React.Component {
         const titleCss = {
             fontSize: '20px',
             fontWeight: 'bold',
-            color: '#fff',
+            color: '#333',
             float: 'left',
             position: 'relative',
             top: '-14px',

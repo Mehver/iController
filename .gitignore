@@ -1,4 +1,8 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# All build packs
+pack-*
+icontroller-v*
+output
+dist
 
 # dependencies
 /node_modules

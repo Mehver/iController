@@ -28,7 +28,7 @@ code {
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: #333;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -39,7 +39,7 @@ code {
 }
 
 .App-link {
-  color: #61dafb;
+  color: #6df;
 }
 
 @keyframes App-logo-spin {
@@ -49,4 +49,12 @@ code {
   to {
     transform: rotate(360deg);
   }
+}
+
+/* 关闭文本选择，避免触屏操作时长按触发文本复制 */
+* {
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE 10+ 和 Edge */
+  user-select: none; /* 标准语法 */
 }
