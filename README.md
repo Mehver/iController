@@ -1,6 +1,6 @@
 <div align="center">
     <img src="https://github.com/Mehver/iController/raw/main/%23README/icon/256.png" width="20%"/>
-    <h1>iController <code>v0.2.1</code></h1>
+    <h1>iController <code>v0.2.2</code></h1>
     </tr>
 	<p>English | <a href='https://github.com/Mehver/iController/blob/main/%23README/README-cn.md'>简体中文</a></p>
 </div>
@@ -21,16 +21,6 @@ control it as touchpad and keyboard through a web page after connecting.
 - [ ] Mouse Wheel
 
 *Some features are not completed yet, and will be added in the future.*
-
-### 1.2 Release Note
-
-**v0.2.1 (pre)**
-
-- New Features
-  - Manually Input Port Number
-- Code
-  - Optimized React Component Structure
-  - Optimized Python Code Structure
 
 ## 2 Usage
 
