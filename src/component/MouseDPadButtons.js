@@ -2,6 +2,7 @@ import {Component} from 'react';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
+import {ButtonContext} from '../context/ButtonContext';
 
 const customTheme = createTheme({
     palette: {
@@ -14,10 +15,6 @@ const customTheme = createTheme({
 class MouseDPadButtons extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            button23: 0,
-            buttonSW4: false,
-        };
     }
 
     // 发送按钮信号的函数，传递信号为纯文本
@@ -25,12 +22,12 @@ class MouseDPadButtons extends Component {
         // 使用简短编码表示不同的按钮
         const signal =
             buttonType === 'Left' ? 'L' :
-            buttonType === 'Middle' ? 'M' :
-            buttonType === 'Right' ? 'R' :
-            buttonType === 'DUp' ? 'W' :
-            buttonType === 'DLeft' ? 'A' :
-            buttonType === 'DDown' ? 'S' :
-            buttonType === 'DRight' ? 'D' : '';
+                buttonType === 'Middle' ? 'M' :
+                    buttonType === 'Right' ? 'R' :
+                        buttonType === 'DUp' ? 'W' :
+                            buttonType === 'DLeft' ? 'A' :
+                                buttonType === 'DDown' ? 'S' :
+                                    buttonType === 'DRight' ? 'D' : '';
 
         fetch('/button_signal', {
             method: 'POST',
@@ -44,20 +41,6 @@ class MouseDPadButtons extends Component {
             .catch((error) => {
                 console.error('Error:', error);
             });
-    };
-
-    componentDidMount() {
-        document.getElementById("button-23").addEventListener("click", () => {
-            // 切换 0 1 2 三档状态
-            this.setState(prevState => ({
-                button23: (prevState.button23 + 1) % 3,
-            }));
-        });
-        document.getElementById("button-sw4").addEventListener("click", () => {
-            this.setState(prevState => ({
-                buttonSW4: !prevState.buttonSW4,
-            }));
-        });
     };
 
     render() {
@@ -75,11 +58,11 @@ class MouseDPadButtons extends Component {
                     width: '100%',
                     backgroundColor: 'transparent',
                 }}>
-                    {this.state.button23 !== 2 ? (
+                    {this.context.button23 !== 2 ? (
                         <>
                             <Button color="primary" variant="outlined" onClick={() => this.sendButtonSignal('Left')}
                                     sx={{width: '100%', mx: '2%'}}>L</Button>
-                            {this.state.button23 === 0 ? (
+                            {this.context.button23 === 0 ? (
                                 <Button color="primary" variant="outlined"
                                         onClick={() => this.sendButtonSignal('Middle')}
                                         sx={{width: '100%', mx: '2%'}}>M</Button> // 中间按钮左右各留出一些空间
@@ -99,7 +82,7 @@ class MouseDPadButtons extends Component {
                         backgroundColor: 'transparent',
                     }}
                 >
-                    {this.state.buttonSW4 ? (
+                    {this.context.buttonSW4 ? (
                         <>
                             <Box>
                                 <Button color="primary" variant="outlined" onClick={() => this.sendButtonSignal('DUp')}
@@ -133,5 +116,7 @@ class MouseDPadButtons extends Component {
     }
 
 }
+
+MouseDPadButtons.contextType = ButtonContext;
 
 export default MouseDPadButtons;

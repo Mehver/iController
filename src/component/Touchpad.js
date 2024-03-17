@@ -1,4 +1,5 @@
 import {Component} from 'react';
+import {ButtonContext} from '../context/ButtonContext';
 
 // 节流函数，限制函数调用频率，避免过多的请求
 function throttle(func, limit) {
@@ -24,22 +25,16 @@ class Touchpad extends Component {
             initialY: 0, // 触摸开始的Y坐标
             screenWidth: window.innerWidth,
             screenHeight: window.innerHeight,
-            buttonSW1: true,
         };
         // 使用throttle包装handleTouchMove方法
         this.handleTouchMove = throttle(this.handleTouchMove.bind(this), 1000 * 0.05); // refreshRate以秒为单位
     }
 
     componentDidMount() {
+        // 获取屏幕尺寸
         window.addEventListener('resize', this.updateWindowDimensions);
+        // 禁用页面滚动
         document.body.style.overflow = 'hidden';
-
-        document.getElementById("button-sw1").addEventListener("click", () => {
-            // 切换图标的显示状态
-            this.setState(prevState => ({
-                buttonSW1: !prevState.buttonSW1,
-            }));
-        });
     }
 
     handleTouchStart = (e) => {
@@ -124,7 +119,7 @@ class Touchpad extends Component {
 
         return (
             <>
-                {this.state.buttonSW1 ? <div
+                {this.context.buttonSW1 ? <div
                     onTouchStart={this.handleTouchStart}
                     onTouchMove={this.handleTouchMove}
                     onTouchEnd={this.handleTouchEnd}
@@ -137,5 +132,7 @@ class Touchpad extends Component {
         );
     }
 }
+
+Touchpad.contextType = ButtonContext;
 
 export default Touchpad;
