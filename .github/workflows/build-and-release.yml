@@ -5,8 +5,8 @@ on:
     types: [created]
 
 jobs:
-  build-windows:
-    runs-on: windows-latest
+  build-windows-x64:
+    runs-on: windows-2022
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python
@@ -40,11 +40,56 @@ jobs:
           asset_name: icontroller-${{ github.event.release.tag_name }}-portable-win-x64.exe
           asset_content_type: application/octet-stream
 
-  build-macos:
-    runs-on: macos-latest
+  build-macos-x64:
+    runs-on: macos-12
     strategy:
       matrix:
-        architecture: [x64, arm64]
+        architecture: [x64]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.10.10'
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      - name: Grant Execute Permission for Scripts
+        run: chmod +x ./bin/packaging/mac-resetenv.sh ./bin/packaging/mac-onefile.sh
+      - name: Initialize Environment
+        run: ./bin/packaging/mac-resetenv.sh
+      - name: Build React Frontend
+        run: npm install && npm run build
+      - name: Build Project
+        run: ./bin/packaging/mac-onefile.sh
+        env:
+          ARCH: ${{ matrix.architecture }}
+      - name: Grant Execute Permission for Executable
+        run: chmod +x ./dist/main
+      - name: Rename & Zip & Prepare for Upload
+        run: |
+          mv ./dist/main ./dist/iController
+          zipName="icontroller-${{ github.event.release.tag_name }}-portable-mac-${{ matrix.architecture }}.zip"
+          cd ./dist
+          zip -r $zipName iController
+          echo "ARTIFACT_PATH=./dist/$zipName" >> $GITHUB_ENV
+        shell: bash
+      - name: Upload to Release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ${{ env.ARTIFACT_PATH }}
+          asset_name: icontroller-${{ github.event.release.tag_name }}-portable-mac-${{ matrix.architecture }}.zip
+          asset_content_type: application/zip
+
+  build-macos-arm64:
+    runs-on: macos-14
+    strategy:
+      matrix:
+        architecture: [arm64]
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python
