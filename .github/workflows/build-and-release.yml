@@ -2,39 +2,69 @@ name: Build and Release
 
 on:
   release:
-    types: [created]  # 当创建新的 Release 时触发
+    types: [created]
 
 jobs:
-  build:
-    runs-on: windows-latest  # 使用 Windows 环境
-
+  build-windows:
+    runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v2  # 检出代码
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.10.10'
+      - name: Set Environment
+        run: .\bin\packaging\win-resetenv.bat
+      - name: Build Project
+        run: .\bin\packaging\win-onefile.bat
+      - name: Rename and Prepare for Upload
+        run: |
+          $newName = "icontroller-${{ github.event.release.tag_name }}-portable-win-x64.exe"
+          Rename-Item .\dist\main.exe $newName
+          $newPath = ".\dist\" + $newName
+          echo "ARTIFACT_PATH=$newPath" >> $env:GITHUB_ENV
+        shell: pwsh
+      - name: Upload to Release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ${{ env.ARTIFACT_PATH }}
+          asset_name: ${{ env.ARTIFACT_PATH }}
+          asset_content_type: application/octet-stream
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.10.10'  # 设置 Python 版本
-
-    - name: Set Compile Environment
-      run: .\bin\packaging\win-resetenv.bat  # 运行环境重置脚本
-
-    - name: Build Project
-      run: .\bin\packaging\win-onefile.bat  # 运行构建脚本
-
-    - name: Rename and Prepare for Upload
-      run: |
-        $newName = "icontroller-${{ github.event.release.tag_name }}-portable-win-x64.exe"
-        Rename-Item .\dist\main.exe $newName
-        echo "ARTIFACT_PATH=.\dist\$newName" >> $env:GITHUB_ENV
-      shell: pwsh
-
-    - name: Upload to Release
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ github.event.release.upload_url }}  # Release 的上传URL
-        asset_path: ${{ env.ARTIFACT_PATH }}
-        asset_name: ${{ env.ARTIFACT_PATH }}
-        asset_content_type: application/octet-stream
+  build-macos:
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        architecture: [x64, arm64]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.10.10'
+      - name: Set Environment
+        run: ./bin/packaging/mac-resetenv.sh
+      - name: Build Project
+        run: ./bin/packaging/mac-onefile.sh
+        env:
+          ARCH: ${{ matrix.architecture }}
+      - name: Rename, Zip, and Prepare for Upload
+        run: |
+          mv ./dist/main ./dist/iController
+          zipName="icontroller-${{ github.event.release.tag_name }}-portable-mac-${{ matrix.architecture }}.zip"
+          cd ./dist
+          zip -r $zipName iController
+          echo "ARTIFACT_PATH=./dist/$zipName" >> $GITHUB_ENV
+        shell: bash
+      - name: Upload to Release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ${{ env.ARTIFACT_PATH }}
+          asset_name: ${{ env.ARTIFACT_PATH }}
+          asset_content_type: application/zip

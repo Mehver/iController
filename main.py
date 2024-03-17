@@ -1,7 +1,19 @@
 import sys
 from modules.server import create_app
 
-PORT = input("Port > ")  # 获取用户输入的端口号
+print("""
+ _   ___            _             _ _           
+(_) / __\___  _ __ | |_ _ __ ___ | | | ___ _ __ 
+| |/ /  / _ \| '_ \| __| '__/ _ \| | |/ _ \ '__|
+| / /__| (_) | | | | |_| | | (_) | | |  __/ |   
+|_\____/\___/|_| |_|\__|_|  \___/|_|_|\___|_|   
+                                                
+https://github.com/Mehver/iController
+v0.2.2
+
+""")
+
+PORT = input("Give a port > ")  # 获取用户输入的端口号
 try:
     PORT = int(PORT)
 except ValueError:
@@ -11,14 +23,4 @@ except ValueError:
 app = create_app()  # 创建Flask应用实例
 
 if __name__ == '__main__':
-    print("""
- _   ___            _             _ _           
-(_) / __\___  _ __ | |_ _ __ ___ | | | ___ _ __ 
-| |/ /  / _ \| '_ \| __| '__/ _ \| | |/ _ \ '__|
-| / /__| (_) | | | | |_| | | (_) | | |  __/ |   
-|_\____/\___/|_| |_|\__|_|  \___/|_|_|\___|_|   
-                                                
-https://github.com/Mehver/iController
-v0.2.1
-    """)
     app.run(debug=False, port=PORT, host='0.0.0.0')
