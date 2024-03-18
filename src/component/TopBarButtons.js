@@ -3,7 +3,7 @@ import {EyeOutlined, EyeFilled, EyeInvisibleOutlined} from '@ant-design/icons';
 import GamepadIcon from '@mui/icons-material/Gamepad';
 import MouseIcon from '@mui/icons-material/Mouse';
 import TouchAppIcon from '@mui/icons-material/TouchApp';
-import {ButtonContext} from '../context/ButtonContext';
+import {Context} from '../utils/Context';
 
 class TopBarButtons extends Component {
     constructor(props) {
@@ -22,25 +22,15 @@ class TopBarButtons extends Component {
 
         document.getElementById("button-sw1").addEventListener("click", () => {
             pressButtonEffect("button-sw1");
-            // this.setState(prevState => ({
-            //     buttonSW1: !prevState.buttonSW1,
-            // }));
             this.context.toggleButtonSW1();
         });
 
         document.getElementById("button-23").addEventListener("click", () => {
             pressButtonEffect("button-23");
-            // 切换 0 1 2 三档状态
-            // this.setState(prevState => ({
-            //     button23: (prevState.button23 + 1) % 3,
-            // }));
             this.context.setButton23((this.context.button23 + 1) % 3);
         });
         document.getElementById("button-sw4").addEventListener("click", () => {
             pressButtonEffect("button-sw4");
-            // this.setState(prevState => ({
-            //     buttonSW4: !prevState.buttonSW4,
-            // }));
             this.context.toggleButtonSW4();
         });
     }
@@ -106,6 +96,6 @@ class TopBarButtons extends Component {
     }
 }
 
-TopBarButtons.contextType = ButtonContext;
+TopBarButtons.contextType = Context;
 
 export default TopBarButtons;

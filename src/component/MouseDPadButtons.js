@@ -1,16 +1,9 @@
 import {Component} from 'react';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
-import {createTheme, ThemeProvider} from '@mui/material/styles';
-import {ButtonContext} from '../context/ButtonContext';
-
-const customTheme = createTheme({
-    palette: {
-        primary: {
-            main: '#6df',
-        },
-    },
-});
+import {ThemeProvider} from '@mui/material/styles';
+import {customTheme} from '../utils/Theme';
+import {Context} from '../utils/Context';
 
 class MouseDPadButtons extends Component {
     constructor(props) {
@@ -22,12 +15,13 @@ class MouseDPadButtons extends Component {
         // 使用简短编码表示不同的按钮
         const signal =
             buttonType === 'Left' ? 'L' :
-                buttonType === 'Middle' ? 'M' :
-                    buttonType === 'Right' ? 'R' :
-                        buttonType === 'DUp' ? 'W' :
-                            buttonType === 'DLeft' ? 'A' :
-                                buttonType === 'DDown' ? 'S' :
-                                    buttonType === 'DRight' ? 'D' : '';
+            buttonType === 'Middle' ? 'M' :
+            buttonType === 'Right' ? 'R' :
+            buttonType === 'DUp' ? 'W' :
+            buttonType === 'DLeft' ? 'A' :
+            buttonType === 'DDown' ? 'S' :
+            buttonType === 'DRight' ? 'D' :
+        '';
 
         fetch('/button_signal', {
             method: 'POST',
@@ -117,6 +111,6 @@ class MouseDPadButtons extends Component {
 
 }
 
-MouseDPadButtons.contextType = ButtonContext;
+MouseDPadButtons.contextType = Context;
 
 export default MouseDPadButtons;

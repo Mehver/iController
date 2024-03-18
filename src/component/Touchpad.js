@@ -1,5 +1,5 @@
 import {Component} from 'react';
-import {ButtonContext} from '../context/ButtonContext';
+import {Context} from '../utils/Context';
 
 // 节流函数，限制函数调用频率，避免过多的请求
 function throttle(func, limit) {
@@ -133,6 +133,6 @@ class Touchpad extends Component {
     }
 }
 
-Touchpad.contextType = ButtonContext;
+Touchpad.contextType = Context;
 
 export default Touchpad;
