@@ -4,10 +4,9 @@ import './index.css';
 import * as serviceWorker from './serviceWorker';
 import {ButtonProvider} from './utils/Context';
 import TopBar from "./component/TopBar";
-// import TopBarButtons from "./component/TopBarButtons";
 import SideBar from "./component/SideBar";
 import Touchpad from "./component/Touchpad";
-import MouseDPadButtons from "./component/MouseDPadButtons";
+import VButtons from "./component/VButtons";
 
 // 设置延时函数
 let resizeTimer;
@@ -28,10 +27,9 @@ ReactDOM.render(
             <header className="App-header">
                 <ButtonProvider>
                     <TopBar/>
-                    {/*<TopBarButtons/>*/}
                     <SideBar/>
                     <Touchpad/>
-                    <MouseDPadButtons/>
+                    <VButtons/>
                 </ButtonProvider>
             </header>
         </div>

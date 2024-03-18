@@ -58,7 +58,7 @@ class SideBar extends Component {
                             <ListItemIcon>
                                 <MouseIcon/>
                             </ListItemIcon>
-                            <ListItemText primary="Mouse Keys"/>
+                            <ListItemText primary="Mouse Buttons"/>
                             {this.context.button23 === 0 ?
                                 <EyeOutlined/> :
                                 this.context.button23 === 1 ? <EyeFilled/> :
@@ -74,7 +74,7 @@ class SideBar extends Component {
                             <ListItemIcon>
                                 <GamepadIcon/>
                             </ListItemIcon>
-                            <ListItemText primary="D-Pad Keys"/>
+                            <ListItemText primary="D-Pad Buttons"/>
                             {this.context.buttonSW4 ? <EyeOutlined/> : <EyeInvisibleOutlined/>}
                         </ListItemButton>
                     </ListItem>
