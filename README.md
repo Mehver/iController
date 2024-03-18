@@ -1,6 +1,6 @@
 <div align="center">
     <img src="https://github.com/Mehver/iController/raw/main/%23README/icon/256.png" width="20%"/>
-    <h1>iController <code>v0.3.0</code></h1>
+    <h1>iController <code>v0.3.1</code></h1>
     </tr>
 	<p>English | <a href='https://github.com/Mehver/iController/blob/main/%23README/README-cn.md'>简体中文</a></p>
 </div>
@@ -13,13 +13,13 @@ control it as touchpad and keyboard through a web page after connecting.
 <table>
     <tr>
         <td>
-            <img src="https://github.com/Mehver/iController/raw/main/%23README/A.png"/>
+            <img src="https://github.com/Mehver/iController/raw/main/%23README/A.png" width="390px"/>
         </td>
         <td>
-            <img src="https://github.com/Mehver/iController/raw/main/%23README/B.png"/>
+            <img src="https://github.com/Mehver/iController/raw/main/%23README/B.png" width="390px"/>
         </td>
         <td>
-            <img src="https://github.com/Mehver/iController/raw/main/%23README/C.png"/>
+            <img src="https://github.com/Mehver/iController/raw/main/%23README/C.png" width="390px"/>
         </td>
         <td>
             <img src="https://github.com/Mehver/iController/raw/main/%23README/D.png" width="390px"/>

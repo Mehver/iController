@@ -36,7 +36,16 @@ class TopBar extends React.Component {
                             marginTop: '10px',
                             width: '20px',
                             height: '20px',
-                            color: '#333'
+                            color: '#333',
+                            // 增加透明的伪元素以扩大触发区域
+                            '&:after': {
+                                content: '""',
+                                position: 'absolute',
+                                top: '-30px',
+                                right: '-30px',
+                                bottom: '-30px',
+                                left: '-30px',
+                            },
                         }}
                         onClick={() => {
                             this.context.setDrawerOpen(true);
