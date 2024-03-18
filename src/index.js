@@ -2,10 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
-import {ButtonProvider} from './context/ButtonContext';
+import {ButtonProvider} from './utils/Context';
 import TopBar from "./component/TopBar";
+// import TopBarButtons from "./component/TopBarButtons";
+import SideBar from "./component/SideBar";
 import Touchpad from "./component/Touchpad";
-import TopBarButtons from "./component/TopBarButtons";
 import MouseDPadButtons from "./component/MouseDPadButtons";
 
 // 设置延时函数
@@ -25,9 +26,10 @@ ReactDOM.render(
     <React.StrictMode>
         <div className="App">
             <header className="App-header">
-                <TopBar/>
                 <ButtonProvider>
-                    <TopBarButtons/>
+                    <TopBar/>
+                    {/*<TopBarButtons/>*/}
+                    <SideBar/>
                     <Touchpad/>
                     <MouseDPadButtons/>
                 </ButtonProvider>
