@@ -1,6 +1,6 @@
 <div align="center">
     <img src="https://github.com/Mehver/iController/raw/main/%23README/icon/256.png" width="20%"/>
-    <h1>iController <code>v0.3.0</code></h1>
+    <h1>iController <code>v0.3.1</code></h1>
 	<p><a href='https://github.com/Mehver/iController/blob/main/README.md'>English</a> | 简体中文</p>
 </div>
 
@@ -11,13 +11,13 @@
 <table>
     <tr>
         <td>
-            <img src="https://github.com/Mehver/iController/raw/main/%23README/A.png"/>
+            <img src="https://github.com/Mehver/iController/raw/main/%23README/A.png" width="390px"/>
         </td>
         <td>
-            <img src="https://github.com/Mehver/iController/raw/main/%23README/B.png"/>
+            <img src="https://github.com/Mehver/iController/raw/main/%23README/B.png" width="390px"/>
         </td>
         <td>
-            <img src="https://github.com/Mehver/iController/raw/main/%23README/C.png"/>
+            <img src="https://github.com/Mehver/iController/raw/main/%23README/C.png" width="390px"/>
         </td>
         <td>
             <img src="https://github.com/Mehver/iController/raw/main/%23README/D.png" width="390px"/>

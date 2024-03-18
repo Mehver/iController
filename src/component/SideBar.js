@@ -2,8 +2,6 @@ import {Component} from 'react';
 import GamepadIcon from '@mui/icons-material/Gamepad';
 import MouseIcon from '@mui/icons-material/Mouse';
 import TouchAppIcon from '@mui/icons-material/TouchApp';
-// import {ThemeProvider} from '@mui/material/styles';
-// import {customTheme} from '../utils/Theme';
 import {Context} from '../utils/Context';
 import {Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText} from "@mui/material";
 import {EyeOutlined, EyeFilled, EyeInvisibleOutlined} from '@ant-design/icons';
@@ -14,9 +12,8 @@ class SideBar extends Component {
     }
 
     render() {
-        let drawerWidth = 240;
+        let drawerWidth = 280;
         return (
-            // <ThemeProvider theme={customTheme}>
             <Drawer
                 anchor="left"
                 open={this.context.drawerOpen}
@@ -81,7 +78,6 @@ class SideBar extends Component {
 
                 </List>
             </Drawer>
-            // </ThemeProvider>
         );
     }
 }
