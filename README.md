@@ -37,7 +37,7 @@ control it as touchpad and keyboard through a web page after connecting.
 
 *Some features are not completed yet, and will be added in the future.*
 
-### 1.2 For `v0.3.0`
+### 1.2 For `v0.3.X`
 
 - Now the setting supports cookie memory
 - Better setting menu
