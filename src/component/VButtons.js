@@ -5,7 +5,7 @@ import {ThemeProvider} from '@mui/material/styles';
 import {customTheme} from '../utils/Theme';
 import {Context} from '../utils/Context';
 
-class MouseDPadButtons extends Component {
+class VButtons extends Component {
     constructor(props) {
         super(props);
     }
@@ -111,6 +111,6 @@ class MouseDPadButtons extends Component {
 
 }
 
-MouseDPadButtons.contextType = Context;
+VButtons.contextType = Context;
 
-export default MouseDPadButtons;
+export default VButtons;
