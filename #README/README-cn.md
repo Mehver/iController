@@ -8,6 +8,23 @@
 
 一个在 `Windows`/`macOS` 主机上运行的简易服务器，同一局域网下的手机连接后可以通过网页实现触摸板和键盘的操作。
 
+<table>
+    <tr>
+        <td>
+            <img src="https://github.com/Mehver/iController/raw/main/%23README/A.png"/>
+        </td>
+        <td>
+            <img src="https://github.com/Mehver/iController/raw/main/%23README/B.png"/>
+        </td>
+        <td>
+            <img src="https://github.com/Mehver/iController/raw/main/%23README/C.png"/>
+        </td>
+        <td>
+            <img src="https://github.com/Mehver/iController/raw/main/%23README/D.png" width="390px"/>
+        </td>
+    </tr>
+</table>
+
 ### 1.1 功能
 
 - [x] 触摸板
@@ -17,6 +34,11 @@
 - [ ] 鼠标滚轮
 
 *部分功能尚未完成，将来会添加。*
+
+### 1.2 `v0.3.0` 新功能
+
+- 现在设置支持 Cookie 记忆
+- 更好的设置菜单
 
 ## 2 使用方法
 
