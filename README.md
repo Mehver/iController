@@ -12,6 +12,23 @@ control it as touchpad and keyboard through a web page after connecting.
 
 一个在 `Windows`/`macOS` 主机上运行的简易服务器，同一局域网下的手机连接后可以通过网页实现触摸板和键盘的操作。
 
+<table>
+    <tr>
+        <td>
+            <img src="https://github.com/Mehver/iController/raw/main/%23README/A.png"/>
+        </td>
+        <td>
+            <img src="https://github.com/Mehver/iController/raw/main/%23README/B.png"/>
+        </td>
+        <td>
+            <img src="https://github.com/Mehver/iController/raw/main/%23README/C.png"/>
+        </td>
+        <td>
+            <img src="https://github.com/Mehver/iController/raw/main/%23README/D.png" width="390px"/>
+        </td>
+    </tr>
+</table>
+
 ### 1.1 Features
 
 - [x] Touchpad
@@ -21,6 +38,11 @@ control it as touchpad and keyboard through a web page after connecting.
 - [ ] Mouse Wheel
 
 *Some features are not completed yet, and will be added in the future.*
+
+### 1.2 For `v0.3.0`
+
+- Now the setting supports cookie memory
+- Better setting menu
 
 ## 2 Usage
 
