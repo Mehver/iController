@@ -126,7 +126,7 @@ class Touchpad extends Component {
                     style={touchPadStyle}
                     id={'touchPad'}
                 >
-                    Touch coordinates: ({this.state.xPercent}%, {this.state.yPercent}%)
+                    Touchpad Acting ({this.state.xPercent}%, {this.state.yPercent}%)
                 </div> : null}
             </>
         );

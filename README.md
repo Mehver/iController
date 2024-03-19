@@ -1,6 +1,6 @@
 <div align="center">
     <img src="https://github.com/Mehver/iController/raw/main/%23README/icon/256.png" width="20%"/>
-    <h1>iController <code>v0.3.1</code></h1>
+    <h1>iController <code>v0.3.2</code></h1>
     </tr>
 	<p>English | <a href='https://github.com/Mehver/iController/blob/main/%23README/README-cn.md'>简体中文</a></p>
 </div>
@@ -140,7 +140,7 @@ mysterious errors. Only Python v3.10.10 is recommended.
     - License: `MIT`
     - Description: Use your android phone as trackpad on Windows or Linux systems.
     - Note: This project is for Android only, and it's not been updated for a long time. The way it works is a bit
-      different, it's not using B/S but C/S architecture, which can be a faster but less flexible.
+      different, it's not using B/S but C/S architecture, which can be faster but less flexible.
 
 Compare to these projects, iController is designed with PyAutoGUI, which means it can do more things than just
 controlling the cursor. But its weakness is that I didn't pay much time on cross-platform support, and it's more laggy
