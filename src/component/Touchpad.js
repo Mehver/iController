@@ -1,5 +1,6 @@
 import {Component} from 'react';
 import {Context} from '../utils/Context';
+import {api_touchpad} from '../api/touchpad';
 
 // 节流函数，限制函数调用频率，避免过多的请求
 function throttle(func, limit) {
@@ -35,6 +36,7 @@ class Touchpad extends Component {
         window.addEventListener('resize', this.updateWindowDimensions);
         // 禁用页面滚动
         document.body.style.overflow = 'hidden';
+        document.documentElement.style.overflow = 'hidden';
     }
 
     handleTouchStart = (e) => {
@@ -65,35 +67,8 @@ class Touchpad extends Component {
         });
 
         // 发送坐标至后端
-        this.sendCoordinates(xPercent.toFixed(2), yPercent.toFixed(2));
+        api_touchpad(xPercent.toFixed(2), yPercent.toFixed(2));
     }
-
-
-    sendCoordinates(xPercent, yPercent) {
-        // 创建一个足够存储两个float32值的缓冲区
-        const buffer = new ArrayBuffer(8); // 每个float32占用4字节
-        const view = new DataView(buffer);
-
-        // 将x和y值写入缓冲区
-        // 第三个参数设置为true表示使用小端序
-        view.setFloat32(0, xPercent, true); // 从缓冲区的起始位置写入x
-        view.setFloat32(4, yPercent, true); // 从缓冲区的第4字节位置写入y
-
-        // 发送二进制数据
-        fetch('/receive_coordinates', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/octet-stream',
-            },
-            body: buffer,
-        })
-            .then(response => response.json())
-            .then(data => console.log('Success:', data))
-            .catch((error) => {
-                console.error('Error:', error);
-            });
-    }
-
 
     handleTouchEnd = () => {
         this.setState({
@@ -101,7 +76,7 @@ class Touchpad extends Component {
             yPercent: 0,
         });
         // 发送坐标至后端
-        this.sendCoordinates(0, 0);
+        api_touchpad(0, 0);
     }
 
     render() {
@@ -119,15 +94,17 @@ class Touchpad extends Component {
 
         return (
             <>
-                {this.context.buttonSW1 ? <div
-                    onTouchStart={this.handleTouchStart}
-                    onTouchMove={this.handleTouchMove}
-                    onTouchEnd={this.handleTouchEnd}
-                    style={touchPadStyle}
-                    id={'touchPad'}
-                >
-                    Touchpad Acting ({this.state.xPercent}%, {this.state.yPercent}%)
-                </div> : null}
+                {this.context.buttonSW1 ?
+                    <div
+                        onTouchStart={this.handleTouchStart}
+                        onTouchMove={this.handleTouchMove}
+                        onTouchEnd={this.handleTouchEnd}
+                        style={touchPadStyle}
+                        id={'touchPad'}
+                    >
+                        Touchpad Acting ({this.state.xPercent}%, {this.state.yPercent}%)
+                    </div> : null
+                }
             </>
         );
     }

@@ -1,14 +1,13 @@
 <div align="center">
     <img src="https://github.com/Mehver/iController/raw/main/%23README/icon/256.png" width="20%"/>
-    <h1>iController <code>v0.3.2</code></h1>
+    <h1>iController <code>v0.3.3</code></h1>
     </tr>
 	<p>English | <a href='https://github.com/Mehver/iController/blob/main/%23README/README-cn.md'>简体中文</a></p>
 </div>
 
 ## 1 Description
 
-A simple server running on a `Windows`/`macOS` host, which allows mobile phones on the same local area network to
-control it as touchpad and keyboard through a web page after connecting.
+A PC host LAN controller running on a `Windows`/`macOS`, enabling mobile phones to access a web page panel for PC control.
 
 <table>
     <tr>
