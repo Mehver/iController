@@ -28,7 +28,7 @@ def create_app(static_folder='build', static_url_path=''):
     def serve():
         return send_from_directory(app.static_folder, 'index.html')
 
-    @app.route('/receive_coordinates', methods=['POST'])
+    @app.route('/api/touchpad', methods=['POST'])
     def receive_coordinates():
         data = request.data
         x_percentage, y_percentage = struct.unpack('<ff', data)
@@ -41,7 +41,7 @@ def create_app(static_folder='build', static_url_path=''):
         print(f"Received coordinates: x={x_percentage}%, y={y_percentage}%")
         return jsonify({"status": "success", "x": x_percentage, "y": y_percentage})
 
-    @app.route('/button_signal', methods=['POST'])
+    @app.route('/api/button', methods=['POST'])
     def button_signal():
         signal = request.data.decode('utf-8')
         if signal == 'L':

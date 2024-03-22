@@ -9,7 +9,7 @@ print("""
 |_\____/\___/|_| |_|\__|_|  \___/|_|_|\___|_|   
                                                 
 https://github.com/Mehver/iController
-v0.3.2
+v0.3.3
 
 """)
 

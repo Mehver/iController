@@ -1,30 +1,30 @@
 import React from 'react';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Context } from '../utils/Context';
+import {Context} from '../utils/Context';
 
 class TopBar extends React.Component {
     render() {
-        const topBarCss = {
-            position: 'absolute',
-            top: '-5px',
-            width: '100%',
-            height: '35px',
-            backgroundColor: '#6df',
-        };
-        const titleCss = {
-            fontSize: '20px',
-            fontWeight: 'bold',
-            color: '#333',
-            float: 'left',
-            position: 'relative',
-            top: '-14px',
-            left: '8px'
-        };
         return (
             <>
-                <div id="topBar" style={topBarCss}>
-                    <p style={titleCss}>iController</p>
+                <div id="topBar" style={{
+                    position: 'absolute',
+                    top: '-5px',
+                    width: '100%',
+                    height: '35px',
+                    backgroundColor: '#6df',
+                }}>
+                    <p style={{
+                        fontSize: '20px',
+                        fontWeight: 'bold',
+                        color: '#333',
+                        float: 'left',
+                        position: 'relative',
+                        top: '-14px',
+                        left: '8px'
+                    }}>
+                        iController
+                    </p>
                     <IconButton
                         edge="start"
                         aria-label="menu"
@@ -51,7 +51,7 @@ class TopBar extends React.Component {
                             this.context.setDrawerOpen(true);
                         }}
                     >
-                        <MenuIcon />
+                        <MenuIcon/>
                     </IconButton>
                 </div>
             </>

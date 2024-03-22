@@ -4,83 +4,75 @@ import Box from '@mui/material/Box';
 import {ThemeProvider} from '@mui/material/styles';
 import {customTheme} from '../utils/Theme';
 import {Context} from '../utils/Context';
+import {api_button} from '../api/button';
 
 class VButtons extends Component {
     constructor(props) {
         super(props);
     }
 
-    // 发送按钮信号的函数，传递信号为纯文本
-    sendButtonSignal = (buttonType) => {
-        // 使用简短编码表示不同的按钮
-        const signal =
-            buttonType === 'Left' ? 'L' :
-            buttonType === 'Middle' ? 'M' :
-            buttonType === 'Right' ? 'R' :
-            buttonType === 'DUp' ? 'W' :
-            buttonType === 'DLeft' ? 'A' :
-            buttonType === 'DDown' ? 'S' :
-            buttonType === 'DRight' ? 'D' :
-        '';
-
-        fetch('/button_signal', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'text/plain',
-            },
-            body: signal,
-        })
-            .then(response => response.json())
-            .then(data => console.log('Success:', data))
-            .catch((error) => {
-                console.error('Error:', error);
-            });
-    };
-
     render() {
-        let buttonWidth = window.innerWidth / 4;
-        let buttonHeight = window.innerHeight / 5;
+        let dPadButtonWidth = window.innerWidth / 4;
+        let dPadButtonHeight = window.innerHeight / 5;
+        const mouseLMRBoxSX = {
+            display: 'flex',
+            justifyContent: 'space-between', // 使按钮间有等距间隙
+            p: 1, // 设置内边距
+            marginBottom: '50px',
+            bottom: 0,
+            position: 'fixed',
+            width: '100%',
+            backgroundColor: 'transparent',
+        };
+        const buttonSX = {
+            width: '100%',
+            mx: '2%'
+        };
         return (
             <ThemeProvider theme={customTheme}>
-                <Box sx={{
-                    display: 'flex',
-                    justifyContent: 'space-between', // 使按钮间有等距间隙
-                    p: 1, // 设置内边距
-                    marginBottom: '50px',
-                    bottom: 0,
-                    position: 'fixed',
-                    width: '100%',
-                    backgroundColor: 'transparent',
-                }}>
+                <Box sx={mouseLMRBoxSX}>
                     {this.context.button23 !== 2 ? (
                         <>
-                            <Button color="primary" variant="outlined" onClick={() => this.sendButtonSignal('Left')}
-                                    sx={{width: '100%', mx: '2%'}}>L</Button>
+                            <Button
+                                color="primary"
+                                variant="outlined"
+                                onClick={() => api_button('Left')}
+                                sx={buttonSX}
+                            >L</Button>
                             {this.context.button23 === 0 ? (
-                                <Button color="primary" variant="outlined"
-                                        onClick={() => this.sendButtonSignal('Middle')}
-                                        sx={{width: '100%', mx: '2%'}}>M</Button> // 中间按钮左右各留出一些空间
+                                <Button
+                                    color="primary"
+                                    variant="outlined"
+                                    onClick={() => api_button('Middle')}
+                                    sx={buttonSX}
+                                >M</Button>
                             ) : null}
-                            <Button color="primary" variant="outlined" onClick={() => this.sendButtonSignal('Right')}
-                                    sx={{width: '100%', mx: '2%'}}>R</Button>
+                            <Button
+                                color="primary"
+                                variant="outlined"
+                                onClick={() => api_button('Right')}
+                                sx={buttonSX}
+                            >R</Button>
                         </>
                     ) : null}
                 </Box>
-                <Box
-                    sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        width: '100%',
-                        backgroundColor: 'transparent',
-                    }}
-                >
+                <Box sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '100%',
+                    backgroundColor: 'transparent',
+                }}>
                     {this.context.buttonSW4 ? (
                         <>
                             <Box>
-                                <Button color="primary" variant="outlined" onClick={() => this.sendButtonSignal('DUp')}
-                                        sx={{mb: 2, width: buttonWidth, height: buttonHeight}}>↑</Button>
+                                <Button
+                                    color="primary"
+                                    variant="outlined"
+                                    onClick={() => api_button('DUp')}
+                                    sx={{mb: 2, width: dPadButtonWidth, height: dPadButtonHeight}}
+                                >↑</Button>
                             </Box>
                             <Box
                                 sx={{
@@ -90,15 +82,24 @@ class VButtons extends Component {
                                     justifyContent: 'center',
                                 }}
                             >
-                                <Button color="primary" variant="outlined"
-                                        onClick={() => this.sendButtonSignal('DLeft')}
-                                        sx={{width: buttonWidth, height: buttonHeight}}>←</Button>
-                                <Button color="primary" variant="outlined"
-                                        onClick={() => this.sendButtonSignal('DDown')}
-                                        sx={{mx: 2, width: buttonWidth, height: buttonHeight}}>↓</Button>
-                                <Button color="primary" variant="outlined"
-                                        onClick={() => this.sendButtonSignal('DRight')}
-                                        sx={{width: buttonWidth, height: buttonHeight}}>→</Button>
+                                <Button
+                                    color="primary"
+                                    variant="outlined"
+                                    onClick={() => api_button('DLeft')}
+                                    sx={{width: dPadButtonWidth, height: dPadButtonHeight}}
+                                >←</Button>
+                                <Button
+                                    color="primary"
+                                    variant="outlined"
+                                    onClick={() => api_button('DDown')}
+                                    sx={{mx: 2, width: dPadButtonWidth, height: dPadButtonHeight}}
+                                >↓</Button>
+                                <Button
+                                    color="primary"
+                                    variant="outlined"
+                                    onClick={() => api_button('DRight')}
+                                    sx={{width: dPadButtonWidth, height: dPadButtonHeight}}
+                                >→</Button>
                             </Box>
                             <Box>
                             </Box>
