@@ -42,9 +42,6 @@ jobs:
 
   build-macos-x64:
     runs-on: macos-12
-    strategy:
-      matrix:
-        architecture: [x64]
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python
@@ -63,14 +60,12 @@ jobs:
         run: npm install && npm run build
       - name: Build Project
         run: ./bin/packaging/mac-onefile.sh
-        env:
-          ARCH: ${{ matrix.architecture }}
       - name: Grant Execute Permission for Executable
         run: chmod +x ./dist/main
       - name: Rename & Zip & Prepare for Upload
         run: |
           mv ./dist/main ./dist/iController
-          zipName="icontroller-${{ github.event.release.tag_name }}-portable-mac-${{ matrix.architecture }}.zip"
+          zipName="icontroller-${{ github.event.release.tag_name }}-portable-mac-x64.zip"
           cd ./dist
           zip -r $zipName iController
           echo "ARTIFACT_PATH=./dist/$zipName" >> $GITHUB_ENV
@@ -82,14 +77,11 @@ jobs:
         with:
           upload_url: ${{ github.event.release.upload_url }}
           asset_path: ${{ env.ARTIFACT_PATH }}
-          asset_name: icontroller-${{ github.event.release.tag_name }}-portable-mac-${{ matrix.architecture }}.zip
+          asset_name: icontroller-${{ github.event.release.tag_name }}-portable-mac-x64.zip
           asset_content_type: application/zip
 
   build-macos-arm64:
     runs-on: macos-14
-    strategy:
-      matrix:
-        architecture: [arm64]
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python
@@ -108,14 +100,12 @@ jobs:
         run: npm install && npm run build
       - name: Build Project
         run: ./bin/packaging/mac-onefile.sh
-        env:
-          ARCH: ${{ matrix.architecture }}
       - name: Grant Execute Permission for Executable
         run: chmod +x ./dist/main
       - name: Rename & Zip & Prepare for Upload
         run: |
           mv ./dist/main ./dist/iController
-          zipName="icontroller-${{ github.event.release.tag_name }}-portable-mac-${{ matrix.architecture }}.zip"
+          zipName="icontroller-${{ github.event.release.tag_name }}-portable-mac-arm64.zip"
           cd ./dist
           zip -r $zipName iController
           echo "ARTIFACT_PATH=./dist/$zipName" >> $GITHUB_ENV
@@ -127,5 +117,5 @@ jobs:
         with:
           upload_url: ${{ github.event.release.upload_url }}
           asset_path: ${{ env.ARTIFACT_PATH }}
-          asset_name: icontroller-${{ github.event.release.tag_name }}-portable-mac-${{ matrix.architecture }}.zip
+          asset_name: icontroller-${{ github.event.release.tag_name }}-portable-mac-arm64.zip
           asset_content_type: application/zip
