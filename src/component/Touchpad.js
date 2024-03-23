@@ -81,7 +81,7 @@ class Touchpad extends Component {
 
     render() {
         const {screenWidth, screenHeight} = this.state;
-        const touchPadStyle = {
+        let touchPadStyle = {
             position: 'absolute',
             left: '50%',
             top: '50%',
@@ -91,7 +91,12 @@ class Touchpad extends Component {
             backgroundColor: 'transparent',
             color: '#6df',
         };
-
+        if (screenWidth < 280) {
+            touchPadStyle.fontSize = `${(screenWidth / 280.0) * 10.0}px`;
+        }
+        if (screenHeight < 400) {
+            touchPadStyle.top = `${400.0 / screenHeight * (61.0 - 380.0 / screenHeight * 12.0)}%`;
+        }
         return (
             <>
                 {this.context.buttonSW1 ?

@@ -5,6 +5,34 @@ import {Context} from '../utils/Context';
 
 class TopBar extends React.Component {
     render() {
+        let nameFrontSize = '20px';
+        let nameFrontTop = '-14px';
+        if (window.innerWidth < 280) {
+            nameFrontSize = `${(window.innerWidth / 280.0) * 20.0}px`;
+            nameFrontTop = `${(window.innerWidth / 280.0) * -11.0}px`;
+            if (window.innerWidth < 240) {
+                nameFrontTop = `${(window.innerWidth / 280.0) * -7.0}px`;
+            }
+        }
+        const iconButtonSX = {
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            marginRight: '10px',
+            marginTop: '10px',
+            width: '20px',
+            height: '20px',
+            color: '#333',
+            // 增加透明的伪元素以扩大触发区域
+            '&:after': {
+                content: '""',
+                position: 'absolute',
+                top: '-30px',
+                right: '-30px',
+                bottom: '-30px',
+                left: '-30px',
+            },
+        };
         return (
             <>
                 <div id="topBar" style={{
@@ -15,12 +43,12 @@ class TopBar extends React.Component {
                     backgroundColor: '#6df',
                 }}>
                     <p style={{
-                        fontSize: '20px',
+                        fontSize: nameFrontSize,
                         fontWeight: 'bold',
                         color: '#333',
                         float: 'left',
                         position: 'relative',
-                        top: '-14px',
+                        top: nameFrontTop,
                         left: '8px'
                     }}>
                         iController
@@ -28,25 +56,7 @@ class TopBar extends React.Component {
                     <IconButton
                         edge="start"
                         aria-label="menu"
-                        sx={{
-                            position: 'absolute',
-                            top: 0,
-                            right: 0,
-                            marginRight: '10px',
-                            marginTop: '10px',
-                            width: '20px',
-                            height: '20px',
-                            color: '#333',
-                            // 增加透明的伪元素以扩大触发区域
-                            '&:after': {
-                                content: '""',
-                                position: 'absolute',
-                                top: '-30px',
-                                right: '-30px',
-                                bottom: '-30px',
-                                left: '-30px',
-                            },
-                        }}
+                        sx={iconButtonSX}
                         onClick={() => {
                             this.context.setDrawerOpen(true);
                         }}
