@@ -118,6 +118,7 @@ mysterious errors. Only Python v3.10.10 is recommended.
 - Node.js
     - React.js
         - Material UI (https://github.com/mui/material-ui)
+        - PrimeReact (https://github.com/primefaces/primereact)
 - Python
     - Flask (https://flask.palletsprojects.com/en/3.0.x/)
     - PyAutoGUI (https://pyautogui.readthedocs.io/en/latest/)
