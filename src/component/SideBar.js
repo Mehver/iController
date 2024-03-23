@@ -3,12 +3,21 @@ import GamepadIcon from '@mui/icons-material/Gamepad';
 import MouseIcon from '@mui/icons-material/Mouse';
 import TouchAppIcon from '@mui/icons-material/TouchApp';
 import {Context} from '../utils/Context';
-import {Drawer, List, ListItem, ListItemButton, ListItemText, Switch, Box} from "@mui/material";
-import {styled} from '@mui/material/styles';
+import {Drawer, List, ListItem, ListItemButton, ListItemText, Collapse, Box, Divider} from "@mui/material";
 import LooksOneOutlinedIcon from '@mui/icons-material/LooksOneOutlined';
 import LooksTwoOutlinedIcon from '@mui/icons-material/LooksTwoOutlined';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
+import MenuIcon from '@mui/icons-material/Menu';
+import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import KeyboardIcon from '@mui/icons-material/Keyboard';
+import SpeakerIcon from '@mui/icons-material/Speaker';
+import FilterTiltShiftIcon from '@mui/icons-material/FilterTiltShift';
+import MouseWheelMenu from './SideBar/MouseWheelMenu';
+import KeyboardMenu from './SideBar/KeyboardMenu';
+import SoundWheel from './SideBar/SoundWheel';
+import SettingMenu from './SideBar/SettingMenu';
 
 class SideBar extends Component {
     constructor(props) {
@@ -104,6 +113,68 @@ class SideBar extends Component {
                             }</Box>
                         </ListItemButton>
                     </ListItem>
+                    <Divider/>
+                    <ListItem>
+                        <ListItemButton onClick={() => {
+                            this.context.toggleSidebarKeyboardMenu();
+                        }}>
+                            <KeyboardIcon sx={iconSizeSX}/>
+                            <ListItemText primary="&nbsp;&nbsp;&nbsp;Keyboard"/>
+                            <Box sx={boxIconSX}>{this.context.sidebarKeyboardMenu ?
+                                <ExpandMoreIcon sx={iconSizeSX}/> :
+                                <ChevronRightOutlinedIcon sx={iconSizeSX}/>
+                            }</Box>
+                        </ListItemButton>
+                    </ListItem>
+                    <Collapse in={this.context.sidebarKeyboardMenu}>
+                        <KeyboardMenu/>
+                    </Collapse>
+                    <ListItem>
+                        <ListItemButton onClick={() => {
+                            this.context.toggleSidebarMouseWheelMenu();
+                        }}>
+                            <FilterTiltShiftIcon sx={iconSizeSX}/>
+                            <ListItemText primary="&nbsp;&nbsp;&nbsp;Mouse Wheel"/>
+                            <Box sx={boxIconSX}>{this.context.sidebarMouseWheelMenu ?
+                                <ExpandMoreIcon sx={iconSizeSX}/> :
+                                <ChevronRightOutlinedIcon sx={iconSizeSX}/>
+                            }</Box>
+                        </ListItemButton>
+                    </ListItem>
+                    <Collapse in={this.context.sidebarMouseWheelMenu}>
+                        <MouseWheelMenu/>
+                    </Collapse>
+                    <ListItem>
+                        <ListItemButton onClick={() => {
+                            this.context.toggleSidebarSoundWheelMenu();
+                        }}>
+                            <SpeakerIcon sx={iconSizeSX}/>
+                            <ListItemText primary="&nbsp;&nbsp;&nbsp;Sound Wheel"/>
+                            <Box sx={boxIconSX}>{this.context.sidebarSoundWheelMenu ?
+                                <ExpandMoreIcon sx={iconSizeSX}/> :
+                                <ChevronRightOutlinedIcon sx={iconSizeSX}/>
+                            }</Box>
+                        </ListItemButton>
+                    </ListItem>
+                    <Collapse in={this.context.sidebarSoundWheelMenu}>
+                        <SoundWheel/>
+                    </Collapse>
+                    <Divider/>
+                    <ListItem>
+                        <ListItemButton onClick={() => {
+                            this.context.toggleSidebarSettingMenu();
+                        }}>
+                            <MenuIcon sx={iconSizeSX}/>
+                            <ListItemText primary="&nbsp;&nbsp;&nbsp;Settings"/>
+                            <Box sx={boxIconSX}>{this.context.sidebarSettingMenu ?
+                                <ExpandMoreIcon sx={iconSizeSX}/> :
+                                <ChevronRightOutlinedIcon sx={iconSizeSX}/>
+                            }</Box>
+                        </ListItemButton>
+                    </ListItem>
+                    <Collapse in={this.context.sidebarSettingMenu}>
+                        <SettingMenu/>
+                    </Collapse>
                 </List>
             </Drawer>
         );

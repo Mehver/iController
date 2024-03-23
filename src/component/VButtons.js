@@ -1,6 +1,7 @@
 import {Component} from 'react';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
+import {Collapse} from "@mui/material";
 import {ThemeProvider} from '@mui/material/styles';
 import {customTheme} from '../utils/Theme';
 import {Context} from '../utils/Context';
@@ -64,47 +65,45 @@ class VButtons extends Component {
                     width: '100%',
                     backgroundColor: 'transparent',
                 }}>
-                    {this.context.buttonSW4 ? (
-                        <>
-                            <Box>
-                                <Button
-                                    color="primary"
-                                    variant="outlined"
-                                    onClick={() => api_button('DUp')}
-                                    sx={{mb: 2, width: dPadButtonWidth, height: dPadButtonHeight}}
-                                >↑</Button>
-                            </Box>
-                            <Box
-                                sx={{
-                                    display: 'flex',
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                }}
-                            >
-                                <Button
-                                    color="primary"
-                                    variant="outlined"
-                                    onClick={() => api_button('DLeft')}
-                                    sx={{width: dPadButtonWidth, height: dPadButtonHeight}}
-                                >←</Button>
-                                <Button
-                                    color="primary"
-                                    variant="outlined"
-                                    onClick={() => api_button('DDown')}
-                                    sx={{mx: 2, width: dPadButtonWidth, height: dPadButtonHeight}}
-                                >↓</Button>
-                                <Button
-                                    color="primary"
-                                    variant="outlined"
-                                    onClick={() => api_button('DRight')}
-                                    sx={{width: dPadButtonWidth, height: dPadButtonHeight}}
-                                >→</Button>
-                            </Box>
-                            <Box>
-                            </Box>
-                        </>
-                    ) : null}
+                    <Collapse in={this.context.buttonSW4}>
+                        <Box>
+                            <Button
+                                color="primary"
+                                variant="outlined"
+                                onClick={() => api_button('DUp')}
+                                sx={{mb: 2, width: dPadButtonWidth, height: dPadButtonHeight}}
+                            >↑</Button>
+                        </Box>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                            }}
+                        >
+                            <Button
+                                color="primary"
+                                variant="outlined"
+                                onClick={() => api_button('DLeft')}
+                                sx={{width: dPadButtonWidth, height: dPadButtonHeight}}
+                            >←</Button>
+                            <Button
+                                color="primary"
+                                variant="outlined"
+                                onClick={() => api_button('DDown')}
+                                sx={{mx: 2, width: dPadButtonWidth, height: dPadButtonHeight}}
+                            >↓</Button>
+                            <Button
+                                color="primary"
+                                variant="outlined"
+                                onClick={() => api_button('DRight')}
+                                sx={{width: dPadButtonWidth, height: dPadButtonHeight}}
+                            >→</Button>
+                        </Box>
+                        <Box>
+                        </Box>
+                    </Collapse>
                 </Box>
             </ThemeProvider>
         );
