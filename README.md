@@ -7,7 +7,7 @@
 
 ## 1 Description
 
-A PC host LAN controller running on a `Windows`/`macOS`, enabling mobile phones to access a web page panel for PC control.
+A PC host LAN controller running on `Windows`/`macOS`, enabling mobile phones to access a web page panel for PC control.
 
 <table>
     <tr>
