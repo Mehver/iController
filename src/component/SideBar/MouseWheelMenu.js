@@ -5,14 +5,21 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import {Context} from '../../utils/Context';
 import IconButton from "@mui/material/IconButton";
+import {api_mousewheel} from "../../api/mousewheel";
 
 // 旋钮组件
-function ReactiveDemo() {
+function KnobComponent() {
     const [value, setValue] = useState(0);
+
+    // 改变组件状态的同时调用API发送值
+    const updateValue = (newValue) => {
+        setValue(newValue); // 更新状态
+        api_mousewheel(newValue); // 调用API发送值
+    };
 
     // 旋钮回中逻辑
     useEffect(() => {
-        const timer = setTimeout(() => setValue(0), 700); // 0.7秒后自动回中
+        const timer = setTimeout(() => updateValue(0), 700); // 0.7秒后自动回中
         return () => clearTimeout(timer);
     }, [value]);
 
@@ -34,15 +41,20 @@ function ReactiveDemo() {
             <Box display="flex" gap={2}>
                 <IconButton size="large">
                     <RemoveIcon
-                        onClick={() => setValue(prevValue => Math.max(prevValue - 1, -4))}
+                        onClick={() => {
+                            const newValue = Math.max(value - 1, -4);
+                            updateValue(newValue);
+                        }}
                         disabled={value === -4}
                         fontSize="inherit"
                     />
                 </IconButton>
                 <IconButton size="large">
                     <AddIcon
-                        onClick={() => setValue(prevValue => Math.min(prevValue + 1, 4))}
-                        disabled={value === 4}
+                        onClick={() => {
+                            const newValue = Math.min(value + 1, 4);
+                            updateValue(newValue);
+                        }} disabled={value === 4}
                         fontSize="inherit"
                     />
                 </IconButton>
@@ -57,7 +69,7 @@ class MouseWheelMenu extends Component {
         return (
             <List component="div" disablePadding style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
                 <ListItem>
-                    <ReactiveDemo/>
+                    <KnobComponent/>
                 </ListItem>
             </List>
         );
