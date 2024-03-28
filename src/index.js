@@ -1,11 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import {ButtonProvider} from './utils/Context';
+import {ContextProvider} from './utils/Context';
 import TopBar from "./component/TopBar";
 import SideBar from "./component/SideBar";
 import Touchpad from "./component/Touchpad";
-import VButtons from "./component/VButtons";
+import MouseButtons from "./component/MouseButtons";
+import DPad from "./component/DPad";
 
 // 设置延时函数
 let resizeTimer;
@@ -24,12 +25,13 @@ ReactDOM.render(
     <React.StrictMode>
         <div className="App">
             <header className="App-header">
-                <ButtonProvider>
+                <ContextProvider>
                     <TopBar/>
                     <SideBar/>
                     <Touchpad/>
-                    <VButtons/>
-                </ButtonProvider>
+                    <MouseButtons/>
+                    <DPad/>
+                </ContextProvider>
             </header>
         </div>
     </React.StrictMode>,
