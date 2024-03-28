@@ -1,6 +1,6 @@
 // Context.js
 import React, {createContext, Component} from 'react';
-import {setCookie, getCookie} from './CookieIO';
+import {setCookie, getCookie} from '../storage/CookieIO';
 
 // 创建Context
 export const Context = createContext();
