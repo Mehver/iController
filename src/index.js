@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import * as serviceWorker from './serviceWorker';
 import {ButtonProvider} from './utils/Context';
 import TopBar from "./component/TopBar";
 import SideBar from "./component/SideBar";
@@ -15,7 +14,7 @@ const handleResize = () => {
     resizeTimer = setTimeout(() => {
         // 刷新页面
         window.location.reload();
-    }, 500); // 延迟500毫秒
+    }, 500); // 延迟500毫秒，避免线性调整尺寸时频繁刷新
 };
 
 // 监听屏幕大小改变或旋转事件
@@ -36,6 +35,3 @@ ReactDOM.render(
     </React.StrictMode>,
     document.getElementById('root')
 );
-
-// PWA设置
-serviceWorker.unregister();
