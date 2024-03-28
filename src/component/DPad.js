@@ -5,9 +5,9 @@ import {Collapse} from "@mui/material";
 import {ThemeProvider} from '@mui/material/styles';
 import {customTheme} from '../utils/Theme';
 import {Context} from '../utils/Context';
-import {api_button} from '../api/button';
+import {api_dpad} from '../api/dpad';
 
-class VButtons extends Component {
+class DPad extends Component {
     constructor(props) {
         super(props);
     }
@@ -15,48 +15,8 @@ class VButtons extends Component {
     render() {
         let dPadButtonWidth = window.innerWidth / 4;
         let dPadButtonHeight = window.innerHeight / 5;
-        const mouseLMRBoxSX = {
-            display: 'flex',
-            justifyContent: 'space-between', // 使按钮间有等距间隙
-            p: 1, // 设置内边距
-            marginBottom: '50px',
-            bottom: 0,
-            position: 'fixed',
-            width: '100%',
-            backgroundColor: 'transparent',
-        };
-        const buttonSX = {
-            width: '100%',
-            mx: '2%'
-        };
         return (
             <ThemeProvider theme={customTheme}>
-                <Box sx={mouseLMRBoxSX}>
-                    {this.context.button23 !== 2 ? (
-                        <>
-                            <Button
-                                color="primary"
-                                variant="outlined"
-                                onClick={() => api_button('Left')}
-                                sx={buttonSX}
-                            >L</Button>
-                            {this.context.button23 === 0 ? (
-                                <Button
-                                    color="primary"
-                                    variant="outlined"
-                                    onClick={() => api_button('Middle')}
-                                    sx={buttonSX}
-                                >M</Button>
-                            ) : null}
-                            <Button
-                                color="primary"
-                                variant="outlined"
-                                onClick={() => api_button('Right')}
-                                sx={buttonSX}
-                            >R</Button>
-                        </>
-                    ) : null}
-                </Box>
                 <Box sx={{
                     display: 'flex',
                     flexDirection: 'column',
@@ -70,7 +30,7 @@ class VButtons extends Component {
                             <Button
                                 color="primary"
                                 variant="outlined"
-                                onClick={() => api_button('DUp')}
+                                onClick={() => api_dpad('DUp')}
                                 sx={{mb: 2, width: dPadButtonWidth, height: dPadButtonHeight}}
                             >↑</Button>
                         </Box>
@@ -85,19 +45,19 @@ class VButtons extends Component {
                             <Button
                                 color="primary"
                                 variant="outlined"
-                                onClick={() => api_button('DLeft')}
+                                onClick={() => api_dpad('DLeft')}
                                 sx={{width: dPadButtonWidth, height: dPadButtonHeight}}
                             >←</Button>
                             <Button
                                 color="primary"
                                 variant="outlined"
-                                onClick={() => api_button('DDown')}
+                                onClick={() => api_dpad('DDown')}
                                 sx={{mx: 2, width: dPadButtonWidth, height: dPadButtonHeight}}
                             >↓</Button>
                             <Button
                                 color="primary"
                                 variant="outlined"
-                                onClick={() => api_button('DRight')}
+                                onClick={() => api_dpad('DRight')}
                                 sx={{width: dPadButtonWidth, height: dPadButtonHeight}}
                             >→</Button>
                         </Box>
@@ -111,6 +71,6 @@ class VButtons extends Component {
 
 }
 
-VButtons.contextType = Context;
+DPad.contextType = Context;
 
-export default VButtons;
+export default DPad;

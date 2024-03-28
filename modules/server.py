@@ -3,6 +3,7 @@ import pyautogui
 import struct
 import sys
 import os
+from modules.config import Config
 
 
 # 动态确定配置文件和静态文件夹路径
@@ -28,28 +29,19 @@ def create_app(static_folder='build', static_url_path=''):
     def serve():
         return send_from_directory(app.static_folder, 'index.html')
 
-    @app.route('/api/button', methods=['POST'])
-    def button_signal():
+    @app.route('/api/dpad', methods=['POST'])
+    def dpad():
         signal = request.data.decode('utf-8')
-        if signal == 'L':
-            pyautogui.click(button='left')
-            action = "left click"
-        elif signal == 'M':
-            pyautogui.click(button='middle')
-            action = "middle click"
-        elif signal == 'R':
-            pyautogui.click(button='right')
-            action = "right click"
-        elif signal == 'W':
+        if signal == 'DUp':
             pyautogui.press('up')
             action = "press up"
-        elif signal == 'A':
+        elif signal == 'DLeft':
             pyautogui.press('left')
             action = "press left"
-        elif signal == 'S':
+        elif signal == 'DDown':
             pyautogui.press('down')
             action = "press down"
-        elif signal == 'D':
+        elif signal == 'DRight':
             pyautogui.press('right')
             action = "press right"
         else:
@@ -57,8 +49,25 @@ def create_app(static_folder='build', static_url_path=''):
         print(f"Performed {action}.")
         return jsonify({"status": "success", "action": action})
 
+    @app.route('/api/mousebutton', methods=['POST'])
+    def mousebutton():
+        signal = request.data.decode('utf-8')
+        if signal == 'Left':
+            pyautogui.click(button='left')
+            action = "left click"
+        elif signal == 'Middle':
+            pyautogui.click(button='middle')
+            action = "middle click"
+        elif signal == 'Right':
+            pyautogui.click(button='right')
+            action = "right click"
+        else:
+            return "Invalid signal", 400
+        print(f"Performed {action}.")
+        return jsonify({"status": "success", "action": action})
+
     @app.route('/api/mousewheel', methods=['POST'])
-    def mouse_wheel():
+    def mousewheel():
         # 打印原始请求数据，查看其确切内容
         raw_data = request.get_data(as_text=True)  # 获取文本格式的原始数据
         # print(f"Received raw data: '{raw_data}'")
@@ -67,21 +76,22 @@ def create_app(static_folder='build', static_url_path=''):
         except ValueError as e:
             print(f"Error converting data to int: {e}")
             return jsonify({"status": "error", "message": "Invalid data format"}), 400
-        # 为了增加滚动的灵敏度，我们将滚动量进行了五次方运算
+        # 立方运算增加滚动的灵敏度
         wheel_amount = wheel_amount * wheel_amount * wheel_amount * wheel_amount * wheel_amount
+        wheel_amount = wheel_amount * Config.MWheel_SENSITIVITY + Config.MWheel_CONSTANT
         pyautogui.scroll(wheel_amount)
         print(f"Scrolled {wheel_amount} steps")
         return jsonify({"status": "success", "steps": wheel_amount})
 
     @app.route('/api/touchpad', methods=['POST'])
-    def receive_coordinates():
+    def touchpad():
         data = request.data
         x_percentage, y_percentage = struct.unpack('<ff', data)
         if x_percentage == 0 and y_percentage == 0:
             pass
         else:
-            x_move = (x_percentage / 100) * screen_width * 0.06  # SENSITIVITY 值硬编码进来了
-            y_move = (y_percentage / 100) * screen_height * 0.06
+            x_move = (x_percentage / 100.0) * screen_width * Config.TPad_SENSITIVITY * 0.06
+            y_move = (y_percentage / 100.0) * screen_height * Config.TPad_SENSITIVITY * 0.06
             pyautogui.moveRel(x_move, y_move, duration=0.05)
         print(f"Received coordinates: x={x_percentage}%, y={y_percentage}%")
         return jsonify({"status": "success", "x": x_percentage, "y": y_percentage})

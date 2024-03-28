@@ -6,7 +6,7 @@ import {setCookie, getCookie} from '../storage/CookieIO';
 export const Context = createContext();
 
 // 创建Provider组件
-export class ButtonProvider extends Component {
+export class ContextProvider extends Component {
     state = {
         buttonSW1: getCookie('buttonSW1') === 'false',
         button23: parseInt(getCookie('button23'), 10) || 0,
