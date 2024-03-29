@@ -1,6 +1,6 @@
 <div align="center">
     <img src="https://github.com/Mehver/iController/raw/main/%23README/icon/256.png" width="20%"/>
-    <h1>iController <code>v0.3.4</code></h1>
+    <h1>iController <code>v0.4.0</code></h1>
 	<p><a href='https://github.com/Mehver/iController/blob/main/README.md'>English</a> | 简体中文</p>
 </div>
 
@@ -29,16 +29,9 @@
 
 - [x] 触摸板
 - [x] 鼠标按钮（左，右，中）
+- [x] 鼠标滚轮
 - [x] 方向键
-- [ ] 键盘
-- [ ] 鼠标滚轮
-
-*部分功能尚未完成，将来会添加。*
-
-### 1.2 `v0.3.X` 新功能
-
-- 现在设置支持 Cookie 记忆
-- 更好的设置菜单
+- [x] 键盘
 
 ## 2 使用方法
 

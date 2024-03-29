@@ -1,5 +1,5 @@
 import sys
-from modules.server import flask_app
+from modules.server import server
 
 print("""
  _   ___            _             _ _           
@@ -22,7 +22,7 @@ except ValueError:
     print("Invalid port number.")
     sys.exit(1)
 
-app = flask_app()  # 创建Flask应用实例
+app = server()  # 创建Flask应用实例
 
 if __name__ == '__main__':
     app.run(debug=False, port=PORT, host='0.0.0.0')

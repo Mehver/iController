@@ -1,6 +1,6 @@
 <div align="center">
     <img src="https://github.com/Mehver/iController/raw/main/%23README/icon/256.png" width="20%"/>
-    <h1>iController <code>v0.3.4</code></h1>
+    <h1>iController <code>v0.4.0</code></h1>
     </tr>
 	<p>English | <a href='https://github.com/Mehver/iController/blob/main/%23README/README-cn.md'>简体中文</a></p>
 </div>
@@ -30,16 +30,9 @@ A PC host LAN controller running on `Windows`/`macOS`, enabling mobile phones to
 
 - [x] Touchpad
 - [x] Mouse Buttons (Left, Right, Middle)
+- [x] Mouse Wheel
 - [x] D-Pad
-- [ ] Keyboard
-- [ ] Mouse Wheel
-
-*Some features are not completed yet, and will be added in the future.*
-
-### 1.2 For `v0.3.X`
-
-- Now the setting supports cookie memory
-- Better setting menu
+- [x] Keyboard
 
 ## 2 Usage
 
