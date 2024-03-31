@@ -27,10 +27,10 @@ ReactDOM.render(
             <header className="App-header">
                 <ContextProvider>
                     <TopBar/>
-                    <SideBar/>
                     <Touchpad/>
                     <MouseButtons/>
                     <DPad/>
+                    <SideBar/>
                 </ContextProvider>
             </header>
         </div>

@@ -115,8 +115,9 @@ mysterious errors. Only Python v3.10.10 is recommended.
 - Python
     - Flask (https://flask.palletsprojects.com/en/3.0.x/)
     - PyAutoGUI (https://pyautogui.readthedocs.io/en/latest/)
+      - Pyperclip
     - PyInstaller (https://www.pyinstaller.org/)
-    - Auto-PY-To-EXE (https://github.com/brentvollebregt/auto-py-to-exe)
+    - (Dev) Auto-PY-To-EXE (https://github.com/brentvollebregt/auto-py-to-exe)
 
 ## 5 Similar Projects
 

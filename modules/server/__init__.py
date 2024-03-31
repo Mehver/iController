@@ -2,6 +2,9 @@ from flask import Flask, send_from_directory
 import sys
 import os
 from modules.server.dpad import dpad
+from modules.server.keyboard import keyboard_buttons
+from modules.server.keyboard import keyboard_typewriting
+from modules.server.keyboard import keyboard_pastetext
 from modules.server.mousebutton import mousebutton
 from modules.server.mousewheel import mousewheel
 from modules.server.touchpad import touchpad
@@ -12,6 +15,7 @@ def get_resource_path(relative_path):
     if getattr(sys, 'frozen', False):
         # 如果是exe文件，使用exe所在目录
         # noinspection PyProtectedMember
+        # noinspection PyUnresolvedReferences
         base_path = sys._MEIPASS
     else:
         # 否则使用脚本所在目录
@@ -29,6 +33,9 @@ def server(static_folder='build', static_url_path=''):
 
     app.route('/')(serve)
     app.route('/api/dpad', methods=['POST'])(dpad)
+    app.route('/api/keyboard/buttons', methods=['POST'])(keyboard_buttons)
+    app.route('/api/keyboard/typewriting', methods=['POST'])(keyboard_typewriting)
+    app.route('/api/keyboard/pastetext', methods=['POST'])(keyboard_pastetext)
     app.route('/api/mousebutton', methods=['POST'])(mousebutton)
     app.route('/api/mousewheel', methods=['POST'])(mousewheel)
     app.route('/api/touchpad', methods=['POST'])(touchpad)

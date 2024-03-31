@@ -3,50 +3,18 @@ import React, {createContext, Component} from 'react';
 import {setCookie, getCookie} from '../storage/CookieIO';
 
 // 创建Context
-export const Context = createContext();
+export const Context = createContext(undefined);
 
 // 创建Provider组件
 export class ContextProvider extends Component {
     state = {
-        buttonSW1: getCookie('buttonSW1') === 'false',
-        button23: parseInt(getCookie('button23'), 10) || 0,
-        buttonSW4: getCookie('buttonSW4') === 'true',
-        sidebarMouseWheelMenu: getCookie('sidebarMouseWheelMenu') === 'false',
-        sidebarSoundWheelMenu: getCookie('sidebarMouseWheelMenu') === 'false',
-        sidebarSettingMenu: getCookie('sidebarMouseWheelMenu') === 'false',
-        sidebarKeyboardMenu: getCookie('sidebarMouseWheelMenu') === 'false',
+        ///////////////////////////////////////////////////////////////////////////////////
         drawerOpen: false,
         setDrawerOpen: (value) => {
             this.setState({drawerOpen: value});
         },
-        toggleSidebarMouseWheelMenu: () => {
-            this.setState(prevState => {
-                const newValue = !prevState.sidebarMouseWheelMenu;
-                setCookie('sidebarMouseWheelMenu', newValue, 7); // 保存7天
-                return {sidebarMouseWheelMenu: newValue};
-            });
-        },
-        toggleSidebarKeyboardMenu: () => {
-            this.setState(prevState => {
-                const newValue = !prevState.sidebarKeyboardMenu;
-                setCookie('sidebarKeyboardMenu', newValue, 7); // 保存7天
-                return {sidebarKeyboardMenu: newValue};
-            });
-        },
-        toggleSidebarSoundWheelMenu: () => {
-            this.setState(prevState => {
-                const newValue = !prevState.sidebarSoundWheelMenu;
-                setCookie('sidebarSoundWheelMenu', newValue, 7); // 保存7天
-                return {sidebarSoundWheelMenu: newValue};
-            });
-        },
-        toggleSidebarSettingMenu: () => {
-            this.setState(prevState => {
-                const newValue = !prevState.sidebarSettingMenu;
-                setCookie('sidebarSettingMenu', newValue, 7); // 保存7天
-                return {sidebarSettingMenu: newValue};
-            });
-        },
+        ///////////////////////////////////////////////////////////////////////////////////
+        buttonSW1: getCookie('buttonSW1') === 'false',
         toggleButtonSW1: () => {
             this.setState(prevState => {
                 const newValue = !prevState.buttonSW1;
@@ -54,11 +22,7 @@ export class ContextProvider extends Component {
                 return {buttonSW1: newValue};
             });
         },
-        setButton23: (value) => {
-            this.setState(
-                {button23: value}, () =>
-                    setCookie('button23', value, 7));
-        },
+        buttonSW4: getCookie('buttonSW4') === 'true',
         toggleButtonSW4: () => {
             this.setState(prevState => {
                 const newValue = !prevState.buttonSW4;
@@ -66,6 +30,60 @@ export class ContextProvider extends Component {
                 return {buttonSW4: newValue};
             });
         },
+        button23: parseInt(getCookie('button23'), 10) || 0,
+        setButton23: (value) => {
+            this.setState(
+                {button23: value}, () =>
+                    setCookie('button23', value, 7));
+        },
+        ///////////////////////////////////////////////////////////////////////////////////
+        sidebarMouseWheelMenu: getCookie('sidebarMouseWheelMenu') === 'false',
+        toggleSidebarMouseWheelMenu: () => {
+            this.setState(prevState => {
+                const newValue = !prevState.sidebarMouseWheelMenu;
+                setCookie('sidebarMouseWheelMenu', newValue, 7); // 保存7天
+                return {sidebarMouseWheelMenu: newValue};
+            });
+        },
+        ///////////////////////////////////////////////////////////////////////////////////
+        sidebarSoundWheelMenu: getCookie('sidebarSoundWheelMenu') === 'false',
+        toggleSidebarSoundWheelMenu: () => {
+            this.setState(prevState => {
+                const newValue = !prevState.sidebarSoundWheelMenu;
+                setCookie('sidebarSoundWheelMenu', newValue, 7); // 保存7天
+                return {sidebarSoundWheelMenu: newValue};
+            });
+        },
+        ///////////////////////////////////////////////////////////////////////////////////
+        sidebarKeyboardMenu: getCookie('sidebarKeyboardMenu') === 'false',
+        toggleSidebarKeyboardMenu: () => {
+            this.setState(prevState => {
+                const newValue = !prevState.sidebarKeyboardMenu;
+                setCookie('sidebarKeyboardMenu', newValue, 7); // 保存7天
+                return {sidebarKeyboardMenu: newValue};
+            });
+        },
+        ///////////////////////////////////////////////////////////////////////////////////
+        sidebarSettingMenu: getCookie('sidebarSettingMenu') === 'false',
+        toggleSidebarSettingMenu: () => {
+            this.setState(prevState => {
+                const newValue = !prevState.sidebarSettingMenu;
+                setCookie('sidebarSettingMenu', newValue, 7); // 保存7天
+                return {sidebarSettingMenu: newValue};
+            });
+        },
+        ///////////////////////////////////////////////////////////////////////////////////
+        // keyboardDataSendMod 是用 char 类型保存的可切换状态值
+        keyboardDataSendMod: getCookie('keyboardDataSendMod') || 'a',
+        setKeyboardDataSendMod: (value) => {
+            this.setState(
+                {keyboardDataSendMod: value}, () => {
+                    setCookie('keyboardDataSendMod', value, 7);
+                    return {keyboardDataSendMod: value};
+                }
+            );
+        },
+        ///////////////////////////////////////////////////////////////////////////////////
     };
 
     componentDidMount() {
@@ -77,6 +95,7 @@ export class ContextProvider extends Component {
         const sidebarSettingMenu = getCookie('sidebarSettingMenu');
         const sidebarSoundWheelMenu = getCookie('sidebarSoundWheelMenu');
         const sidebarKeyboardMenu = getCookie('sidebarKeyboardMenu');
+        const keyboardDataSendMod = getCookie('keyboardDataSendMod');
         this.setState({
             buttonSW1: buttonSW1 ? buttonSW1 === 'true' : this.state.buttonSW1,
             button23: button23 ? parseInt(button23, 10) : this.state.button23,
@@ -85,6 +104,7 @@ export class ContextProvider extends Component {
             sidebarSettingMenu: sidebarSettingMenu ? sidebarSettingMenu === 'true' : this.state.sidebarSettingMenu,
             sidebarSoundWheelMenu: sidebarSoundWheelMenu ? sidebarSoundWheelMenu === 'true' : this.state.sidebarSoundWheelMenu,
             sidebarKeyboardMenu: sidebarKeyboardMenu ? sidebarKeyboardMenu === 'true' : this.state.sidebarKeyboardMenu,
+            keyboardDataSendMod: keyboardDataSendMod || this.state.keyboardDataSendMod,
         });
     }
 

@@ -23,6 +23,12 @@ body {
     sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /*缺少下面这些会导致 iOS Safari 的屏幕键盘改变可是视窗尺寸*/
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
 }
 
 code {
