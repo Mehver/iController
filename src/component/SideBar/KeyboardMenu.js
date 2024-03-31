@@ -1,19 +1,132 @@
 import {Component} from 'react';
 import {Context} from '../../utils/Context';
-import {List, ListItemButton, ListItemText} from "@mui/material";
+import {List, IconButton, ListItem, Radio, Divider} from "@mui/material";
+import KeyboardDoubleArrowUpOutlinedIcon from '@mui/icons-material/KeyboardDoubleArrowUpOutlined';
+import BackspaceOutlinedIcon from '@mui/icons-material/BackspaceOutlined';
+import SubdirectoryArrowLeftOutlinedIcon from '@mui/icons-material/SubdirectoryArrowLeftOutlined';
+import {ThemeProvider} from '@mui/material/styles';
+import {customTheme} from '../../utils/Theme';
+import {api_keyboard_buttons, api_keyboard_typewriting, api_keyboard_pastetext} from "../../api/keyboard";
 
 class KeyboardMenu extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            inputText: '',
+        };
     }
+
+    // 输入框实时更新
+    handleInputChange = (event) => {
+        this.setState({inputText: event.target.value});
+    };
+
+    // 发送文本消息
+    handleSendText = () => {
+        const {inputText} = this.state;
+        if (inputText.trim()) {
+            if (this.context.keyboardDataSendMod === 'a') {
+                api_keyboard_pastetext(inputText);
+                console.log('api_keyboard_pastetext: ' + inputText);
+            } else if (this.context.keyboardDataSendMod === 'b') {
+                api_keyboard_typewriting(inputText);
+                console.log('api_keyboard_typewriting: ' + inputText);
+            }
+            this.setState({inputText: ''});
+        }
+    };
+
+    // 发送按键消息
+    handleSendButton = (signal) => {
+        api_keyboard_buttons(signal);
+    };
 
     render() {
         return (
-            <List component="div" disablePadding>
-                <ListItemButton sx={{pl: 4}}>
-                    <ListItemText primary="KeyboardMenu"/>
-                </ListItemButton>
-            </List>
+            <ThemeProvider theme={customTheme}>
+                <List component="div" disablePadding>
+                    <ListItem display="flex" alignItems="center">
+                        {/* 使用TextField会有文字大小不匹配的bug */}
+                        <div style={{
+                            margin: '10px',
+                            height: '40px',
+                            border: '1px solid #333',
+                            borderRadius: '4px',
+                            backgroundColor: '#6df',
+                            display: 'flex',
+                            alignItems: 'center',
+                        }}>
+                            <input
+                                type="text"
+                                value={this.state.inputText}
+                                onChange={this.handleInputChange}
+                                style={{
+                                    border: 'none', // 移除input的默认边框
+                                    outline: 'none', // 移除聚焦时的轮廓
+                                    caretColor: '#333', // 修改光标颜色
+                                    color: '#333', // 修改文字颜色
+                                    backgroundColor: 'transparent',
+                                    width: '100%',
+                                    fontSize: '1rem',
+                                    lineHeight: 'normal',
+                                }}
+                            />
+                        </div>
+                        <IconButton
+                            sx={{
+                                // 使按钮变为正方形
+                                width: '40px',
+                                height: '40px',
+                                backgroundColor: '#333',
+                                color: '#6df',
+                                '&:hover': {
+                                    backgroundColor: '#6df',
+                                    color: '#333',
+                                },
+                            }}
+                            onClick={this.handleSendText}
+                        >
+                            <KeyboardDoubleArrowUpOutlinedIcon sx={{color: '#6df'}}/>
+                        </IconButton>
+                    </ListItem>
+                    <ListItem display="flex" alignItems="center">
+                        <Radio
+                            checked={this.context.keyboardDataSendMod === 'a'}
+                            onChange={() => {
+                                this.context.setKeyboardDataSendMod('a');
+                            }}
+                            value="a"
+                            name="DataSendMod"
+                            inputProps={{'aria-label': 'A'}}
+                        />
+                        <text style={{fontSize: '1rem'}}>Past</text>
+                        <Radio
+                            checked={this.context.keyboardDataSendMod === 'b'}
+                            onChange={() => {
+                                this.context.setKeyboardDataSendMod('b');
+                            }}
+                            value="b"
+                            name="DataSendMod"
+                            inputProps={{'aria-label': 'B'}}
+                        />
+                        <text style={{fontSize: '1rem'}}>Type</text>
+                        <div style={{flex: 1}}/>
+                        <IconButton
+                            onClick={() => this.handleSendButton('Enter')}
+                            style={{marginLeft: '10px'}}
+                        >
+                            <SubdirectoryArrowLeftOutlinedIcon/>
+                        </IconButton>
+                        <IconButton
+                            onClick={() => this.handleSendButton('Backspace')}
+                            style={{marginRight: '10px'}}
+                        >
+                            <BackspaceOutlinedIcon/>
+                        </IconButton>
+                    </ListItem>
+                </List>
+                <Divider/>
+            </ThemeProvider>
         );
     }
 }

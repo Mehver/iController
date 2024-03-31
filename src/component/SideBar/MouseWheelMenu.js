@@ -1,6 +1,6 @@
 import React, {Component, useState, useEffect} from 'react';
 import {Knob} from 'primereact/knob';
-import {List, ListItem, Button, Box} from "@mui/material";
+import {List, ListItem, Box, Divider} from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import {Context} from '../../utils/Context';
@@ -14,12 +14,14 @@ function KnobComponent() {
     // 改变组件状态的同时调用API发送值
     const updateValue = (newValue) => {
         setValue(newValue); // 更新状态
-        api_mousewheel(newValue); // 调用API发送值
+        if (newValue !== 0) {
+            api_mousewheel(newValue); // 调用API发送值
+        }
     };
 
     // 旋钮回中逻辑
     useEffect(() => {
-        const timer = setTimeout(() => updateValue(0), 700); // 0.7秒后自动回中
+        const timer = setTimeout(() => updateValue(0), 500); // 0.5秒后自动回中
         return () => clearTimeout(timer);
     }, [value]);
 
@@ -67,11 +69,14 @@ function KnobComponent() {
 class MouseWheelMenu extends Component {
     render() {
         return (
-            <List component="div" disablePadding style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
-                <ListItem>
-                    <KnobComponent/>
-                </ListItem>
-            </List>
+            <>
+                <List component="div" disablePadding style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
+                    <ListItem>
+                        <KnobComponent/>
+                    </ListItem>
+                </List>
+                <Divider/>
+            </>
         );
     }
 }

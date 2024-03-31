@@ -1,12 +1,10 @@
 import {Component} from 'react';
-import GamepadIcon from '@mui/icons-material/Gamepad';
-import MouseIcon from '@mui/icons-material/Mouse';
-import TouchAppIcon from '@mui/icons-material/TouchApp';
 import {Context} from '../utils/Context';
 import {Drawer, List, ListItem, ListItemButton, ListItemText, Collapse, Box, Divider} from "@mui/material";
 import LooksOneOutlinedIcon from '@mui/icons-material/LooksOneOutlined';
 import LooksTwoOutlinedIcon from '@mui/icons-material/LooksTwoOutlined';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import MouseIcon from '@mui/icons-material/Mouse';
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
@@ -14,6 +12,8 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import KeyboardIcon from '@mui/icons-material/Keyboard';
 import SpeakerIcon from '@mui/icons-material/Speaker';
 import FilterTiltShiftIcon from '@mui/icons-material/FilterTiltShift';
+import OpenWithIcon from '@mui/icons-material/OpenWith';
+import PinchIcon from '@mui/icons-material/Pinch';
 import MouseWheelMenu from './SideBar/MouseWheelMenu';
 import KeyboardMenu from './SideBar/KeyboardMenu';
 import SoundWheel from './SideBar/SoundWheel';
@@ -79,7 +79,7 @@ class SideBar extends Component {
                             this.context.toggleButtonSW1();
                         }}>
 
-                            <TouchAppIcon sx={iconSizeSX}/>
+                            <PinchIcon sx={iconSizeSX}/>
                             <ListItemText primary="&nbsp;&nbsp;&nbsp;Touchpad"/>
                             <Box sx={boxIconSX}>{this.context.buttonSW1 ?
                                 <VisibilityOutlinedIcon sx={iconSizeSX}/> :
@@ -91,7 +91,7 @@ class SideBar extends Component {
                         <ListItemButton onClick={() => {
                             this.context.toggleButtonSW4();
                         }}>
-                            <GamepadIcon sx={iconSizeSX}/>
+                            <OpenWithIcon sx={iconSizeSX}/>
                             <ListItemText primary="&nbsp;&nbsp;&nbsp;D-Pad"/>
                             <Box sx={boxIconSX}>{this.context.buttonSW4 ?
                                 <VisibilityOutlinedIcon sx={iconSizeSX}/> :

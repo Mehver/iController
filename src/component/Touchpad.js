@@ -2,9 +2,9 @@ import {Component} from 'react';
 import {Context} from '../utils/Context';
 import {api_touchpad} from '../api/touchpad';
 
-// 节流函数，限制函数调用频率，避免过多的请求
 function throttle(func, limit) {
     let inThrottle;
+    // 节流函数，用于减少函数的调用频率
     return function () {
         const args = arguments;
         const context = this;
@@ -32,7 +32,8 @@ class Touchpad extends Component {
     }
 
     componentDidMount() {
-        // 获取屏幕尺寸
+        // 获取窗口尺寸
+        // noinspection JSUnresolvedFunction
         window.addEventListener('resize', this.updateWindowDimensions);
         // 禁用页面滚动
         document.body.style.overflow = 'hidden';
