@@ -112,10 +112,13 @@ mysterious errors. Only Python v3.10.10 is recommended.
     - React.js
         - Material UI (https://github.com/mui/material-ui)
         - PrimeReact (https://github.com/primefaces/primereact)
+    - Lodash (https://lodash.com/)
 - Python
     - Flask (https://flask.palletsprojects.com/en/3.0.x/)
     - PyAutoGUI (https://pyautogui.readthedocs.io/en/latest/)
       - Pyperclip
+    - Pycaw (https://github.com/AndreMiras/pycaw)
+      - Comtypes
     - PyInstaller (https://www.pyinstaller.org/)
     - (Dev) Auto-PY-To-EXE (https://github.com/brentvollebregt/auto-py-to-exe)
 

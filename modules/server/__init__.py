@@ -8,6 +8,8 @@ from modules.server.keyboard import keyboard_pastetext
 from modules.server.mousebutton import mousebutton
 from modules.server.mousewheel import mousewheel
 from modules.server.touchpad import touchpad
+from modules.server.volume import volume_get
+from modules.server.volume import volume_set
 
 
 # 动态确定配置文件和静态文件夹路径
@@ -39,5 +41,7 @@ def server(static_folder='build', static_url_path=''):
     app.route('/api/mousebutton', methods=['POST'])(mousebutton)
     app.route('/api/mousewheel', methods=['POST'])(mousewheel)
     app.route('/api/touchpad', methods=['POST'])(touchpad)
+    app.route('/api/volume/get', methods=['GET'])(volume_get)
+    app.route('/api/volume/set', methods=['POST'])(volume_set)
 
     return app
