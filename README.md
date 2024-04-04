@@ -33,6 +33,7 @@ A PC host LAN controller running on `Windows`/`macOS`, enabling mobile phones to
 - [x] Mouse Wheel
 - [x] D-Pad
 - [x] Keyboard
+- [x] Volume Slider
 
 ## 2 Usage
 
