@@ -1,12 +1,24 @@
 import {Component} from 'react';
 import {Context} from '../../utils/Context';
-import {List, IconButton, ListItem, Radio, Divider} from "@mui/material";
-import KeyboardDoubleArrowUpOutlinedIcon from '@mui/icons-material/KeyboardDoubleArrowUpOutlined';
-import BackspaceOutlinedIcon from '@mui/icons-material/BackspaceOutlined';
-import SubdirectoryArrowLeftOutlinedIcon from '@mui/icons-material/SubdirectoryArrowLeftOutlined';
+import {
+    List,
+    IconButton,
+    ListItem,
+    Radio,
+    Divider
+} from "@mui/material";
+import {
+    KeyboardDoubleArrowUpOutlined,
+    BackspaceOutlined,
+    SubdirectoryArrowLeftOutlined
+} from '@mui/icons-material';
 import {ThemeProvider} from '@mui/material/styles';
 import {customTheme} from '../../utils/Theme';
-import {api_keyboard_buttons, api_keyboard_typewriting, api_keyboard_pastetext} from "../../api/keyboard";
+import {
+    api_keyboard_buttons,
+    api_keyboard_typewriting,
+    api_keyboard_pastetext
+} from "../../api/keyboard";
 
 class KeyboardMenu extends Component {
     constructor(props) {
@@ -74,7 +86,6 @@ class KeyboardMenu extends Component {
                         </div>
                         <IconButton
                             sx={{
-                                // 使按钮变为正方形
                                 width: '40px',
                                 height: '40px',
                                 backgroundColor: '#333',
@@ -86,7 +97,7 @@ class KeyboardMenu extends Component {
                             }}
                             onClick={this.handleSendText}
                         >
-                            <KeyboardDoubleArrowUpOutlinedIcon sx={{color: '#6df'}}/>
+                            <KeyboardDoubleArrowUpOutlined sx={{color: '#6df'}}/>
                         </IconButton>
                     </ListItem>
                     <ListItem display="flex" alignItems="center">
@@ -115,13 +126,13 @@ class KeyboardMenu extends Component {
                             onClick={() => this.handleSendButton('Enter')}
                             style={{marginLeft: '10px'}}
                         >
-                            <SubdirectoryArrowLeftOutlinedIcon/>
+                            <SubdirectoryArrowLeftOutlined/>
                         </IconButton>
                         <IconButton
                             onClick={() => this.handleSendButton('Backspace')}
                             style={{marginRight: '10px'}}
                         >
-                            <BackspaceOutlinedIcon/>
+                            <BackspaceOutlined/>
                         </IconButton>
                     </ListItem>
                 </List>

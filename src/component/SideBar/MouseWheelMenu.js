@@ -35,8 +35,8 @@ function KnobComponent() {
              style={{backgroundColor: '#6df', width: '100%'}}>
             <Knob value={value} size={knobSize} min={-4} max={4} step={1}
                   textColor="#333"
-                  valueColor="#6df"
-                  rangeColor="#333"
+                  valueColor="#333"
+                  rangeColor="rgba(51, 51, 51, 0.5)"
                   strokeWidth={10}
                   valueTemplate="{value}"
             />
@@ -49,6 +49,7 @@ function KnobComponent() {
                         }}
                         disabled={value === -4}
                         fontSize="inherit"
+                        sx={{color: '#333'}}
                     />
                 </IconButton>
                 <IconButton size="large">
@@ -58,6 +59,7 @@ function KnobComponent() {
                             updateValue(newValue);
                         }} disabled={value === 4}
                         fontSize="inherit"
+                        sx={{color: '#333'}}
                     />
                 </IconButton>
             </Box>

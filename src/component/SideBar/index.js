@@ -1,23 +1,34 @@
 import {Component} from 'react';
-import {Context} from '../utils/Context';
-import {Drawer, List, ListItem, ListItemButton, ListItemText, Collapse, Box, Divider} from "@mui/material";
-import LooksOneOutlinedIcon from '@mui/icons-material/LooksOneOutlined';
-import LooksTwoOutlinedIcon from '@mui/icons-material/LooksTwoOutlined';
-import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
-import MouseIcon from '@mui/icons-material/Mouse';
-import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
-import MenuIcon from '@mui/icons-material/Menu';
-import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import KeyboardIcon from '@mui/icons-material/Keyboard';
-import SpeakerIcon from '@mui/icons-material/Speaker';
-import FilterTiltShiftIcon from '@mui/icons-material/FilterTiltShift';
-import OpenWithIcon from '@mui/icons-material/OpenWith';
-import PinchIcon from '@mui/icons-material/Pinch';
-import MouseWheelMenu from './SideBar/MouseWheelMenu';
-import KeyboardMenu from './SideBar/KeyboardMenu';
-import SoundWheel from './SideBar/SoundWheel';
-import SettingMenu from './SideBar/SettingMenu';
+import {Context} from '../../utils/Context';
+import {
+    Drawer,
+    List,
+    ListItem,
+    ListItemButton,
+    ListItemText,
+    Collapse,
+    Box,
+    Divider
+} from "@mui/material";
+import {
+    LooksOneOutlined,
+    LooksTwoOutlined,
+    VisibilityOutlined,
+    Mouse,
+    VisibilityOffOutlined,
+    Menu,
+    ChevronRightOutlined,
+    ExpandMore,
+    Keyboard,
+    Speaker,
+    FilterTiltShift,
+    OpenWith,
+    Pinch
+} from '@mui/icons-material';
+import MouseWheelMenu from './MouseWheelMenu';
+import KeyboardMenu from './KeyboardMenu';
+import VolumeMenu from './VolumeMenu';
+import SettingMenu from './SettingMenu';
 
 class SideBar extends Component {
     constructor(props) {
@@ -79,11 +90,11 @@ class SideBar extends Component {
                             this.context.toggleButtonSW1();
                         }}>
 
-                            <PinchIcon sx={iconSizeSX}/>
+                            <Pinch sx={iconSizeSX}/>
                             <ListItemText primary="&nbsp;&nbsp;&nbsp;Touchpad"/>
                             <Box sx={boxIconSX}>{this.context.buttonSW1 ?
-                                <VisibilityOutlinedIcon sx={iconSizeSX}/> :
-                                <VisibilityOffOutlinedIcon sx={iconSizeSX}/>
+                                <VisibilityOutlined sx={iconSizeSX}/> :
+                                <VisibilityOffOutlined sx={iconSizeSX}/>
                             }</Box>
                         </ListItemButton>
                     </ListItem>
@@ -91,11 +102,11 @@ class SideBar extends Component {
                         <ListItemButton onClick={() => {
                             this.context.toggleButtonSW4();
                         }}>
-                            <OpenWithIcon sx={iconSizeSX}/>
+                            <OpenWith sx={iconSizeSX}/>
                             <ListItemText primary="&nbsp;&nbsp;&nbsp;D-Pad"/>
                             <Box sx={boxIconSX}>{this.context.buttonSW4 ?
-                                <VisibilityOutlinedIcon sx={iconSizeSX}/> :
-                                <VisibilityOffOutlinedIcon sx={iconSizeSX}/>
+                                <VisibilityOutlined sx={iconSizeSX}/> :
+                                <VisibilityOffOutlined sx={iconSizeSX}/>
                             }</Box>
                         </ListItemButton>
                     </ListItem>
@@ -103,13 +114,13 @@ class SideBar extends Component {
                         <ListItemButton onClick={() => {
                             this.context.setButton23((this.context.button23 + 1) % 3);
                         }}>
-                            <MouseIcon sx={iconSizeSX}/>
+                            <Mouse sx={iconSizeSX}/>
                             <ListItemText primary="&nbsp;&nbsp;&nbsp;Mouse Buttons"/>
                             <Box sx={boxIconSX}>{this.context.button23 === 0 ?
-                                <LooksOneOutlinedIcon sx={iconSizeSX}/> :
+                                <LooksOneOutlined sx={iconSizeSX}/> :
                                 this.context.button23 === 1 ?
-                                    <LooksTwoOutlinedIcon sx={iconSizeSX}/> :
-                                    <VisibilityOffOutlinedIcon sx={iconSizeSX}/>
+                                    <LooksTwoOutlined sx={iconSizeSX}/> :
+                                    <VisibilityOffOutlined sx={iconSizeSX}/>
                             }</Box>
                         </ListItemButton>
                     </ListItem>
@@ -118,11 +129,11 @@ class SideBar extends Component {
                         <ListItemButton onClick={() => {
                             this.context.toggleSidebarKeyboardMenu();
                         }}>
-                            <KeyboardIcon sx={iconSizeSX}/>
+                            <Keyboard sx={iconSizeSX}/>
                             <ListItemText primary="&nbsp;&nbsp;&nbsp;Keyboard"/>
                             <Box sx={boxIconSX}>{this.context.sidebarKeyboardMenu ?
-                                <ExpandMoreIcon sx={iconSizeSX}/> :
-                                <ChevronRightOutlinedIcon sx={iconSizeSX}/>
+                                <ExpandMore sx={iconSizeSX}/> :
+                                <ChevronRightOutlined sx={iconSizeSX}/>
                             }</Box>
                         </ListItemButton>
                     </ListItem>
@@ -133,11 +144,11 @@ class SideBar extends Component {
                         <ListItemButton onClick={() => {
                             this.context.toggleSidebarMouseWheelMenu();
                         }}>
-                            <FilterTiltShiftIcon sx={iconSizeSX}/>
+                            <FilterTiltShift sx={iconSizeSX}/>
                             <ListItemText primary="&nbsp;&nbsp;&nbsp;Mouse Wheel"/>
                             <Box sx={boxIconSX}>{this.context.sidebarMouseWheelMenu ?
-                                <ExpandMoreIcon sx={iconSizeSX}/> :
-                                <ChevronRightOutlinedIcon sx={iconSizeSX}/>
+                                <ExpandMore sx={iconSizeSX}/> :
+                                <ChevronRightOutlined sx={iconSizeSX}/>
                             }</Box>
                         </ListItemButton>
                     </ListItem>
@@ -146,29 +157,29 @@ class SideBar extends Component {
                     </Collapse>
                     <ListItem>
                         <ListItemButton onClick={() => {
-                            this.context.toggleSidebarSoundWheelMenu();
+                            this.context.toggleSidebarVolumeMenu();
                         }}>
-                            <SpeakerIcon sx={iconSizeSX}/>
-                            <ListItemText primary="&nbsp;&nbsp;&nbsp;Sound Wheel"/>
-                            <Box sx={boxIconSX}>{this.context.sidebarSoundWheelMenu ?
-                                <ExpandMoreIcon sx={iconSizeSX}/> :
-                                <ChevronRightOutlinedIcon sx={iconSizeSX}/>
+                            <Speaker sx={iconSizeSX}/>
+                            <ListItemText primary="&nbsp;&nbsp;&nbsp;Volume"/>
+                            <Box sx={boxIconSX}>{this.context.sidebarVolumeMenu ?
+                                <ExpandMore sx={iconSizeSX}/> :
+                                <ChevronRightOutlined sx={iconSizeSX}/>
                             }</Box>
                         </ListItemButton>
                     </ListItem>
-                    <Collapse in={this.context.sidebarSoundWheelMenu}>
-                        <SoundWheel/>
+                    <Collapse in={this.context.sidebarVolumeMenu}>
+                        <VolumeMenu/>
                     </Collapse>
                     <Divider/>
                     <ListItem>
                         <ListItemButton onClick={() => {
                             this.context.toggleSidebarSettingMenu();
                         }}>
-                            <MenuIcon sx={iconSizeSX}/>
+                            <Menu sx={iconSizeSX}/>
                             <ListItemText primary="&nbsp;&nbsp;&nbsp;Settings"/>
                             <Box sx={boxIconSX}>{this.context.sidebarSettingMenu ?
-                                <ExpandMoreIcon sx={iconSizeSX}/> :
-                                <ChevronRightOutlinedIcon sx={iconSizeSX}/>
+                                <ExpandMore sx={iconSizeSX}/> :
+                                <ChevronRightOutlined sx={iconSizeSX}/>
                             }</Box>
                         </ListItemButton>
                     </ListItem>

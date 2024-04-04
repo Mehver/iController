@@ -46,12 +46,12 @@ export class ContextProvider extends Component {
             });
         },
         ///////////////////////////////////////////////////////////////////////////////////
-        sidebarSoundWheelMenu: getCookie('sidebarSoundWheelMenu') === 'false',
-        toggleSidebarSoundWheelMenu: () => {
+        sidebarVolumeMenu: getCookie('sidebarVolumeMenu') === 'false',
+        toggleSidebarVolumeMenu: () => {
             this.setState(prevState => {
-                const newValue = !prevState.sidebarSoundWheelMenu;
-                setCookie('sidebarSoundWheelMenu', newValue, 7); // 保存7天
-                return {sidebarSoundWheelMenu: newValue};
+                const newValue = !prevState.sidebarVolumeMenu;
+                setCookie('sidebarVolumeMenu', newValue, 7); // 保存7天
+                return {sidebarVolumeMenu: newValue};
             });
         },
         ///////////////////////////////////////////////////////////////////////////////////
@@ -93,7 +93,7 @@ export class ContextProvider extends Component {
         const buttonSW4 = getCookie('buttonSW4');
         const sidebarMouseWheelMenu = getCookie('sidebarMouseWheelMenu');
         const sidebarSettingMenu = getCookie('sidebarSettingMenu');
-        const sidebarSoundWheelMenu = getCookie('sidebarSoundWheelMenu');
+        const sidebarVolumeMenu = getCookie('sidebarVolumeMenu');
         const sidebarKeyboardMenu = getCookie('sidebarKeyboardMenu');
         const keyboardDataSendMod = getCookie('keyboardDataSendMod');
         this.setState({
@@ -102,7 +102,7 @@ export class ContextProvider extends Component {
             buttonSW4: buttonSW4 ? buttonSW4 === 'true' : this.state.buttonSW4,
             sidebarMouseWheelMenu: sidebarMouseWheelMenu ? sidebarMouseWheelMenu === 'true' : this.state.sidebarMouseWheelMenu,
             sidebarSettingMenu: sidebarSettingMenu ? sidebarSettingMenu === 'true' : this.state.sidebarSettingMenu,
-            sidebarSoundWheelMenu: sidebarSoundWheelMenu ? sidebarSoundWheelMenu === 'true' : this.state.sidebarSoundWheelMenu,
+            sidebarVolumeMenu: sidebarVolumeMenu ? sidebarVolumeMenu === 'true' : this.state.sidebarVolumeMenu,
             sidebarKeyboardMenu: sidebarKeyboardMenu ? sidebarKeyboardMenu === 'true' : this.state.sidebarKeyboardMenu,
             keyboardDataSendMod: keyboardDataSendMod || this.state.keyboardDataSendMod,
         });
