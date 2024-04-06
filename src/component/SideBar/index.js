@@ -23,13 +23,8 @@ import {
     Speaker,
     FilterTiltShift,
     OpenWith,
-    Pinch,
-    FormatAlignLeftOutlined,
-    FormatAlignRightOutlined,
-    ViewCarousel
+    Pinch
 } from '@mui/icons-material';
-import {ThemeProvider} from '@mui/material/styles';
-import {customTheme} from '../../utils/Theme';
 import MouseWheelMenu from './MouseWheelMenu';
 import KeyboardMenu from './KeyboardMenu';
 import VolumeMenu from './VolumeMenu';
@@ -133,11 +128,13 @@ class SideBar extends Component {
                     <ListItem>
                         <ListItemButton onClick={() => {
                             // this.context.toggleSidebarKeyboardMenu();
-                            {if (this.context.openMenuSW === 1) {
-                                this.context.setOpenMenuSW(0);
-                            } else {
-                                this.context.setOpenMenuSW(1);
-                            }}
+                            {
+                                if (this.context.openMenuSW === 1) {
+                                    this.context.setOpenMenuSW(0);
+                                } else {
+                                    this.context.setOpenMenuSW(1);
+                                }
+                            }
                         }}>
                             <Keyboard sx={iconSizeSX}/>
                             <ListItemText primary="&nbsp;&nbsp;&nbsp;Keyboard"/>
@@ -158,11 +155,13 @@ class SideBar extends Component {
                     <ListItem>
                         <ListItemButton onClick={() => {
                             // this.context.toggleSidebarMouseWheelMenu();
-                            {if (this.context.openMenuSW === 2) {
-                                this.context.setOpenMenuSW(0);
-                            } else {
-                                this.context.setOpenMenuSW(2);
-                            }}
+                            {
+                                if (this.context.openMenuSW === 2) {
+                                    this.context.setOpenMenuSW(0);
+                                } else {
+                                    this.context.setOpenMenuSW(2);
+                                }
+                            }
                         }}>
                             <FilterTiltShift sx={iconSizeSX}/>
                             <ListItemText primary="&nbsp;&nbsp;&nbsp;Mouse Wheel"/>
@@ -183,11 +182,13 @@ class SideBar extends Component {
                     <ListItem>
                         <ListItemButton onClick={() => {
                             // this.context.toggleSidebarVolumeMenu();
-                            {if (this.context.openMenuSW === 3) {
-                                this.context.setOpenMenuSW(0);
-                            } else {
-                                this.context.setOpenMenuSW(3);
-                            }}
+                            {
+                                if (this.context.openMenuSW === 3) {
+                                    this.context.setOpenMenuSW(0);
+                                } else {
+                                    this.context.setOpenMenuSW(3);
+                                }
+                            }
                         }}>
                             <Speaker sx={iconSizeSX}/>
                             <ListItemText primary="&nbsp;&nbsp;&nbsp;Volume"/>
@@ -209,11 +210,13 @@ class SideBar extends Component {
                     <ListItem>
                         <ListItemButton onClick={() => {
                             // this.context.toggleSidebarSettingMenu();
-                            {if (this.context.openMenuSW === 4) {
-                                this.context.setOpenMenuSW(0);
-                            } else {
-                                this.context.setOpenMenuSW(4);
-                            }}
+                            {
+                                if (this.context.openMenuSW === 4) {
+                                    this.context.setOpenMenuSW(0);
+                                } else {
+                                    this.context.setOpenMenuSW(4);
+                                }
+                            }
                         }}>
                             <Menu sx={iconSizeSX}/>
                             <ListItemText primary="&nbsp;&nbsp;&nbsp;Settings"/>
@@ -229,26 +232,7 @@ class SideBar extends Component {
                     </ListItem>
                     {/*<Collapse in={this.context.sidebarSettingMenu}>*/}
                     <Collapse in={this.context.openMenuSW === 4}>
-                        <ThemeProvider theme={customTheme}>
-                            <List component="div" disablePadding>
-                                <ListItem>
-                                    <ListItemButton onClick={() => {
-                                        this.context.setDrawerRL(this.context.drawerRL === 'r' ? 'l' : 'r');
-                                    }}>
-                                        <ViewCarousel sx={iconSizeSX}/>
-                                        <ListItemText primary="&nbsp;&nbsp;&nbsp;Sidebar Toggle"/>
-                                        <Box sx={boxIconSX}>
-                                            {this.context.drawerRL === 'r' ?
-                                                <FormatAlignRightOutlined sx={iconSizeSX}/> :
-                                                <FormatAlignLeftOutlined sx={iconSizeSX}/>
-                                            }
-                                        </Box>
-                                    </ListItemButton>
-                                </ListItem>
-                                {/*<Divider/>*/}
-                                <SettingMenu/>
-                            </List>
-                        </ThemeProvider>
+                        <SettingMenu/>
                     </Collapse>
                 </List>
             </Drawer>
