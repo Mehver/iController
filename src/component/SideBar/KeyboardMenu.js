@@ -88,6 +88,7 @@ class KeyboardMenu extends Component {
                             sx={{
                                 width: '40px',
                                 height: '40px',
+                                borderRadius: '8%',
                                 backgroundColor: '#333',
                                 color: '#6df',
                                 '&:hover': {
