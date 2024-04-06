@@ -1,6 +1,7 @@
 import React from 'react';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
+import {primaryColor, secondaryColor} from '../utils/Theme';
 import {Context} from '../utils/Context';
 
 class TopBar extends React.Component {
@@ -22,7 +23,7 @@ class TopBar extends React.Component {
             marginTop: '10px',
             width: '20px',
             height: '20px',
-            color: '#333',
+            color: secondaryColor,
             // 增加透明的伪元素以扩大触发区域
             '&:after': {
                 content: '""',
@@ -40,12 +41,12 @@ class TopBar extends React.Component {
                     top: '-5px',
                     width: '100%',
                     height: '35px',
-                    backgroundColor: '#6df',
+                    backgroundColor: primaryColor,
                 }}>
                     <p style={{
                         fontSize: nameFrontSize,
                         fontWeight: 'bold',
-                        color: '#333',
+                        color: secondaryColor,
                         float: 'left',
                         position: 'relative',
                         top: nameFrontTop,

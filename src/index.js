@@ -3,10 +3,8 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import {ContextProvider} from './utils/Context';
 import TopBar from "./component/TopBar";
+import Screen from "./component/Screen";
 import SideBar from "./component/SideBar";
-import Touchpad from "./component/Touchpad";
-import MouseButtons from "./component/MouseButtons";
-import DPad from "./component/DPad";
 
 // 设置延时函数
 let resizeTimer;
@@ -27,9 +25,7 @@ ReactDOM.render(
             <header className="App-header">
                 <ContextProvider>
                     <TopBar/>
-                    <Touchpad/>
-                    <MouseButtons/>
-                    <DPad/>
+                    <Screen/>
                     <SideBar/>
                 </ContextProvider>
             </header>

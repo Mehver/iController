@@ -13,7 +13,7 @@ import {
     SubdirectoryArrowLeftOutlined
 } from '@mui/icons-material';
 import {ThemeProvider} from '@mui/material/styles';
-import {customTheme} from '../../utils/Theme';
+import {customTheme, primaryColor, secondaryColor} from '../../utils/Theme';
 import {
     api_keyboard_buttons,
     api_keyboard_typewriting,
@@ -34,7 +34,7 @@ class KeyboardMenu extends Component {
     };
 
     // 发送文本消息
-    handleSendText = () => {
+    handleSendText = (event) => {
         const {inputText} = this.state;
         if (inputText.trim()) {
             if (this.context.keyboardDataSendMod === 'a') {
@@ -46,6 +46,7 @@ class KeyboardMenu extends Component {
             }
             this.setState({inputText: ''});
         }
+        event.target.blur();
     };
 
     // 发送按键消息
@@ -62,9 +63,9 @@ class KeyboardMenu extends Component {
                         <div style={{
                             margin: '10px',
                             height: '40px',
-                            border: '1px solid #333',
+                            border: '1px solid ' + secondaryColor,
                             borderRadius: '4px',
-                            backgroundColor: '#6df',
+                            backgroundColor: primaryColor,
                             display: 'flex',
                             alignItems: 'center',
                         }}>
@@ -75,8 +76,8 @@ class KeyboardMenu extends Component {
                                 style={{
                                     border: 'none', // 移除input的默认边框
                                     outline: 'none', // 移除聚焦时的轮廓
-                                    caretColor: '#333', // 修改光标颜色
-                                    color: '#333', // 修改文字颜色
+                                    caretColor: secondaryColor, // 修改光标颜色
+                                    color: secondaryColor, // 修改文字颜色
                                     backgroundColor: 'transparent',
                                     width: '100%',
                                     fontSize: '1rem',
@@ -89,16 +90,20 @@ class KeyboardMenu extends Component {
                                 width: '40px',
                                 height: '40px',
                                 borderRadius: '8%',
-                                backgroundColor: '#333',
-                                color: '#6df',
+                                backgroundColor: secondaryColor,
+                                color: primaryColor,
                                 '&:hover': {
-                                    backgroundColor: '#6df',
-                                    color: '#333',
+                                    backgroundColor: secondaryColor,
+                                    color: primaryColor,
+                                },
+                                'focus': {
+                                    backgroundColor: secondaryColor,
+                                    color: primaryColor,
                                 },
                             }}
                             onClick={this.handleSendText}
                         >
-                            <KeyboardDoubleArrowUpOutlined sx={{color: '#6df'}}/>
+                            <KeyboardDoubleArrowUpOutlined sx={{color: primaryColor}}/>
                         </IconButton>
                     </ListItem>
                     <ListItem display="flex" alignItems="center">
