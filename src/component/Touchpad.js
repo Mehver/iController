@@ -59,8 +59,8 @@ class Touchpad extends Component {
         const xRelative = touch.clientX - initialX;
         const yRelative = touch.clientY - initialY;
 
-        const xPercent = (xRelative / (shorterSide / 2)) * 100;
-        const yPercent = (yRelative / (shorterSide / 2)) * 100;
+        const xPercent = (xRelative / (shorterSide / 2)) * 100 * this.context.tPadSensitivity;
+        const yPercent = (yRelative / (shorterSide / 2)) * 100 * this.context.tPadSensitivity;
 
         this.setState({
             xPercent: xPercent.toFixed(2),
