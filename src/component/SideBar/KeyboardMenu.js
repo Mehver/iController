@@ -106,9 +106,8 @@ class KeyboardMenu extends Component {
                             onChange={() => {
                                 this.context.setKeyboardDataSendMod('a');
                             }}
-                            value="a"
-                            name="DataSendMod"
-                            inputProps={{'aria-label': 'A'}}
+                            value={this.context.keyboardDataSendMod}
+                            inputProps={{'aria-label': 'a'}}
                         />
                         <text style={{fontSize: '1rem'}}>Past</text>
                         <Radio
@@ -116,9 +115,8 @@ class KeyboardMenu extends Component {
                             onChange={() => {
                                 this.context.setKeyboardDataSendMod('b');
                             }}
-                            value="b"
-                            name="DataSendMod"
-                            inputProps={{'aria-label': 'B'}}
+                            value={this.context.keyboardDataSendMod}
+                            inputProps={{'aria-label': 'b'}}
                         />
                         <text style={{fontSize: '1rem'}}>Type</text>
                         <div style={{flex: 1}}/>
@@ -136,7 +134,7 @@ class KeyboardMenu extends Component {
                         </IconButton>
                     </ListItem>
                 </List>
-                <Divider/>
+                {/*<Divider/>*/}
             </ThemeProvider>
         );
     }

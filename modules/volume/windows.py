@@ -10,6 +10,7 @@ class WindowsVolumeController(BaseVolumeController):
         CoInitializeEx(COINIT_MULTITHREADED)
 
         devices = AudioUtilities.GetSpeakers()
+        # noinspection PyProtectedMember
         interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
         self.volume = cast(interface, POINTER(IAudioEndpointVolume))
 
@@ -17,4 +18,7 @@ class WindowsVolumeController(BaseVolumeController):
         return self.volume.GetMasterVolumeLevelScalar() * 100
 
     def set_volume(self, target_volume):
+        # 确保没用静音
+        self.volume.SetMute(0, None)
+        # 设置音量
         self.volume.SetMasterVolumeLevelScalar(target_volume / 100, None)
