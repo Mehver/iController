@@ -25,6 +25,7 @@ import {
     OpenWith,
     Pinch
 } from '@mui/icons-material';
+import {primaryColor, secondaryColor} from '../../utils/Theme';
 import MouseWheelMenu from './MouseWheelMenu';
 import KeyboardMenu from './KeyboardMenu';
 import VolumeMenu from './VolumeMenu';
@@ -39,8 +40,8 @@ class SideBar extends Component {
         let drawerWidth = '280px';
         let drawerPaperProps = {
             sx: {
-                backgroundColor: '#6df',
-                color: '#333',
+                backgroundColor: primaryColor,
+                color: secondaryColor,
                 width: drawerWidth,
             },
         };
@@ -62,8 +63,8 @@ class SideBar extends Component {
             };
             drawerPaperProps = {
                 sx: {
-                    backgroundColor: '#6df',
-                    color: '#333',
+                    backgroundColor: primaryColor,
+                    color: secondaryColor,
                     width: drawerWidth,
                     // 调整字体和图标大小
                     '& .MuiListItemIcon-root': {

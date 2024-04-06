@@ -2,9 +2,9 @@ import {Component} from 'react';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import {ThemeProvider} from '@mui/material/styles';
-import {customTheme} from '../utils/Theme';
-import {Context} from '../utils/Context';
-import {api_mousebutton} from '../api/mousebutton';
+import {customTheme, primaryColorTrans} from '../../utils/Theme';
+import {Context} from '../../utils/Context';
+import {api_mousebutton} from '../../api/mousebutton';
 import {Typography} from "@mui/material";
 
 class MouseButtons extends Component {
@@ -27,6 +27,7 @@ class MouseButtons extends Component {
             width: '100%',
             // 使用 !important 否则按下时边框不会变粗
             borderWidth: '5px !important',
+            borderColor: primaryColorTrans + ' !important',
         };
         return (
             <ThemeProvider theme={customTheme}>
@@ -37,7 +38,10 @@ class MouseButtons extends Component {
                             <Button
                                 color="primary"
                                 variant="outlined"
-                                onClick={() => api_mousebutton('Left')}
+                                onClick={(event) => {
+                                    api_mousebutton('Left');
+                                    event.currentTarget.blur();
+                                }}
                                 sx={buttonSX}
                             >L</Button>
                             {this.context.button23 === 0 ? (
@@ -46,7 +50,10 @@ class MouseButtons extends Component {
                                     <Button
                                         color="primary"
                                         variant="outlined"
-                                        onClick={() => api_mousebutton('Middle')}
+                                        onClick={(event) => {
+                                            api_mousebutton('Middle');
+                                            event.currentTarget.blur();
+                                        }}
                                         sx={buttonSX}
                                     >M</Button>
                                     <Typography style={{fontSize: '1rem'}}>&nbsp;&nbsp;</Typography>
@@ -55,7 +62,10 @@ class MouseButtons extends Component {
                             <Button
                                 color="primary"
                                 variant="outlined"
-                                onClick={() => api_mousebutton('Right')}
+                                onClick={(event) => {
+                                    api_mousebutton('Right');
+                                    event.currentTarget.blur();
+                                }}
                                 sx={buttonSX}
                             >R</Button>
                             <Typography style={{fontSize: '1rem'}}>&nbsp;&nbsp;&nbsp;&nbsp;</Typography>

@@ -1,6 +1,7 @@
 import {Component} from 'react';
-import {Context} from '../utils/Context';
-import {api_touchpad} from '../api/touchpad';
+import {Context} from '../../utils/Context';
+import {primaryColor} from '../../utils/Theme';
+import {api_touchpad} from '../../api/touchpad';
 
 function throttle(func, limit) {
     let inThrottle;
@@ -90,7 +91,7 @@ class Touchpad extends Component {
             height: `${screenHeight * 0.84}px`,
             transform: 'translate(-50%, -50%)',
             backgroundColor: 'transparent',
-            color: '#6df',
+            color: primaryColor,
         };
         if (screenWidth < 280) {
             touchPadStyle.fontSize = `${(screenWidth / 280.0) * 10.0}px`;

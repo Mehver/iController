@@ -9,9 +9,9 @@ import {
     KeyboardArrowRightOutlined
 } from '@mui/icons-material';
 import {ThemeProvider} from '@mui/material/styles';
-import {customTheme} from '../utils/Theme';
-import {Context} from '../utils/Context';
-import {api_dpad} from '../api/dpad';
+import {customTheme, primaryColorTrans} from '../../utils/Theme';
+import {Context} from '../../utils/Context';
+import {api_dpad} from '../../api/dpad';
 
 class DPad extends Component {
     constructor(props) {
@@ -27,6 +27,7 @@ class DPad extends Component {
             borderRadius: '18%',
             // 使用 !important 否则按下时边框不会变粗
             borderWidth: '5px !important',
+            borderColor: primaryColorTrans + ' !important',
         };
         let iconSX = {
             fontSize: dPadButtonSize * 0.4,
