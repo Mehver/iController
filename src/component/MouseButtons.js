@@ -5,6 +5,7 @@ import {ThemeProvider} from '@mui/material/styles';
 import {customTheme} from '../utils/Theme';
 import {Context} from '../utils/Context';
 import {api_mousebutton} from '../api/mousebutton';
+import {Typography} from "@mui/material";
 
 class MouseButtons extends Component {
     constructor(props) {
@@ -24,13 +25,15 @@ class MouseButtons extends Component {
         };
         const buttonSX = {
             width: '100%',
-            mx: '2%'
+            // 使用 !important 否则按下时边框不会变粗
+            borderWidth: '5px !important',
         };
         return (
             <ThemeProvider theme={customTheme}>
                 <Box sx={mouseLMRBoxSX}>
                     {this.context.button23 !== 2 ? (
                         <>
+                            <Typography style={{fontSize: '1rem'}}>&nbsp;&nbsp;&nbsp;&nbsp;</Typography>
                             <Button
                                 color="primary"
                                 variant="outlined"
@@ -38,19 +41,24 @@ class MouseButtons extends Component {
                                 sx={buttonSX}
                             >L</Button>
                             {this.context.button23 === 0 ? (
-                                <Button
-                                    color="primary"
-                                    variant="outlined"
-                                    onClick={() => api_mousebutton('Middle')}
-                                    sx={buttonSX}
-                                >M</Button>
-                            ) : null}
+                                <>
+                                    <Typography style={{fontSize: '1rem'}}>&nbsp;&nbsp;</Typography>
+                                    <Button
+                                        color="primary"
+                                        variant="outlined"
+                                        onClick={() => api_mousebutton('Middle')}
+                                        sx={buttonSX}
+                                    >M</Button>
+                                    <Typography style={{fontSize: '1rem'}}>&nbsp;&nbsp;</Typography>
+                                </>
+                            ) : <Typography style={{fontSize: '1rem'}}>&nbsp;&nbsp;</Typography>}
                             <Button
                                 color="primary"
                                 variant="outlined"
                                 onClick={() => api_mousebutton('Right')}
                                 sx={buttonSX}
                             >R</Button>
+                            <Typography style={{fontSize: '1rem'}}>&nbsp;&nbsp;&nbsp;&nbsp;</Typography>
                         </>
                     ) : null}
                 </Box>
