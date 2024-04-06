@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Knob } from 'primereact/knob';
-import { List, ListItem, Box, Divider, IconButton } from "@mui/material";
+import { List, ListItem, Box, IconButton } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { Context } from '../../utils/Context';
@@ -76,7 +76,6 @@ class MouseWheelMenu extends Component {
                         </Box>
                     </ListItem>
                 </List>
-                {/*<Divider />*/}
             </>
         );
     }

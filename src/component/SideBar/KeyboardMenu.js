@@ -5,7 +5,7 @@ import {
     IconButton,
     ListItem,
     Radio,
-    Divider
+    Typography
 } from "@mui/material";
 import {
     KeyboardDoubleArrowUpOutlined,
@@ -109,7 +109,7 @@ class KeyboardMenu extends Component {
                             value={this.context.keyboardDataSendMod}
                             inputProps={{'aria-label': 'a'}}
                         />
-                        <text style={{fontSize: '1rem'}}>Past</text>
+                        <Typography style={{fontSize: '1rem'}}>Past</Typography>
                         <Radio
                             checked={this.context.keyboardDataSendMod === 'b'}
                             onChange={() => {
@@ -118,7 +118,7 @@ class KeyboardMenu extends Component {
                             value={this.context.keyboardDataSendMod}
                             inputProps={{'aria-label': 'b'}}
                         />
-                        <text style={{fontSize: '1rem'}}>Type</text>
+                        <Typography style={{fontSize: '1rem'}}>Type</Typography>
                         <div style={{flex: 1}}/>
                         <IconButton
                             onClick={() => this.handleSendButton('Enter')}
