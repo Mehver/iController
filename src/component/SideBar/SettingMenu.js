@@ -93,6 +93,8 @@ class SettingMenu extends Component {
                             inputProps={{step: "0.01", min: "0"}}
                             size="small"
                             fullWidth='true'
+                            color="secondary"
+                            focused='true'
                         />
                     </ListItem>
                     <ListItem>
@@ -107,6 +109,8 @@ class SettingMenu extends Component {
                             inputProps={{step: "0.01", min: "0"}}
                             size="small"
                             fullWidth='true'
+                            color="secondary"
+                            focused='true'
                         />
                     </ListItem>
                 </List>
