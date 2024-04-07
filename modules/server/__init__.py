@@ -5,6 +5,7 @@ from modules.server.dpad import dpad
 from modules.server.keyboard import keyboard_buttons
 from modules.server.keyboard import keyboard_typewriting
 from modules.server.keyboard import keyboard_pastetext
+from modules.server.system import get_system_info
 from modules.server.mousebutton import mousebutton
 from modules.server.mousewheel import mousewheel
 from modules.server.touchpad import touchpad
@@ -38,6 +39,7 @@ def server(static_folder='build', static_url_path=''):
     app.route('/api/keyboard/buttons', methods=['POST'])(keyboard_buttons)
     app.route('/api/keyboard/typewriting', methods=['POST'])(keyboard_typewriting)
     app.route('/api/keyboard/pastetext', methods=['POST'])(keyboard_pastetext)
+    app.route('/api/system/info', methods=['GET'])(get_system_info)
     app.route('/api/mousebutton', methods=['POST'])(mousebutton)
     app.route('/api/mousewheel', methods=['POST'])(mousewheel)
     app.route('/api/touchpad', methods=['POST'])(touchpad)

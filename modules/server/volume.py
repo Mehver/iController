@@ -3,10 +3,14 @@ from modules.volume import get_volume_controller
 
 
 def volume_get():
-    vc = get_volume_controller()
-    volume = vc.get_current_volume()
-    print(f"Read current volume: {volume}")
-    return jsonify({"status": "success", "volume": volume})
+    try:
+        vc = get_volume_controller()
+        volume = vc.get_current_volume()
+        print(f"Read current volume: {volume}")
+        return jsonify({"status": "success", "volume": volume})
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({"status": "error", "message": "An error occurred while reading volume."})
 
 
 def volume_set():
