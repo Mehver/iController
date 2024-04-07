@@ -1,5 +1,6 @@
-import sys
 from modules.server import server
+from modules.portchecker import portchecker
+
 
 print("""
  _   ___            _             _ _           
@@ -9,18 +10,20 @@ print("""
 |_\____/\___/|_| |_|\__|_|  \___/|_|_|\___|_|   
                                                 
 https://github.com/Mehver/iController
-v0.4.1
+v0.4.2
 
 """)
 
-PORT = input("Give a port > ")  # 获取用户输入的端口号
-try:
-    PORT = int(PORT)
-    if PORT < 0 or PORT > 65535:
-        raise ValueError
-except ValueError:
-    print("Invalid port number.")
-    sys.exit(1)
+while True:
+    PORT = input("Give a port > ")
+    try:
+        PORT = int(PORT)
+        if not portchecker(PORT):
+            raise ValueError
+    except ValueError:
+        print("Invalid or unavailable port number. Please try again.")
+    else:
+        break
 
 app = server()  # 创建Flask应用实例
 
