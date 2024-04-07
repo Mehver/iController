@@ -1,6 +1,6 @@
 <div align="center">
     <img src="https://github.com/Mehver/iController/raw/main/%23README/icon/256.png" width="20%"/>
-    <h1>iController <code>v0.4.1</code></h1>
+    <h1>iController <code>v0.4.2</code></h1>
     </tr>
 	<p>English | <a href='https://github.com/Mehver/iController/blob/main/%23README/README-cn.md'>简体中文</a></p>
 </div>
@@ -120,6 +120,7 @@ mysterious errors. Only Python v3.10.10 is recommended.
       - Pyperclip
     - Pycaw (https://github.com/AndreMiras/pycaw)
       - Comtypes
+    - Psutil (https://github.com/giampaolo/psutil)
     - PyInstaller (https://www.pyinstaller.org/)
     - (Dev) Auto-PY-To-EXE (https://github.com/brentvollebregt/auto-py-to-exe)
 

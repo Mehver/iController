@@ -1,6 +1,6 @@
 <div align="center">
     <img src="https://github.com/Mehver/iController/raw/main/%23README/icon/256.png" width="20%"/>
-    <h1>iController <code>v0.4.1</code></h1>
+    <h1>iController <code>v0.4.2</code></h1>
 	<p><a href='https://github.com/Mehver/iController/blob/main/README.md'>English</a> | 简体中文</p>
 </div>
 
@@ -112,6 +112,7 @@ source venv/bin/activate
       - Pyperclip
     - Pycaw (https://github.com/AndreMiras/pycaw)
       - Comtypes
+    - Psutil (https://github.com/giampaolo/psutil)
     - PyInstaller (https://www.pyinstaller.org/)
     - (Dev) Auto-PY-To-EXE (https://github.com/brentvollebregt/auto-py-to-exe)
 
