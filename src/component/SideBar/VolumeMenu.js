@@ -19,6 +19,12 @@ class VolumeMenu extends Component {
         setTimeout(() => {
             this.fetchVolume();
         }, 500);
+        setTimeout(() => {
+            this.fetchVolume();
+        }, 1000);
+        setTimeout(() => {
+            this.fetchVolume();
+        }, 1500);
     }
 
     componentWillUnmount() {
