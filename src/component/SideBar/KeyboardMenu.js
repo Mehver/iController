@@ -19,13 +19,24 @@ import {
     api_keyboard_typewriting,
     api_keyboard_pastetext
 } from "../../api/keyboard";
+import {api_get_system_info} from "../../api/system";
 
 class KeyboardMenu extends Component {
     constructor(props) {
         super(props);
         this.state = {
             inputText: '',
+            serverIsMac: true,
         };
+    }
+
+    componentDidMount() {
+        api_get_system_info().then(data => {
+            this.setState({serverIsMac: data.volume === 'Darwin'});
+        });
+        if (this.state.serverIsMac) {
+            this.context.setKeyboardDataSendMod('b');
+        }
     }
 
     // 输入框实时更新
@@ -107,24 +118,30 @@ class KeyboardMenu extends Component {
                         </IconButton>
                     </ListItem>
                     <ListItem display="flex" alignItems="center">
-                        <Radio
-                            checked={this.context.keyboardDataSendMod === 'a'}
-                            onChange={() => {
-                                this.context.setKeyboardDataSendMod('a');
-                            }}
-                            value={this.context.keyboardDataSendMod}
-                            inputProps={{'aria-label': 'a'}}
-                        />
-                        <Typography style={{fontSize: '1rem'}}>Past</Typography>
-                        <Radio
-                            checked={this.context.keyboardDataSendMod === 'b'}
-                            onChange={() => {
-                                this.context.setKeyboardDataSendMod('b');
-                            }}
-                            value={this.context.keyboardDataSendMod}
-                            inputProps={{'aria-label': 'b'}}
-                        />
-                        <Typography style={{fontSize: '1rem'}}>Type</Typography>
+                        {this.state.serverIsMac ? (
+                                <Typography style={{fontSize: '1rem'}}>*MacOS ASCII Only</Typography>
+                        ) : (
+                            <>
+                                <Radio
+                                    checked={this.context.keyboardDataSendMod === 'a'}
+                                    onChange={() => {
+                                        this.context.setKeyboardDataSendMod('a');
+                                    }}
+                                    value={this.context.keyboardDataSendMod}
+                                    inputProps={{'aria-label': 'a'}}
+                                />
+                                <Typography style={{fontSize: '1rem'}}>Past</Typography>
+                                <Radio
+                                    checked={this.context.keyboardDataSendMod === 'b'}
+                                    onChange={() => {
+                                        this.context.setKeyboardDataSendMod('b');
+                                    }}
+                                    value={this.context.keyboardDataSendMod}
+                                    inputProps={{'aria-label': 'b'}}
+                                />
+                                <Typography style={{fontSize: '1rem'}}>Type</Typography>
+                            </>
+                        )}
                         <div style={{flex: 1}}/>
                         <IconButton
                             onClick={() => this.handleSendButton('Enter')}

@@ -14,7 +14,11 @@ class VolumeMenu extends Component {
 
     componentDidMount() {
         this._isMounted = true;
-        this.fetchVolume();
+        // this.fetchVolume();
+        // 延迟获取音量，防止服务器报错
+        setTimeout(() => {
+            this.fetchVolume();
+        }, 500);
     }
 
     componentWillUnmount() {
