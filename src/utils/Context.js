@@ -68,34 +68,43 @@ export class ContextProvider extends Component {
                 {button23: value}, () =>
                     setCookie('button23', value, 7));
         },
-        ///////////////////////////////////////////////////////////////////////////////////
-        // sidebarMouseWheelMenu: getCookie('sidebarMouseWheelMenu') === 'false',
-        // toggleSidebarMouseWheelMenu: () => {
-        //     this.setState(prevState => {
-        //         const newValue = !prevState.sidebarMouseWheelMenu;
-        //         setCookie('sidebarMouseWheelMenu', newValue, 7);
-        //         return {sidebarMouseWheelMenu: newValue};
-        //     });
-        // },
-        ///////////////////////////////////////////////////////////////////////////////////
-        // sidebarKeyboardMenu: getCookie('sidebarKeyboardMenu') === 'false',
-        // toggleSidebarKeyboardMenu: () => {
-        //     this.setState(prevState => {
-        //         const newValue = !prevState.sidebarKeyboardMenu;
-        //         setCookie('sidebarKeyboardMenu', newValue, 7);
-        //         return {sidebarKeyboardMenu: newValue};
-        //     });
-        // },
-        ///////////////////////////////////////////////////////////////////////////////////
-        // sidebarVolumeMenu: getCookie('sidebarVolumeMenu') === 'false',
-        // toggleSidebarVolumeMenu: () => {
-        //     this.setState(prevState => {
-        //         const newValue = !prevState.sidebarVolumeMenu;
-        //         setCookie('sidebarVolumeMenu', newValue, 7);
-        //         return {sidebarVolumeMenu: newValue};
-        //     });
-        // },
-        ///////////////////////////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////////////////////
+        autoCollapse: getCookie('autoCollapse') === 'true',
+        toggleAutoCollapse: () => {
+            this.setState(prevState => {
+                const newValue = !prevState.autoCollapse;
+                setCookie('autoCollapse', newValue, 7);
+                return {autoCollapse: newValue};
+            });
+        },
+        /////////////////////////////////////////////////////////////////////////////////
+        sidebarMouseWheelMenu: getCookie('sidebarMouseWheelMenu') === 'false',
+        toggleSidebarMouseWheelMenu: () => {
+            this.setState(prevState => {
+                const newValue = !prevState.sidebarMouseWheelMenu;
+                setCookie('sidebarMouseWheelMenu', newValue, 7);
+                return {sidebarMouseWheelMenu: newValue};
+            });
+        },
+        /////////////////////////////////////////////////////////////////////////////////
+        sidebarKeyboardMenu: getCookie('sidebarKeyboardMenu') === 'false',
+        toggleSidebarKeyboardMenu: () => {
+            this.setState(prevState => {
+                const newValue = !prevState.sidebarKeyboardMenu;
+                setCookie('sidebarKeyboardMenu', newValue, 7);
+                return {sidebarKeyboardMenu: newValue};
+            });
+        },
+        /////////////////////////////////////////////////////////////////////////////////
+        sidebarVolumeMenu: getCookie('sidebarVolumeMenu') === 'false',
+        toggleSidebarVolumeMenu: () => {
+            this.setState(prevState => {
+                const newValue = !prevState.sidebarVolumeMenu;
+                setCookie('sidebarVolumeMenu', newValue, 7);
+                return {sidebarVolumeMenu: newValue};
+            });
+        },
+        /////////////////////////////////////////////////////////////////////////////////
         // openMenuSW 是用 int 类型保存的可切换状态值，0 表示关闭，1 表示打开键盘菜单，2 表示打开鼠标滚轮菜单，3 表示打开音量菜单...
         openMenuSW: parseInt(getCookie('openMenuSW'), 10) || 0,
         setOpenMenuSW: (value) => {
@@ -134,9 +143,10 @@ export class ContextProvider extends Component {
         const drawerRL = getCookie('drawerRL');
         const tPadSensitivity = getCookie('tPadSensitivity');
         const mWheelSensitivity = getCookie('mWheelSensitivity');
-        // const sidebarMouseWheelMenu = getCookie('sidebarMouseWheelMenu');
-        // const sidebarSettingMenu = getCookie('sidebarSettingMenu');
-        // const sidebarVolumeMenu = getCookie('sidebarVolumeMenu');
+        const autoCollapse = getCookie('autoCollapse');
+        const sidebarMouseWheelMenu = getCookie('sidebarMouseWheelMenu');
+        const sidebarSettingMenu = getCookie('sidebarSettingMenu');
+        const sidebarVolumeMenu = getCookie('sidebarVolumeMenu');
         const openMenuSW = getCookie('openMenuSW');
         const sidebarKeyboardMenu = getCookie('sidebarKeyboardMenu');
         const keyboardDataSendMod = getCookie('keyboardDataSendMod');
@@ -147,9 +157,10 @@ export class ContextProvider extends Component {
             drawerRL: drawerRL || this.state.drawerRL,
             tPadSensitivity: tPadSensitivity ? parseFloat(tPadSensitivity) : this.state.tPadSensitivity,
             mWheelSensitivity: mWheelSensitivity ? parseFloat(mWheelSensitivity) : this.state.mWheelSensitivity,
-            // sidebarMouseWheelMenu: sidebarMouseWheelMenu ? sidebarMouseWheelMenu === 'true' : this.state.sidebarMouseWheelMenu,
-            // sidebarSettingMenu: sidebarSettingMenu ? sidebarSettingMenu === 'true' : this.state.sidebarSettingMenu,
-            // sidebarVolumeMenu: sidebarVolumeMenu ? sidebarVolumeMenu === 'true' : this.state.sidebarVolumeMenu,
+            autoCollapse: autoCollapse ? autoCollapse === 'true' : this.state.autoCollapse,
+            sidebarMouseWheelMenu: sidebarMouseWheelMenu ? sidebarMouseWheelMenu === 'true' : this.state.sidebarMouseWheelMenu,
+            sidebarSettingMenu: sidebarSettingMenu ? sidebarSettingMenu === 'true' : this.state.sidebarSettingMenu,
+            sidebarVolumeMenu: sidebarVolumeMenu ? sidebarVolumeMenu === 'true' : this.state.sidebarVolumeMenu,
             openMenuSW: openMenuSW ? parseInt(openMenuSW, 10) : this.state.openMenuSW,
             sidebarKeyboardMenu: sidebarKeyboardMenu ? sidebarKeyboardMenu === 'true' : this.state.sidebarKeyboardMenu,
             keyboardDataSendMod: keyboardDataSendMod || this.state.keyboardDataSendMod,
