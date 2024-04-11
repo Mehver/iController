@@ -10,7 +10,6 @@ import {
     FormControl,
     Typography,
     ListItemButton,
-    ListItemText,
     Box
 } from "@mui/material";
 import {
@@ -20,10 +19,7 @@ import {
 import {ThemeProvider} from '@mui/material/styles';
 import {
     customTheme,
-    primaryColor,
-    secondaryColor,
-    setPrimaryColor,
-    setSecondaryColor
+    secondaryColor
 } from '../../utils/Theme';
 
 class SettingMenu extends Component {
