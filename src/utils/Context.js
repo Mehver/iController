@@ -77,6 +77,23 @@ export class ContextProvider extends Component {
                 return {autoCollapse: newValue};
             });
         },
+
+        /////////////////////////////////////////////////////////////////////////////////
+        mouseWheelMenuType: parseInt(getCookie('mouseWheelMenuType'), 10) || 0,
+        setMouseWheelMenuType: (value) => {
+            this.setState(
+                {mouseWheelMenuType: value}, () =>
+                    setCookie('mouseWheelMenuType', value, 7));
+        },
+        /////////////////////////////////////////////////////////////////////////////////
+        sidebarModulesSettingMenu: getCookie('sidebarModulesSettingMenu') === 'false',
+        toggleSidebarModulesSettingMenu: () => {
+            this.setState(prevState => {
+                const newValue = !prevState.sidebarModulesSettingMenu;
+                setCookie('sidebarModulesSettingMenu', newValue, 7);
+                return {sidebarModulesSettingMenu: newValue};
+            });
+        },
         /////////////////////////////////////////////////////////////////////////////////
         sidebarMouseWheelMenu: getCookie('sidebarMouseWheelMenu') === 'false',
         toggleSidebarMouseWheelMenu: () => {
@@ -144,6 +161,8 @@ export class ContextProvider extends Component {
         const tPadSensitivity = getCookie('tPadSensitivity');
         const mWheelSensitivity = getCookie('mWheelSensitivity');
         const autoCollapse = getCookie('autoCollapse');
+        const mouseWheelMenuType = getCookie('mouseWheelMenuType');
+        const sidebarModulesSettingMenu = getCookie('sidebarModulesSettingMenu');
         const sidebarMouseWheelMenu = getCookie('sidebarMouseWheelMenu');
         const sidebarSettingMenu = getCookie('sidebarSettingMenu');
         const sidebarVolumeMenu = getCookie('sidebarVolumeMenu');
@@ -158,6 +177,8 @@ export class ContextProvider extends Component {
             tPadSensitivity: tPadSensitivity ? parseFloat(tPadSensitivity) : this.state.tPadSensitivity,
             mWheelSensitivity: mWheelSensitivity ? parseFloat(mWheelSensitivity) : this.state.mWheelSensitivity,
             autoCollapse: autoCollapse ? autoCollapse === 'true' : this.state.autoCollapse,
+            mouseWheelMenuType: mouseWheelMenuType ? parseInt(mouseWheelMenuType, 10) : this.state.mouseWheelMenuType,
+            sidebarModulesSettingMenu: sidebarModulesSettingMenu ? sidebarModulesSettingMenu === 'true' : this.state.sidebarModulesSettingMenu,
             sidebarMouseWheelMenu: sidebarMouseWheelMenu ? sidebarMouseWheelMenu === 'true' : this.state.sidebarMouseWheelMenu,
             sidebarSettingMenu: sidebarSettingMenu ? sidebarSettingMenu === 'true' : this.state.sidebarSettingMenu,
             sidebarVolumeMenu: sidebarVolumeMenu ? sidebarVolumeMenu === 'true' : this.state.sidebarVolumeMenu,

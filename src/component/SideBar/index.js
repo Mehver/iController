@@ -7,25 +7,19 @@ import {
     ListItemButton,
     ListItemText,
     Collapse,
-    Box,
-    Divider
+    Box
 } from "@mui/material";
 import {
-    LooksOneOutlined,
-    LooksTwoOutlined,
-    VisibilityOutlined,
-    Mouse,
-    VisibilityOffOutlined,
-    Menu,
     ChevronRightOutlined,
     ExpandMore,
     Keyboard,
     Speaker,
     FilterTiltShift,
-    OpenWith,
-    Pinch
+    Tune,
+    Settings
 } from '@mui/icons-material';
 import {primaryColor, secondaryColor} from '../../utils/Theme';
+import ModulesSettingMenu from './ModulesSettingMenu';
 import MouseWheelMenu from './MouseWheelMenu';
 import KeyboardMenu from './KeyboardMenu';
 import VolumeMenu from './VolumeMenu';
@@ -88,72 +82,32 @@ class SideBar extends Component {
                 <List sx={listSX}>
                     <ListItem>
                         <ListItemButton onClick={() => {
-                            this.context.toggleButtonSW1();
-                        }}>
-
-                            <Pinch sx={iconSizeSX}/>
-                            <ListItemText primary="&nbsp;&nbsp;&nbsp;Touchpad"/>
-                            <Box sx={boxIconSX}>{this.context.buttonSW1 ?
-                                <VisibilityOutlined sx={iconSizeSX}/> :
-                                <VisibilityOffOutlined sx={iconSizeSX}/>
-                            }</Box>
-                        </ListItemButton>
-                    </ListItem>
-                    <ListItem>
-                        <ListItemButton onClick={() => {
-                            this.context.toggleButtonSW4();
-                        }}>
-                            <OpenWith sx={iconSizeSX}/>
-                            <ListItemText primary="&nbsp;&nbsp;&nbsp;D-Pad"/>
-                            <Box sx={boxIconSX}>{this.context.buttonSW4 ?
-                                <VisibilityOutlined sx={iconSizeSX}/> :
-                                <VisibilityOffOutlined sx={iconSizeSX}/>
-                            }</Box>
-                        </ListItemButton>
-                    </ListItem>
-                    <ListItem>
-                        <ListItemButton onClick={() => {
-                            this.context.setButton23((this.context.button23 + 1) % 3);
-                        }}>
-                            <Mouse sx={iconSizeSX}/>
-                            <ListItemText primary="&nbsp;&nbsp;&nbsp;Mouse Buttons"/>
-                            <Box sx={boxIconSX}>{this.context.button23 === 0 ?
-                                <LooksOneOutlined sx={iconSizeSX}/> :
-                                this.context.button23 === 1 ?
-                                    <LooksTwoOutlined sx={iconSizeSX}/> :
-                                    <VisibilityOffOutlined sx={iconSizeSX}/>
-                            }</Box>
-                        </ListItemButton>
-                    </ListItem>
-                    <Divider/>
-                    <ListItem>
-                        <ListItemButton onClick={() => {
                             {
                                 if (this.context.autoCollapse) {
-                                    if (this.context.openMenuSW === 1) {
+                                    if (this.context.sidebarModulesSettingMenu === 1) {
                                         this.context.setOpenMenuSW(0);
                                     } else {
                                         this.context.setOpenMenuSW(1);
                                     }
                                 } else {
-                                    this.context.toggleSidebarKeyboardMenu();
+                                    this.context.toggleSidebarModulesSettingMenu();
                                 }
                             }
                         }}>
-                            <Keyboard sx={iconSizeSX}/>
-                            <ListItemText primary="&nbsp;&nbsp;&nbsp;Keyboard"/>
+                            <Tune sx={iconSizeSX}/>
+                            <ListItemText primary="&nbsp;&nbsp;&nbsp;Modules Settings"/>
                             <Box sx={boxIconSX}>{this.context.autoCollapse ?
                                 this.context.openMenuSW === 1 ?
                                     <ExpandMore sx={iconSizeSX}/> :
                                     <ChevronRightOutlined sx={iconSizeSX}/> :
-                                this.context.sidebarKeyboardMenu ?
+                                this.context.sidebarModulesSettingMenu ?
                                     <ExpandMore sx={iconSizeSX}/> :
                                     <ChevronRightOutlined sx={iconSizeSX}/>
                             }</Box>
                         </ListItemButton>
                     </ListItem>
-                    <Collapse in={this.context.autoCollapse ? this.context.openMenuSW === 1 : this.context.sidebarKeyboardMenu}>
-                        <KeyboardMenu/>
+                    <Collapse in={this.context.autoCollapse ? this.context.openMenuSW === 1 : this.context.sidebarModulesSettingMenu}>
+                        <ModulesSettingMenu/>
                     </Collapse>
                     <ListItem>
                         <ListItemButton onClick={() => {
@@ -165,24 +119,24 @@ class SideBar extends Component {
                                         this.context.setOpenMenuSW(2);
                                     }
                                 } else {
-                                    this.context.toggleSidebarMouseWheelMenu();
+                                    this.context.toggleSidebarKeyboardMenu();
                                 }
                             }
                         }}>
-                            <FilterTiltShift sx={iconSizeSX}/>
-                            <ListItemText primary="&nbsp;&nbsp;&nbsp;Mouse Wheel"/>
+                            <Keyboard sx={iconSizeSX}/>
+                            <ListItemText primary="&nbsp;&nbsp;&nbsp;Keyboard"/>
                             <Box sx={boxIconSX}>{this.context.autoCollapse ?
                                 this.context.openMenuSW === 2 ?
                                     <ExpandMore sx={iconSizeSX}/> :
                                     <ChevronRightOutlined sx={iconSizeSX}/> :
-                                this.context.sidebarMouseWheelMenu ?
+                                this.context.sidebarKeyboardMenu ?
                                     <ExpandMore sx={iconSizeSX}/> :
                                     <ChevronRightOutlined sx={iconSizeSX}/>
                             }</Box>
                         </ListItemButton>
                     </ListItem>
-                    <Collapse in={this.context.autoCollapse ? this.context.openMenuSW === 2 : this.context.sidebarMouseWheelMenu}>
-                        <MouseWheelMenu/>
+                    <Collapse in={this.context.autoCollapse ? this.context.openMenuSW === 2 : this.context.sidebarKeyboardMenu}>
+                        <KeyboardMenu/>
                     </Collapse>
                     <ListItem>
                         <ListItemButton onClick={() => {
@@ -194,24 +148,24 @@ class SideBar extends Component {
                                         this.context.setOpenMenuSW(3);
                                     }
                                 } else {
-                                    this.context.toggleSidebarVolumeMenu();
+                                    this.context.toggleSidebarMouseWheelMenu();
                                 }
                             }
                         }}>
-                            <Speaker sx={iconSizeSX}/>
-                            <ListItemText primary="&nbsp;&nbsp;&nbsp;Volume"/>
+                            <FilterTiltShift sx={iconSizeSX}/>
+                            <ListItemText primary="&nbsp;&nbsp;&nbsp;Mouse Wheel"/>
                             <Box sx={boxIconSX}>{this.context.autoCollapse ?
                                 this.context.openMenuSW === 3 ?
                                     <ExpandMore sx={iconSizeSX}/> :
                                     <ChevronRightOutlined sx={iconSizeSX}/> :
-                                this.context.sidebarVolumeMenu ?
+                                this.context.sidebarMouseWheelMenu ?
                                     <ExpandMore sx={iconSizeSX}/> :
                                     <ChevronRightOutlined sx={iconSizeSX}/>
                             }</Box>
                         </ListItemButton>
                     </ListItem>
-                    <Collapse in={this.context.autoCollapse ? this.context.openMenuSW === 3 : this.context.sidebarVolumeMenu}>
-                        <VolumeMenu/>
+                    <Collapse in={this.context.autoCollapse ? this.context.openMenuSW === 3 : this.context.sidebarMouseWheelMenu}>
+                        <MouseWheelMenu/>
                     </Collapse>
                     <ListItem>
                         <ListItemButton onClick={() => {
@@ -223,14 +177,43 @@ class SideBar extends Component {
                                         this.context.setOpenMenuSW(4);
                                     }
                                 } else {
+                                    this.context.toggleSidebarVolumeMenu();
+                                }
+                            }
+                        }}>
+                            <Speaker sx={iconSizeSX}/>
+                            <ListItemText primary="&nbsp;&nbsp;&nbsp;Volume"/>
+                            <Box sx={boxIconSX}>{this.context.autoCollapse ?
+                                this.context.openMenuSW === 4 ?
+                                    <ExpandMore sx={iconSizeSX}/> :
+                                    <ChevronRightOutlined sx={iconSizeSX}/> :
+                                this.context.sidebarVolumeMenu ?
+                                    <ExpandMore sx={iconSizeSX}/> :
+                                    <ChevronRightOutlined sx={iconSizeSX}/>
+                            }</Box>
+                        </ListItemButton>
+                    </ListItem>
+                    <Collapse in={this.context.autoCollapse ? this.context.openMenuSW === 4 : this.context.sidebarVolumeMenu}>
+                        <VolumeMenu/>
+                    </Collapse>
+                    <ListItem>
+                        <ListItemButton onClick={() => {
+                            {
+                                if (this.context.autoCollapse) {
+                                    if (this.context.openMenuSW === 5) {
+                                        this.context.setOpenMenuSW(0);
+                                    } else {
+                                        this.context.setOpenMenuSW(5);
+                                    }
+                                } else {
                                     this.context.toggleSidebarSettingMenu();
                                 }
                             }
                         }}>
-                            <Menu sx={iconSizeSX}/>
-                            <ListItemText primary="&nbsp;&nbsp;&nbsp;Settings"/>
+                            <Settings sx={iconSizeSX}/>
+                            <ListItemText primary="&nbsp;&nbsp;&nbsp;Advanced Settings"/>
                             <Box sx={boxIconSX}>{this.context.autoCollapse ?
-                                this.context.openMenuSW === 4 ?
+                                this.context.openMenuSW === 5?
                                     <ExpandMore sx={iconSizeSX}/> :
                                     <ChevronRightOutlined sx={iconSizeSX}/> :
                                 this.context.sidebarSettingMenu ?
@@ -239,7 +222,7 @@ class SideBar extends Component {
                             }</Box>
                         </ListItemButton>
                     </ListItem>
-                    <Collapse in={this.context.autoCollapse ? this.context.openMenuSW === 4 : this.context.sidebarSettingMenu}>
+                    <Collapse in={this.context.autoCollapse ? this.context.openMenuSW === 5 : this.context.sidebarSettingMenu}>
                         <SettingMenu/>
                     </Collapse>
                 </List>
