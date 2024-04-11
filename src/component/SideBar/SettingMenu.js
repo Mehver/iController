@@ -7,10 +7,18 @@ import {
     Radio,
     RadioGroup,
     FormControlLabel,
-    FormControl, Typography
+    FormControl,
+    Typography,
+    ListItemButton,
+    ListItemText,
+    Box
 } from "@mui/material";
+import {
+    CheckBoxOutlineBlankRounded,
+    CheckBoxRounded
+} from '@mui/icons-material';
 import {ThemeProvider} from '@mui/material/styles';
-import {customTheme} from '../../utils/Theme';
+import {customTheme, primaryColor, secondaryColor} from '../../utils/Theme';
 
 class SettingMenu extends Component {
     constructor(props) {
@@ -62,9 +70,27 @@ class SettingMenu extends Component {
 
     render() {
         const {tPadSensitivity, mWheelSensitivity} = this.state;
+        let iconSizeSX = {};
+        let boxIconSX = {};
+        if (window.innerWidth < 280) {
+            iconSizeSX.fontSize = `${window.innerWidth / 300.0}rem`;
+            boxIconSX.marginRight = '-50px';
+        }
         return (
             <ThemeProvider theme={customTheme}>
                 <List component="div" disablePadding>
+                    <ListItem>
+                        <Typography style={{fontSize: '1rem'}}>Auto-Collapse Submenus</Typography>
+                        <div style={{flex: 1}}/>
+                        <ListItemButton onClick={() => {
+                            this.context.toggleAutoCollapse();
+                        }}>
+                            <Box sx={boxIconSX}>{this.context.autoCollapse ?
+                                <CheckBoxRounded sx={iconSizeSX}/> :
+                                <CheckBoxOutlineBlankRounded sx={iconSizeSX}/>
+                            }</Box>
+                        </ListItemButton>
+                    </ListItem>
                     <ListItem>
                         <Typography style={{fontSize: '1rem'}}>Sidebar Toggle</Typography>
                         <div style={{flex: 1}}/>
@@ -82,7 +108,12 @@ class SettingMenu extends Component {
                         </FormControl>
                     </ListItem>
                     <ListItem>
-                    <div style={{flex: 1}}/>
+                        <Typography style={{fontSize: '1rem'}}>Adjustment Parameters</Typography>
+                        <div style={{flex: 1}}/>
+                    </ListItem>
+                    <ListItem>
+                        <Typography style={{fontSize: '1rem'}}>&nbsp;</Typography>
+                        <div style={{flex: 1}}/>
                         <TextField
                             label="Touchpad Sensitivity"
                             variant="outlined"
@@ -96,8 +127,10 @@ class SettingMenu extends Component {
                             color="secondary"
                             focused='true'
                         />
+                        <Typography style={{fontSize: '1rem'}}>&nbsp;</Typography>
                     </ListItem>
                     <ListItem>
+                        <Typography style={{fontSize: '1rem'}}>&nbsp;</Typography>
                         <div style={{flex: 1}}/>
                         <TextField
                             label="Mouse Wheel Sensitivity"
@@ -112,6 +145,7 @@ class SettingMenu extends Component {
                             color="secondary"
                             focused='true'
                         />
+                        <Typography style={{fontSize: '1rem'}}>&nbsp;</Typography>
                     </ListItem>
                 </List>
             </ThemeProvider>
