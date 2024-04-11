@@ -18,7 +18,13 @@ import {
     CheckBoxRounded
 } from '@mui/icons-material';
 import {ThemeProvider} from '@mui/material/styles';
-import {customTheme, primaryColor, secondaryColor} from '../../utils/Theme';
+import {
+    customTheme,
+    primaryColor,
+    secondaryColor,
+    setPrimaryColor,
+    setSecondaryColor
+} from '../../utils/Theme';
 
 class SettingMenu extends Component {
     constructor(props) {
@@ -37,6 +43,8 @@ class SettingMenu extends Component {
             tPadSensitivity: this.context.tPadSensitivity.toString(),
             mWheelSensitivity: this.context.mWheelSensitivity.toString(),
         });
+        // setPrimaryColor("#ff0000");
+        // setSecondaryColor("#00ff00");
     }
 
     handleRadioChange = (event) => {
@@ -101,9 +109,34 @@ class SettingMenu extends Component {
                                 name="row-radio-buttons-group"
                                 value={this.state.drawerSide}
                                 onChange={this.handleRadioChange}
+                                color="secondary"
                             >
-                                <FormControlLabel value="l" control={<Radio/>} label="L"/>
-                                <FormControlLabel value="r" control={<Radio/>} label="R"/>
+                                <FormControlLabel
+                                    value="l"
+                                    control={<Radio
+                                        sx={{
+                                            color: secondaryColor,
+                                            '&.Mui-checked': {
+                                                color: secondaryColor,
+                                            },
+                                        }}
+                                        color="secondary"
+                                    />}
+                                    label="L"
+                                />
+                                <FormControlLabel
+                                    value="r"
+                                    control={<Radio
+                                        sx={{
+                                            color: secondaryColor,
+                                            '&.Mui-checked': {
+                                                color: secondaryColor,
+                                            },
+                                        }}
+                                        color="secondary"
+                                    />}
+                                    label="R"
+                                />
                             </RadioGroup>
                         </FormControl>
                     </ListItem>
@@ -125,6 +158,12 @@ class SettingMenu extends Component {
                             size="small"
                             fullWidth='true'
                             color="secondary"
+                            sx={{
+                                input: {
+                                    color: secondaryColor,
+                                    caretColor: secondaryColor,
+                                }
+                            }}
                             focused='true'
                         />
                         <Typography style={{fontSize: '1rem'}}>&nbsp;</Typography>
@@ -143,6 +182,12 @@ class SettingMenu extends Component {
                             size="small"
                             fullWidth='true'
                             color="secondary"
+                            sx={{
+                                input: {
+                                    color: secondaryColor,
+                                    caretColor: secondaryColor,
+                                }
+                            }}
                             focused='true'
                         />
                         <Typography style={{fontSize: '1rem'}}>&nbsp;</Typography>

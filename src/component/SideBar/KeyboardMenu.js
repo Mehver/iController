@@ -13,7 +13,11 @@ import {
     SubdirectoryArrowLeftOutlined
 } from '@mui/icons-material';
 import {ThemeProvider} from '@mui/material/styles';
-import {customTheme, primaryColor, secondaryColor} from '../../utils/Theme';
+import {
+    customTheme,
+    primaryColor,
+    secondaryColor
+} from '../../utils/Theme';
 import {
     api_keyboard_buttons,
     api_keyboard_typewriting,
@@ -119,7 +123,7 @@ class KeyboardMenu extends Component {
                     </ListItem>
                     <ListItem display="flex" alignItems="center">
                         {this.state.serverIsMac ? (
-                                <Typography style={{fontSize: '1rem'}}>*MacOS ASCII Only</Typography>
+                            <Typography style={{fontSize: '1rem'}}>*MacOS ASCII Only</Typography>
                         ) : (
                             <>
                                 <Radio
@@ -129,6 +133,13 @@ class KeyboardMenu extends Component {
                                     }}
                                     value={this.context.keyboardDataSendMod}
                                     inputProps={{'aria-label': 'a'}}
+                                    sx={{
+                                        color: secondaryColor,
+                                        '&.Mui-checked': {
+                                            color: secondaryColor,
+                                        },
+                                    }}
+                                    color='secondary'
                                 />
                                 <Typography style={{fontSize: '1rem'}}>Past</Typography>
                                 <Radio
@@ -138,6 +149,13 @@ class KeyboardMenu extends Component {
                                     }}
                                     value={this.context.keyboardDataSendMod}
                                     inputProps={{'aria-label': 'b'}}
+                                    sx={{
+                                        color: secondaryColor,
+                                        '&.Mui-checked': {
+                                            color: secondaryColor,
+                                        },
+                                    }}
+                                    color='secondary'
                                 />
                                 <Typography style={{fontSize: '1rem'}}>Type</Typography>
                             </>
@@ -147,13 +165,13 @@ class KeyboardMenu extends Component {
                             onClick={() => this.handleSendButton('Enter')}
                             style={{marginLeft: '10px'}}
                         >
-                            <SubdirectoryArrowLeftOutlined/>
+                            <SubdirectoryArrowLeftOutlined sx={{color: secondaryColor}}/>
                         </IconButton>
                         <IconButton
                             onClick={() => this.handleSendButton('Backspace')}
                             style={{marginRight: '10px'}}
                         >
-                            <BackspaceOutlined/>
+                            <BackspaceOutlined sx={{color: secondaryColor}}/>
                         </IconButton>
                     </ListItem>
                 </List>
