@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import debounce from 'lodash/debounce';
-import {Slider, List, ListItem} from "@mui/material";
+import {Slider, List, ListItem, Divider} from "@mui/material";
 import {VolumeDown, VolumeUp} from "@mui/icons-material";
 import {ThemeProvider} from '@mui/material/styles';
 import {customTheme} from "../../utils/Theme";
@@ -77,6 +77,7 @@ class VolumeMenu extends Component {
                         <VolumeUp/>
                     </ListItem>
                 </List>
+                <Divider/>
             </ThemeProvider>
         );
     }

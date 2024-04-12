@@ -39,8 +39,6 @@ class SettingMenu extends Component {
             tPadSensitivity: this.context.tPadSensitivity.toString(),
             mWheelSensitivity: this.context.mWheelSensitivity.toString(),
         });
-        // setPrimaryColor("#ff0000");
-        // setSecondaryColor("#00ff00");
     }
 
     handleRadioChange = (event) => {

@@ -5,7 +5,8 @@ import {
     IconButton,
     ListItem,
     Radio,
-    Typography
+    Typography,
+    Divider
 } from "@mui/material";
 import {
     KeyboardDoubleArrowUpOutlined,
@@ -175,7 +176,7 @@ class KeyboardMenu extends Component {
                         </IconButton>
                     </ListItem>
                 </List>
-                {/*<Divider/>*/}
+                <Divider/>
             </ThemeProvider>
         );
     }

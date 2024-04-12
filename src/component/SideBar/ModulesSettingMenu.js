@@ -4,11 +4,15 @@ import {
     List,
     ListItem,
     ListItemButton,
-    Box, ListItemText
+    Box,
+    ListItemText,
+    Divider,
+    SvgIcon
 } from "@mui/material";
 import {
     LooksOneOutlined,
     LooksTwoOutlined,
+    Looks3Outlined,
     Mouse,
     OpenWith,
     Pinch,
@@ -76,7 +80,22 @@ class ModuleSettingMenu extends Component {
                             }</Box>
                         </ListItemButton>
                     </ListItem>
+                    <ListItem>
+                        <ListItemButton onClick={() => {
+                            this.context.setMouseWheelMenuType((this.context.mouseWheelMenuType + 1) % 3);
+                        }}>
+                            <SvgIcon sx={iconSizeSX} style={{ color: 'transparent' }}/>
+                            <ListItemText primary="&nbsp;&nbsp;&nbsp;Mouse Wheel"/>
+                            <Box sx={boxIconSX}>{this.context.mouseWheelMenuType === 0 ?
+                                <LooksOneOutlined sx={iconSizeSX}/> :
+                                this.context.mouseWheelMenuType === 1 ?
+                                    <LooksTwoOutlined sx={iconSizeSX}/> :
+                                    <Looks3Outlined sx={iconSizeSX}/>
+                            }</Box>
+                        </ListItemButton>
+                    </ListItem>
                 </List>
+                <Divider/>
             </ThemeProvider>
         );
     }
