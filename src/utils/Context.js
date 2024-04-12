@@ -77,7 +77,6 @@ export class ContextProvider extends Component {
                 return {autoCollapse: newValue};
             });
         },
-
         /////////////////////////////////////////////////////////////////////////////////
         mouseWheelMenuType: parseInt(getCookie('mouseWheelMenuType'), 10) || 0,
         setMouseWheelMenuType: (value) => {
@@ -94,7 +93,6 @@ export class ContextProvider extends Component {
                 return {sidebarModulesSettingMenu: newValue};
             });
         },
-        /////////////////////////////////////////////////////////////////////////////////
         sidebarMouseWheelMenu: getCookie('sidebarMouseWheelMenu') === 'false',
         toggleSidebarMouseWheelMenu: () => {
             this.setState(prevState => {
@@ -103,7 +101,6 @@ export class ContextProvider extends Component {
                 return {sidebarMouseWheelMenu: newValue};
             });
         },
-        /////////////////////////////////////////////////////////////////////////////////
         sidebarKeyboardMenu: getCookie('sidebarKeyboardMenu') === 'false',
         toggleSidebarKeyboardMenu: () => {
             this.setState(prevState => {
@@ -112,7 +109,6 @@ export class ContextProvider extends Component {
                 return {sidebarKeyboardMenu: newValue};
             });
         },
-        /////////////////////////////////////////////////////////////////////////////////
         sidebarVolumeMenu: getCookie('sidebarVolumeMenu') === 'false',
         toggleSidebarVolumeMenu: () => {
             this.setState(prevState => {
@@ -121,15 +117,6 @@ export class ContextProvider extends Component {
                 return {sidebarVolumeMenu: newValue};
             });
         },
-        /////////////////////////////////////////////////////////////////////////////////
-        // openMenuSW 是用 int 类型保存的可切换状态值，0 表示关闭，1 表示打开键盘菜单，2 表示打开鼠标滚轮菜单，3 表示打开音量菜单...
-        openMenuSW: parseInt(getCookie('openMenuSW'), 10) || 0,
-        setOpenMenuSW: (value) => {
-            this.setState(
-                {openMenuSW: value}, () =>
-                    setCookie('openMenuSW', value, 7));
-        },
-        ///////////////////////////////////////////////////////////////////////////////////
         sidebarSettingMenu: getCookie('sidebarSettingMenu') === 'false',
         toggleSidebarSettingMenu: () => {
             this.setState(prevState => {
@@ -137,6 +124,35 @@ export class ContextProvider extends Component {
                 setCookie('sidebarSettingMenu', newValue, 7);
                 return {sidebarSettingMenu: newValue};
             });
+        },
+        sidebarThemeMenu: getCookie('sidebarThemeMenu') === 'false',
+        toggleSidebarThemeMenu: () => {
+            this.setState(prevState => {
+                const newValue = !prevState.sidebarThemeMenu;
+                setCookie('sidebarThemeMenu', newValue, 7);
+                return {sidebarThemeMenu: newValue};
+            });
+        },
+        /////////////////////////////////////////////////////////////////////////////////
+        primaryColor: getCookie('primaryColor') || '#6df',
+        setPrimaryColor: (value) => {
+            this.setState(
+                {primaryColor: value}, () =>
+                    setCookie('primaryColor', value, 7));
+        },
+        secondaryColor: getCookie('secondaryColor') || '#333',
+        setSecondaryColor: (value) => {
+            this.setState(
+                {secondaryColor: value}, () =>
+                    setCookie('secondaryColor', value, 7));
+        },
+        /////////////////////////////////////////////////////////////////////////////////
+        // openMenuSW 是用 int 类型保存的可切换状态值，0 表示关闭，1 表示打开键盘菜单，2 表示打开鼠标滚轮菜单，3 表示打开音量菜单...
+        openMenuSW: parseInt(getCookie('openMenuSW'), 10) || 0,
+        setOpenMenuSW: (value) => {
+            this.setState(
+                {openMenuSW: value}, () =>
+                    setCookie('openMenuSW', value, 7));
         },
         ///////////////////////////////////////////////////////////////////////////////////
         // keyboardDataSendMod 是用 char 类型保存的可切换状态值
@@ -166,8 +182,11 @@ export class ContextProvider extends Component {
         const sidebarMouseWheelMenu = getCookie('sidebarMouseWheelMenu');
         const sidebarSettingMenu = getCookie('sidebarSettingMenu');
         const sidebarVolumeMenu = getCookie('sidebarVolumeMenu');
-        const openMenuSW = getCookie('openMenuSW');
         const sidebarKeyboardMenu = getCookie('sidebarKeyboardMenu');
+        const sidebarThemeMenu = getCookie('sidebarThemeMenu');
+        const primaryColor = getCookie('primaryColor');
+        const secondaryColor = getCookie('secondaryColor');
+        const openMenuSW = getCookie('openMenuSW');
         const keyboardDataSendMod = getCookie('keyboardDataSendMod');
         this.setState({
             buttonSW1: buttonSW1 ? buttonSW1 === 'true' : this.state.buttonSW1,
@@ -182,8 +201,11 @@ export class ContextProvider extends Component {
             sidebarMouseWheelMenu: sidebarMouseWheelMenu ? sidebarMouseWheelMenu === 'true' : this.state.sidebarMouseWheelMenu,
             sidebarSettingMenu: sidebarSettingMenu ? sidebarSettingMenu === 'true' : this.state.sidebarSettingMenu,
             sidebarVolumeMenu: sidebarVolumeMenu ? sidebarVolumeMenu === 'true' : this.state.sidebarVolumeMenu,
-            openMenuSW: openMenuSW ? parseInt(openMenuSW, 10) : this.state.openMenuSW,
             sidebarKeyboardMenu: sidebarKeyboardMenu ? sidebarKeyboardMenu === 'true' : this.state.sidebarKeyboardMenu,
+            sidebarThemeMenu: sidebarThemeMenu ? sidebarThemeMenu === 'true' : this.state.sidebarThemeMenu,
+            primaryColor: primaryColor || this.state.primaryColor,
+            secondaryColor: secondaryColor || this.state.secondaryColor,
+            openMenuSW: openMenuSW ? parseInt(openMenuSW, 10) : this.state.openMenuSW,
             keyboardDataSendMod: keyboardDataSendMod || this.state.keyboardDataSendMod,
         });
     }

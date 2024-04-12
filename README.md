@@ -1,6 +1,6 @@
 <div align="center">
     <img src="https://github.com/Mehver/iController/raw/main/%23README/icon/256.png" width="20%"/>
-    <h1>iController <code>v0.4.4</code></h1>
+    <h1>iController <code>v0.4.5</code></h1>
     </tr>
 	<p>English | <a href='https://github.com/Mehver/iController/blob/main/%23README/README-cn.md'>简体中文</a></p>
 </div>
@@ -112,16 +112,17 @@ mysterious errors. Only Python v3.10.10 is recommended.
 - Node.js
     - React.js
         - Material UI (https://github.com/mui/material-ui)
-        - PrimeReact (https://github.com/primefaces/primereact)
-    - Lodash (https://lodash.com/)
+        - Prime React (https://github.com/primefaces/primereact)
+        - React Color (https://github.com/casesandberg/react-color)
+    - Lodash (https://github.com/lodash/lodash)
 - Python
-    - Flask (https://flask.palletsprojects.com/en/3.0.x/)
-    - PyAutoGUI (https://pyautogui.readthedocs.io/en/latest/)
+    - Flask (https://github.com/pallets/flask)
+    - PyAutoGUI (https://github.com/asweigart/pyautogui)
       - Pyperclip
     - Pycaw (https://github.com/AndreMiras/pycaw)
       - Comtypes
     - Psutil (https://github.com/giampaolo/psutil)
-    - PyInstaller (https://www.pyinstaller.org/)
+    - PyInstaller (https://github.com/pyinstaller/pyinstaller)
     - (Dev) Auto-PY-To-EXE (https://github.com/brentvollebregt/auto-py-to-exe)
 
 ## 5 Similar Projects

@@ -1,6 +1,6 @@
 <div align="center">
     <img src="https://github.com/Mehver/iController/raw/main/%23README/icon/256.png" width="20%"/>
-    <h1>iController <code>v0.4.4</code></h1>
+    <h1>iController <code>v0.4.5</code></h1>
 	<p><a href='https://github.com/Mehver/iController/blob/main/README.md'>English</a> | 简体中文</p>
 </div>
 
@@ -104,16 +104,17 @@ source venv/bin/activate
 - Node.js
     - React.js
         - Material UI (https://github.com/mui/material-ui)
-        - PrimeReact (https://github.com/primefaces/primereact)
-    - Lodash (https://lodash.com/)
+        - Prime React (https://github.com/primefaces/primereact)
+        - React Color (https://github.com/casesandberg/react-color)
+    - Lodash (https://github.com/lodash/lodash)
 - Python
-    - Flask (https://flask.palletsprojects.com/en/3.0.x/)
-    - PyAutoGUI (https://pyautogui.readthedocs.io/en/latest/)
+    - Flask (https://github.com/pallets/flask)
+    - PyAutoGUI (https://github.com/asweigart/pyautogui)
       - Pyperclip
     - Pycaw (https://github.com/AndreMiras/pycaw)
       - Comtypes
     - Psutil (https://github.com/giampaolo/psutil)
-    - PyInstaller (https://www.pyinstaller.org/)
+    - PyInstaller (https://github.com/pyinstaller/pyinstaller)
     - (Dev) Auto-PY-To-EXE (https://github.com/brentvollebregt/auto-py-to-exe)
 
 ## 5 相似项目
