@@ -36,13 +36,20 @@ class KeyboardMenu extends Component {
     }
 
     componentDidMount() {
-        api_get_system_info().then(data => {
-            this.setState({serverIsMac: data.volume === 'Darwin'});
-        });
-        if (this.state.serverIsMac) {
-            this.context.setKeyboardDataSendMod('b');
-        }
+        api_get_system_info()
+            .then(data => {
+                this.setState({serverIsMac: data.volume === 'Darwin'});
+            })
+            .then(() => {
+                if (this.state.serverIsMac) {
+                    this.context.setKeyboardDataSendMod('b');
+                }
+            });
     }
+
+    handleRadioChange = (event) => {
+        this.context.setKeyboardDataSendMod(event.target.value);
+    };
 
     // 输入框实时更新
     handleInputChange = (event) => {
@@ -126,6 +133,42 @@ class KeyboardMenu extends Component {
                         {this.state.serverIsMac ? (
                             <Typography style={{fontSize: '1rem'}}>*MacOS ASCII Only</Typography>
                         ) : (
+                            // <RadioGroup
+                            //     row
+                            //     value={this.context.keyboardDataSendMod}
+                            //     onChange={this.handleRadioChange}
+                            // >
+                            //     <FormControlLabel
+                            //         value="a"
+                            //         control={
+                            //             <Radio
+                            //                 sx={{
+                            //                     color: secondaryColor,
+                            //                     '&.Mui-checked': {
+                            //                         color: secondaryColor,
+                            //                     },
+                            //                 }}
+                            //                 color="secondary"
+                            //             />
+                            //         }
+                            //         label="Paste"
+                            //     />
+                            //     <FormControlLabel
+                            //         value="b"
+                            //         control={
+                            //             <Radio
+                            //                 sx={{
+                            //                     color: secondaryColor,
+                            //                     '&.Mui-checked': {
+                            //                         color: secondaryColor,
+                            //                     },
+                            //                 }}
+                            //                 color="secondary"
+                            //             />
+                            //         }
+                            //         label="Type"
+                            //     />
+                            // </RadioGroup>
                             <>
                                 <Radio
                                     checked={this.context.keyboardDataSendMod === 'a'}
@@ -142,7 +185,7 @@ class KeyboardMenu extends Component {
                                     }}
                                     color='secondary'
                                 />
-                                <Typography style={{fontSize: '1rem'}}>Past</Typography>
+                                <Typography style={{fontSize: '1rem'}}>Paste</Typography>
                                 <Radio
                                     checked={this.context.keyboardDataSendMod === 'b'}
                                     onChange={() => {
