@@ -1,9 +1,9 @@
-from flask import request, jsonify
+from quart import jsonify, request
 import pyautogui
 
 
-def dpad():
-    signal = request.data.decode('utf-8')
+async def dpad():
+    signal = (await request.get_data()).decode('utf-8')
     if signal == 'DUp':
         pyautogui.press('up')
         action = "press up"

@@ -1,6 +1,6 @@
 <div align="center">
     <img src="https://github.com/Mehver/iController/raw/main/%23README/icon/256.png" width="20%"/>
-    <h1>iController <code>v0.4.5</code></h1>
+    <h1>iController <code>v0.5.0</code></h1>
 	<p><a href='https://github.com/Mehver/iController/blob/main/README.md'>English</a> | 简体中文</p>
 </div>
 
@@ -108,7 +108,8 @@ source venv/bin/activate
         - React Color (https://github.com/casesandberg/react-color)
     - Lodash (https://github.com/lodash/lodash)
 - Python
-    - Flask (https://github.com/pallets/flask)
+    - (≤v0.4.5) ~~Flask (https://github.com/pallets/flask)~~
+    - (v0.5.0+) Quart (https://github.com/pallets/quart)
     - PyAutoGUI (https://github.com/asweigart/pyautogui)
       - Pyperclip
     - Pycaw (https://github.com/AndreMiras/pycaw)

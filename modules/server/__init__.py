@@ -1,4 +1,4 @@
-from flask import Flask, send_from_directory
+from quart import Quart, send_from_directory
 import sys
 import os
 from modules.server.dpad import dpad
@@ -27,14 +27,13 @@ def get_resource_path(relative_path):
     return os.path.join(base_path, relative_path)
 
 
-# 创建 Flask 应用实例的函数
 def server(static_folder='build', static_url_path=''):
-    app = Flask(__name__, static_folder=get_resource_path(static_folder), static_url_path=static_url_path)
+    app = Quart(__name__, static_folder=get_resource_path(static_folder), static_url_path=static_url_path)
 
-    def serve():
-        return send_from_directory(app.static_folder, 'index.html')
+    async def index():
+        return await send_from_directory(app.static_folder, 'index.html')
 
-    app.route('/')(serve)
+    app.route('/')(index)
     app.route('/api/dpad', methods=['POST'])(dpad)
     app.route('/api/keyboard/buttons', methods=['POST'])(keyboard_buttons)
     app.route('/api/keyboard/typewriting', methods=['POST'])(keyboard_typewriting)

@@ -1,9 +1,9 @@
-from flask import request, jsonify
+from quart import request, jsonify
 import pyautogui
 
 
-def mousebutton():
-    signal = request.data.decode('utf-8')
+async def mousebutton():
+    signal = (await request.get_data()).decode('utf-8')
     if signal == 'Left':
         pyautogui.click(button='left')
         action = "left click"
