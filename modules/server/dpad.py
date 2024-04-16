@@ -18,5 +18,5 @@ async def dpad():
         action = "press right"
     else:
         return "Invalid signal", 400
-    print(f"Performed {action}.")
+    print(f"D-Pad performed {action}.")
     return jsonify({"status": "success", "action": action})

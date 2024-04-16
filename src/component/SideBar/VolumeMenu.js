@@ -14,17 +14,12 @@ class VolumeMenu extends Component {
 
     componentDidMount() {
         this._isMounted = true;
-        // this.fetchVolume();
         // 延迟获取音量，防止服务器报错
-        setTimeout(() => {
-            this.fetchVolume();
-        }, 500);
-        setTimeout(() => {
-            this.fetchVolume();
-        }, 1000);
-        setTimeout(() => {
-            this.fetchVolume();
-        }, 1500);
+        for (let i = 100; i < 2000; i = (i + 200) * 2) {
+            setTimeout(() => {
+                this.fetchVolume();
+            }, i);
+        }
     }
 
     componentWillUnmount() {
@@ -33,16 +28,18 @@ class VolumeMenu extends Component {
     }
 
     fetchVolume = () => {
-        api_volume_get().then(data => {
-            if (this._isMounted) {
-                this.setState({
-                    value: data.volume,
-                    lastSuccessfulValue: data.volume,
-                });
-            }
-        }).catch(error => {
-            console.error("Failed to fetch volume:", error);
-        });
+        api_volume_get()
+            .then(data => {
+                if (this._isMounted) {
+                    this.setState({
+                        value: data.volume,
+                        lastSuccessfulValue: data.volume,
+                    });
+                }
+            })
+            .catch(error => {
+                console.error("Failed to fetch volume:", error);
+            });
     };
 
     handleChange = (event, newValue) => {
@@ -54,13 +51,15 @@ class VolumeMenu extends Component {
 
     debouncedHandleCommit = debounce((newValue) => {
         // noinspection JSVoidFunctionReturnValueUsed, JSUnusedLocalSymbols
-        api_volume_set(String(newValue)).then(data => {
-            if (this._isMounted) {
-                this.setState({lastSuccessfulValue: newValue});
-            }
-        }).catch(error => {
-            console.error("Failed to set volume:", error);
-        });
+        api_volume_set(String(newValue))
+            .then(data => {
+                if (this._isMounted) {
+                    this.setState({lastSuccessfulValue: newValue});
+                }
+            })
+            .catch(error => {
+                console.error("Failed to set volume:", error);
+            });
     }, 300); // 300ms的防抖时间
 
     render() {
