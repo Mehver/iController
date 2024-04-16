@@ -15,5 +15,5 @@ async def mousebutton():
         action = "right click"
     else:
         return "Invalid signal", 400
-    print(f"Performed {action}.")
+    print(f"Mouse performed {action}.")
     return jsonify({"status": "success", "action": action})

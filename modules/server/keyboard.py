@@ -14,7 +14,7 @@ async def keyboard_buttons():
         action = "press enter"
     else:
         return "Invalid signal", 400
-    print(f"Performed {action}.")
+    print(f"Keyboard performed {action}.")
     return jsonify({"status": "success", "action": action})
 
 
@@ -22,9 +22,10 @@ async def keyboard_typewriting():
     text = (await request.get_data()).decode('utf-8')
     try:
         pyautogui.write(text, interval=0.05)
+        print(f"Keyboard typewriting: \"{text}\".")
         return jsonify({"status": "success", "message": "Text has been sent successfully."})
     except Exception as e:
-        print(f"Error: {e}")
+        print(f"Keyboard typewriting error: {e}.")
         return jsonify({"status": "error", "message": "An error occurred while sending text."}), 500
 
 
@@ -35,14 +36,15 @@ async def keyboard_pastetext():
         try:
             pyperclip.copy(text)
             pyautogui.hotkey('ctrl', 'v')
+            print(f"Keyboard paste text: \"{text}\".")
             return jsonify({"status": "success", "message": "Text has been pasted successfully."})
         except Exception as e:
-            print(f"Error: {e}")
+            print(f"Keyboard paste text error: {e}.")
             return jsonify({"status": "error", "message": "An error occurred while pasting text."}), 500
     elif os_name == 'Darwin':
         try:
             pyautogui.write(text, interval=0.05)
             return jsonify({"status": "success", "message": "Text has been sent successfully."})
         except Exception as e:
-            print(f"Error: {e}")
+            print(f"Keyboard paste text error: {e}.")
             return jsonify({"status": "error", "message": "An error occurred while sending text."}), 500

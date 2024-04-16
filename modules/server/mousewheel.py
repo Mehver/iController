@@ -10,7 +10,7 @@ async def mousewheel():
         wheel_amount = wheel_amount * wheel_amount * wheel_amount * wheel_amount * wheel_amount
         wheel_amount = wheel_amount * Config.MWheel_SENSITIVITY + Config.MWheel_CONSTANT
         pyautogui.scroll(wheel_amount)
-        print(f"Scrolled {wheel_amount} steps")
+        print(f"Mouse wheel scrolled {wheel_amount} steps.")
         return jsonify({"status": "success", "steps": wheel_amount})
     except ValueError as e:
         print(f"Error converting data to int: {e}")
