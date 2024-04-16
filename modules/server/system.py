@@ -1,8 +1,8 @@
-from flask import jsonify
+from quart import jsonify
 import platform
 
 
-def get_system_info():
+async def get_system_info():
     os_name = platform.system()
     # os_name = 'Windows'  # 测试值
     # os_name = 'Darwin'  # 测试值
