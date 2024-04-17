@@ -1,6 +1,9 @@
+> [!IMPORTANT]
+> 由于下版本开始引入了额外的功能，macOS 上通过免安装的方式难以完美支持，因此暂时不再提供 macOS 版本的打包文件。目前 `v0.5.1` 将会是 macOS 一个临时的最终版本，后续版本将会首先在 Windows 上推出进行测试。
+
 <div align="center">
     <img src="https://github.com/Mehver/iController/raw/main/%23README/icon/256.png" width="20%"/>
-    <h1>iController <code>v0.5.0</code></h1>
+    <h1>iController <code>v0.5.1</code></h1>
 	<p><a href='https://github.com/Mehver/iController/blob/main/README.md'>English</a> | 简体中文</p>
 </div>
 

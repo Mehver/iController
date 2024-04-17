@@ -1,6 +1,9 @@
+> [!IMPORTANT]
+> Due to the introduction of additional features in the next version, it is difficult to perfectly support macOS through the portable way. Therefore, the packaging file for macOS will not be provided for the time being. Currently, `v0.5.1` will be a temporary final version for macOS, and subsequent versions will be launched on Windows first for testing.
+
 <div align="center">
     <img src="https://github.com/Mehver/iController/raw/main/%23README/icon/256.png" width="20%"/>
-    <h1>iController <code>v0.5.0</code></h1>
+    <h1>iController <code>v0.5.1</code></h1>
     </tr>
 	<p>English | <a href='https://github.com/Mehver/iController/blob/main/%23README/README-cn.md'>简体中文</a></p>
 </div>
