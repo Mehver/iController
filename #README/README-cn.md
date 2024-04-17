@@ -110,6 +110,7 @@ source venv/bin/activate
 - Python
     - (≤v0.4.5) ~~Flask (https://github.com/pallets/flask)~~
     - (v0.5.0+) Quart (https://github.com/pallets/quart)
+      - Hypercorn (https://github.com/pgjones/hypercorn)
     - PyAutoGUI (https://github.com/asweigart/pyautogui)
       - Pyperclip
     - Pycaw (https://github.com/AndreMiras/pycaw)
