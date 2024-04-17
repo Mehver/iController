@@ -1,5 +1,6 @@
 import socket
 import platform
+from modules.config import Config
 
 
 def portChecker(port):
@@ -36,6 +37,23 @@ def portChecker(port):
 
 
 def getAddress():
+    PORT = Config.HttpServer.PORT
+    try:
+        if not 0 < PORT < 65535:
+            raise ValueError
+        if not portChecker(PORT):
+            raise IndexError
+        print(f"Do you want to use the port [{PORT}] given by the configuration file?")
+        use = input("Use this port? (Y/n) > ")
+        if use != 'n' and use != 'N':
+            return f"{Config.HttpServer.HOST}:{PORT}"
+    except ValueError:
+        print(f"The port [{PORT}] in the configuration file is not a valid port number.")
+    except IndexError:
+        print(f"The port [{PORT}] in the configuration file is already in use by another program.")
+        force = input("Do you want to force the use of this port? (y/N) > ")
+        if force == 'y' or force == 'Y':
+            return f"{Config.HttpServer.HOST}:{PORT}"
     while True:
         PORT = input("Give a port > ")
         try:
@@ -53,4 +71,4 @@ def getAddress():
                 break
         else:
             break
-    return f"0.0.0.0:{PORT}"
+    return f"{Config.HttpServer.HOST}:{PORT}"
