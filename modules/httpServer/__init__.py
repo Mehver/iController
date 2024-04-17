@@ -1,6 +1,4 @@
 from quart import Quart, send_from_directory
-import sys
-import os
 from modules.httpServer.dpad import dpad
 from modules.httpServer.keyboard import keyboard_buttons
 from modules.httpServer.keyboard import keyboard_typewriting
@@ -12,24 +10,12 @@ from modules.httpServer.touchpad import touchpad
 from modules.httpServer.touchpad import touchpad_reposition
 from modules.httpServer.volume import volume_get
 from modules.httpServer.volume import volume_set
-
-
-# 动态确定配置文件和静态文件夹路径
-def get_resource_path(relative_path):
-    if getattr(sys, 'frozen', False):
-        # 如果是exe文件，使用exe所在目录
-        # noinspection PyProtectedMember
-        # noinspection PyUnresolvedReferences
-        base_path = sys._MEIPASS
-    else:
-        # 否则使用脚本所在目录
-        base_path = os.path.abspath(".")
-
-    return os.path.join(base_path, relative_path)
+from modules.pyinstallerContext import PyInstallerContext
 
 
 def httpServer(static_folder='build', static_url_path=''):
-    app = Quart(__name__, static_folder=get_resource_path(static_folder), static_url_path=static_url_path)
+    pyinstallerContext = PyInstallerContext()
+    app = Quart(__name__, static_folder=pyinstallerContext.resource_path(static_folder), static_url_path=static_url_path)
 
     async def index():
         return await send_from_directory(app.static_folder, 'index.html')
