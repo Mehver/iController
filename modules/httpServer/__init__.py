@@ -1,17 +1,17 @@
 from quart import Quart, send_from_directory
 import sys
 import os
-from modules.server.dpad import dpad
-from modules.server.keyboard import keyboard_buttons
-from modules.server.keyboard import keyboard_typewriting
-from modules.server.keyboard import keyboard_pastetext
-from modules.server.system import get_system_info
-from modules.server.mousebutton import mousebutton
-from modules.server.mousewheel import mousewheel
-from modules.server.touchpad import touchpad
-from modules.server.touchpad import touchpad_reposition
-from modules.server.volume import volume_get
-from modules.server.volume import volume_set
+from modules.httpServer.dpad import dpad
+from modules.httpServer.keyboard import keyboard_buttons
+from modules.httpServer.keyboard import keyboard_typewriting
+from modules.httpServer.keyboard import keyboard_pastetext
+from modules.httpServer.system import get_system_info
+from modules.httpServer.mousebutton import mousebutton
+from modules.httpServer.mousewheel import mousewheel
+from modules.httpServer.touchpad import touchpad
+from modules.httpServer.touchpad import touchpad_reposition
+from modules.httpServer.volume import volume_get
+from modules.httpServer.volume import volume_set
 
 
 # 动态确定配置文件和静态文件夹路径
@@ -28,7 +28,7 @@ def get_resource_path(relative_path):
     return os.path.join(base_path, relative_path)
 
 
-def server(static_folder='build', static_url_path=''):
+def httpServer(static_folder='build', static_url_path=''):
     app = Quart(__name__, static_folder=get_resource_path(static_folder), static_url_path=static_url_path)
 
     async def index():

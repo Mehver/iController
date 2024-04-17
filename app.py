@@ -1,8 +1,8 @@
 import asyncio
 from hypercorn.config import Config
 from hypercorn.asyncio import serve
-from modules.server import server
-from modules.portchecker import portchecker
+from modules.httpServer import httpServer
+from modules.getAddress import getAddress
 
 print("""
  _   ___            _             _ _           
@@ -16,21 +16,7 @@ v0.5.0
 
 """)
 
-
-while True:
-    PORT = input("Give a port > ")
-    try:
-        PORT = int(PORT)
-        if not portchecker(PORT):
-            raise ValueError
-    except ValueError:
-        print("Invalid or unavailable port number. Please try again.")
-    else:
-        break
-
-# PORT = 3030
-
-app = server()
+app = httpServer()
 config = Config()
-config.bind = [f"0.0.0.0:{PORT}"]
+config.bind = [getAddress()]
 asyncio.run(serve(app, config))

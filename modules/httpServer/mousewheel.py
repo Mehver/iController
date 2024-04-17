@@ -8,7 +8,7 @@ async def mousewheel():
     try:
         wheel_amount = int(raw_data)
         wheel_amount = wheel_amount * wheel_amount * wheel_amount * wheel_amount * wheel_amount
-        wheel_amount = wheel_amount * Config.MWheel_SENSITIVITY + Config.MWheel_CONSTANT
+        wheel_amount = wheel_amount * Config.Control.MWheel_SENSITIVITY + Config.Control.MWheel_CONSTANT
         pyautogui.scroll(wheel_amount)
         print(f"Mouse wheel scrolled {wheel_amount} steps.")
         return jsonify({"status": "success", "steps": wheel_amount})
