@@ -16,7 +16,7 @@ v0.5.0
 
 """)
 
-# PORT = 3030
+
 while True:
     PORT = input("Give a port > ")
     try:
@@ -27,6 +27,8 @@ while True:
         print("Invalid or unavailable port number. Please try again.")
     else:
         break
+
+# PORT = 3030
 
 app = server()
 config = Config()
