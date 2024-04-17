@@ -3,7 +3,7 @@ from hypercorn.config import Config as HypercornConfig
 from hypercorn.asyncio import serve
 from modules.httpServer import httpServer
 from modules.getAddress import getAddress
-from modules.config import Config
+# from modules.config import Config
 
 print("""
  _   ___            _             _ _           
@@ -13,11 +13,11 @@ print("""
 |_\____/\___/|_| |_|\__|_|  \___/|_|_|\___|_|   
                                                 
 https://github.com/Mehver/iController
-v0.5.0
+v0.5.1
 
 """)
 
-Config.init()
+# Config.init()
 app = httpServer()
 config = HypercornConfig()
 config.bind = [getAddress()]
