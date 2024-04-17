@@ -71,4 +71,8 @@ def getAddress():
                 break
         else:
             break
+    update = input("Do you want to update the configuration file with this port? (Y/n) > ")
+    if update != 'n' and update != 'N':
+        Config.HttpServer.PORT = PORT
+        Config.save()
     return f"{Config.HttpServer.HOST}:{PORT}"
