@@ -112,12 +112,10 @@ source venv/bin/activate
     - (v0.5.0+) Quart (https://github.com/pallets/quart)
       - Hypercorn (https://github.com/pgjones/hypercorn)
     - PyAutoGUI (https://github.com/asweigart/pyautogui)
-      - Pyperclip
     - Pycaw (https://github.com/AndreMiras/pycaw)
-      - Comtypes
     - Psutil (https://github.com/giampaolo/psutil)
     - PyInstaller (https://github.com/pyinstaller/pyinstaller)
-    - (Dev) Auto-PY-To-EXE (https://github.com/brentvollebregt/auto-py-to-exe)
+      - (Dev) Auto-PY-To-EXE (https://github.com/brentvollebregt/auto-py-to-exe)
 
 ## 5 相似项目
 
