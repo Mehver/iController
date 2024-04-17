@@ -13,6 +13,10 @@ class GeneralDidMount extends Component {
     componentDidMount() {
         theme_setPrimaryColor(this.context.primaryColor);
         theme_setSecondaryColor(this.context.secondaryColor);
+        // 禁用页面滚动
+        // 主要用于 Touchpad 组件
+        document.body.style.overflow = 'hidden';
+        document.documentElement.style.overflow = 'hidden';
     }
 
     render() {

@@ -21,3 +21,10 @@ async def touchpad():
     thread = threading.Thread(target=handle_touchpad, args=(data,))
     thread.start()
     return jsonify({"status": "success", "message": "Touchpad request is being processed."})
+
+
+async def touchpad_reposition():
+    # 鼠标回到屏幕中间
+    pyautogui.moveTo(pyautogui.size()[0] / 2, pyautogui.size()[1] / 2, duration=0.25)
+    print("Touchpad has been repositioned to the center of the screen.")
+    return jsonify({"status": "success", "message": "Touchpad has been repositioned."})

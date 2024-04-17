@@ -22,3 +22,14 @@ export const api_touchpad = (xPercent, yPercent) => {
             console.error('Error:', error);
         });
 }
+
+export const api_touchpad_reposition = () => {
+    fetch('/api/touchpad/reposition', {
+        method: 'POST',
+    })
+        .then(response => response.json())
+        .then(data => console.log('Success:', data))
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+}
