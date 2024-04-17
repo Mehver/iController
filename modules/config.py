@@ -3,6 +3,7 @@ import os
 
 
 class Config:
+    # 默认配置 default values
     class Control:
         TPad_SENSITIVITY = 1
         MWheel_SENSITIVITY = 1
@@ -16,6 +17,7 @@ class Config:
     def init():
         config_path = "./config.yaml"
         # 检查配置文件是否存在
+        # check if the configuration file exists
         if os.path.exists(config_path):
             # 读取现有的配置文件
             with open(config_path, 'r') as file:
@@ -27,6 +29,7 @@ class Config:
                 Config.HttpServer.PORT = data['HttpServer']['PORT']
         else:
             # 文件不存在，则用默认值初始化，并保存这些默认值
+            # if the file does not exist, initialize with default values and save these default values
             Config.save()
 
     @staticmethod
