@@ -1,16 +1,13 @@
-> [!IMPORTANT]
-> Due to the introduction of additional features in the next version, it is difficult to perfectly support macOS through the portable way. Therefore, the packaging file for macOS will not be provided for the time being. Currently, `v0.5.1` will be a temporary final version for macOS, and subsequent versions will be launched on Windows first for testing.
-
 <div align="center">
     <img src="https://github.com/Mehver/iController/raw/main/%23README/icon/256.png" width="20%"/>
-    <h1>iController <code>v0.5.1</code></h1>
+    <h1>iController <code>v0.6.0</code></h1>
     </tr>
 	<p>English | <a href='https://github.com/Mehver/iController/blob/main/%23README/README-cn.md'>简体中文</a></p>
 </div>
 
 ## 1 Description
 
-A PC host LAN controller running on `Windows`/`macOS`, enabling mobile phones to access a web page panel for PC control.
+A host LAN controller software running on `Windows` or `macOS` (read description below) PC, enabling mobile phones to access a web page panel for PC control.
 
 <table>
     <tr>
@@ -40,26 +37,26 @@ A PC host LAN controller running on `Windows`/`macOS`, enabling mobile phones to
 
 ## 2 Usage
 
-### 2.1 Download
+### 2.1 Windows
 
 Download portable application from the [Release](https://github.com/Mehver/iController/releases) page.
 
-After starting, the phone can access the corresponding address according to the prompt. Please ensure that there is no
-problem with the network connection between the phone and the computer. If there is a problem, please debug the firewall
-and other settings by yourself. IOS users are recommended to use the "Add to Home Screen" function of Safari.
+Currently, the program is CLI interactive. When starting, you can manually provide the port number, and the program will automatically detect to ensure that the port is available and conflict-free. After starting, use the mobile browser to access the LAN IP address and port of the computer.
 
 <img src="https://github.com/Mehver/iController/raw/main/%23README/0.png" width="50%">
 
-***Note: For `macOS`, due to permission issues, the
+### 2.2 macOS
+
+> [!IMPORTANT]
+> Due to the introduction of additional features starting from `v0.6.0`, it is difficult to perfectly support macOS through the non-installation method. Therefore, the packaging files for macOS are temporarily not provided.
+
+For `v0.5.1`, you can download from the [Release v0.5.1](https://github.com/Mehver/iController/releases/tag/v0.5.1) page.
+
+Note: For macOS, due to permission issues, the
 directly downloaded iController cannot be trusted by the system, the only solution at present is to open the switch
-of `Settings > Privacy & Security > Developer Tools > Terminal`.**
+of `Settings > Privacy & Security > Developer Tools > Terminal`.
 
 <img src="https://github.com/Mehver/iController/raw/main/%23README/1.jpg" width="50%">
-
-### 2.2 Capability
-
-Currently, only `Windows 10 (2024.2)`/`macOS (13.3)` and `IOS 17` under `Safari` browser have been tested, and other
-environments have not been tested.
 
 ## 3 Development
 
@@ -106,8 +103,8 @@ to enter the virtual environment. Or add the virtual environment to your IDE.
 
 ### 3.4 Compile / Package
 
-Directly run `auto-py-to-exe` or use `win-onefile.bat` / `mac-onefile.sh` in `./bin/packaging/` to package the application. Note that after testing, some Python v3.10.x versions may have
-mysterious errors. Only Python v3.10.10 is recommended.
+Recommend use `win-onefile.bat` / `mac-onefile.sh` in `./bin/packaging/` to package the application. **Note that after testing, some Python v3.10.x versions may have
+mysterious errors. Only Python v3.10.10 is recommended.**
 
 
 ## 4 Built With / Tech Stack
@@ -126,7 +123,6 @@ mysterious errors. Only Python v3.10.10 is recommended.
     - Pycaw (https://github.com/AndreMiras/pycaw)
     - Psutil (https://github.com/giampaolo/psutil)
     - PyInstaller (https://github.com/pyinstaller/pyinstaller)
-      - (Dev) Auto-PY-To-EXE (https://github.com/brentvollebregt/auto-py-to-exe)
 
 ## 5 Similar Projects
 

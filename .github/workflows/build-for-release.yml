@@ -42,86 +42,91 @@ jobs:
           asset_name: icontroller-${{ github.event.release.tag_name }}-portable-win-x64.exe
           asset_content_type: application/octet-stream
 
-  build-macos-x64:
-    runs-on: macos-12
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.10.10'
-      - name: Update PIP
-        run: python -m pip install --upgrade pip
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '16'
-      - name: Grant Execute Permission for Scripts
-        run: chmod +x ./bin/packaging/mac-resetenv.sh ./bin/packaging/mac-onefile.sh
-      - name: Initialize Environment
-        run: ./bin/packaging/mac-resetenv.sh
-      - name: Build React Frontend
-        run: npm install && npm run build
-      - name: Build Project
-        run: ./bin/packaging/mac-onefile.sh
-      - name: Grant Execute Permission for Executable
-        run: chmod +x ./dist/app
-      - name: Rename & Zip & Prepare for Upload
-        run: |
-          mv ./dist/app ./dist/iController
-          zipName="icontroller-${{ github.event.release.tag_name }}-portable-mac-x64.zip"
-          cd ./dist
-          zip -r $zipName iController
-          echo "ARTIFACT_PATH=./dist/$zipName" >> $GITHUB_ENV
-        shell: bash
-      - name: Upload to Release
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ${{ env.ARTIFACT_PATH }}
-          asset_name: icontroller-${{ github.event.release.tag_name }}-portable-mac-x64.zip
-          asset_content_type: application/zip
+#v0.6.0 后暂时不支持 macOS 构建，因为 Portable 程序创建持久化数据引入不必要的复杂性。
+#如果后续实现 GUI 等需要 DMG 安装包的功能，再考虑 macOS 构建。
+#After v0.6.0, macOS build is temporarily not supported, because creating a portable program with persistent data introduces unnecessary complexity.
+#If GUI and DMG installer are implemented in the future, macOS build will be considered.
 
-  build-macos-arm64:
-    runs-on: macos-14
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.10.11'
-      - name: Update PIP
-        run: python -m pip install --upgrade pip
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '16'
-      - name: Grant Execute Permission for Scripts
-        run: chmod +x ./bin/packaging/mac-resetenv.sh ./bin/packaging/mac-onefile.sh
-      - name: Initialize Environment
-        run: ./bin/packaging/mac-resetenv.sh
-      - name: Build React Frontend
-        run: npm install && npm run build
-      - name: Build Project
-        run: ./bin/packaging/mac-onefile.sh
-      - name: Grant Execute Permission for Executable
-        run: chmod +x ./dist/app
-      - name: Rename & Zip & Prepare for Upload
-        run: |
-          mv ./dist/app ./dist/iController
-          zipName="icontroller-${{ github.event.release.tag_name }}-portable-mac-arm64.zip"
-          cd ./dist
-          zip -r $zipName iController
-          echo "ARTIFACT_PATH=./dist/$zipName" >> $GITHUB_ENV
-        shell: bash
-      - name: Upload to Release
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ${{ env.ARTIFACT_PATH }}
-          asset_name: icontroller-${{ github.event.release.tag_name }}-portable-mac-arm64.zip
-          asset_content_type: application/zip
+#  build-macos-x64:
+#    runs-on: macos-12
+#    steps:
+#      - uses: actions/checkout@v2
+#      - name: Set up Python
+#        uses: actions/setup-python@v2
+#        with:
+#          python-version: '3.10.10'
+#      - name: Update PIP
+#        run: python -m pip install --upgrade pip
+#      - name: Set up Node.js
+#        uses: actions/setup-node@v2
+#        with:
+#          node-version: '16'
+#      - name: Grant Execute Permission for Scripts
+#        run: chmod +x ./bin/packaging/mac-resetenv.sh ./bin/packaging/mac-onefile.sh
+#      - name: Initialize Environment
+#        run: ./bin/packaging/mac-resetenv.sh
+#      - name: Build React Frontend
+#        run: npm install && npm run build
+#      - name: Build Project
+#        run: ./bin/packaging/mac-onefile.sh
+#      - name: Grant Execute Permission for Executable
+#        run: chmod +x ./dist/app
+#      - name: Rename & Zip & Prepare for Upload
+#        run: |
+#          mv ./dist/app ./dist/iController
+#          zipName="icontroller-${{ github.event.release.tag_name }}-portable-mac-x64.zip"
+#          cd ./dist
+#          zip -r $zipName iController
+#          echo "ARTIFACT_PATH=./dist/$zipName" >> $GITHUB_ENV
+#        shell: bash
+#      - name: Upload to Release
+#        uses: actions/upload-release-asset@v1
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        with:
+#          upload_url: ${{ github.event.release.upload_url }}
+#          asset_path: ${{ env.ARTIFACT_PATH }}
+#          asset_name: icontroller-${{ github.event.release.tag_name }}-portable-mac-x64.zip
+#          asset_content_type: application/zip
+#
+#  build-macos-arm64:
+#    runs-on: macos-14
+#    steps:
+#      - uses: actions/checkout@v2
+#      - name: Set up Python
+#        uses: actions/setup-python@v2
+#        with:
+#          python-version: '3.10.11'
+#      - name: Update PIP
+#        run: python -m pip install --upgrade pip
+#      - name: Set up Node.js
+#        uses: actions/setup-node@v2
+#        with:
+#          node-version: '16'
+#      - name: Grant Execute Permission for Scripts
+#        run: chmod +x ./bin/packaging/mac-resetenv.sh ./bin/packaging/mac-onefile.sh
+#      - name: Initialize Environment
+#        run: ./bin/packaging/mac-resetenv.sh
+#      - name: Build React Frontend
+#        run: npm install && npm run build
+#      - name: Build Project
+#        run: ./bin/packaging/mac-onefile.sh
+#      - name: Grant Execute Permission for Executable
+#        run: chmod +x ./dist/app
+#      - name: Rename & Zip & Prepare for Upload
+#        run: |
+#          mv ./dist/app ./dist/iController
+#          zipName="icontroller-${{ github.event.release.tag_name }}-portable-mac-arm64.zip"
+#          cd ./dist
+#          zip -r $zipName iController
+#          echo "ARTIFACT_PATH=./dist/$zipName" >> $GITHUB_ENV
+#        shell: bash
+#      - name: Upload to Release
+#        uses: actions/upload-release-asset@v1
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        with:
+#          upload_url: ${{ github.event.release.upload_url }}
+#          asset_path: ${{ env.ARTIFACT_PATH }}
+#          asset_name: icontroller-${{ github.event.release.tag_name }}-portable-mac-arm64.zip
+#          asset_content_type: application/zip
