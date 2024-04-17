@@ -38,7 +38,7 @@ class KeyboardMenu extends Component {
     componentDidMount() {
         api_get_system_info()
             .then(data => {
-                this.setState({serverIsMac: data.volume === 'Darwin'});
+                this.setState({serverIsMac: data.os === 'Darwin'});
             })
             .then(() => {
                 if (this.state.serverIsMac) {

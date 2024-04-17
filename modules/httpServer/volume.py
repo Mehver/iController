@@ -1,5 +1,5 @@
 from quart import request, jsonify
-from modules.volume import get_volume_controller
+from modules.volumeController import get_volume_controller
 
 
 async def volume_get():

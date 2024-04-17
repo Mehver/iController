@@ -1,7 +1,8 @@
 import socket
 import platform
 
-def portchecker(port):
+
+def portChecker(port):
     """
     检查端口是否可用。
     - 如果端口是一个数字且在合法范围内（1-65534）
@@ -32,3 +33,24 @@ def portchecker(port):
             return False  # 端口号不合法
     else:
         raise NotImplementedError("This OS is not supported for port checking")
+
+
+def getAddress():
+    while True:
+        PORT = input("Give a port > ")
+        try:
+            PORT = int(PORT)
+            if not 0 < PORT < 65535:
+                raise ValueError
+            if not portChecker(PORT):
+                raise IndexError
+        except ValueError:
+            print("Port number must be an integer between 1 and 65534.")
+        except IndexError:
+            print("This port is already in use by another program.")
+            force = input("Do you want to force the use of this port? (y/N) > ")
+            if force == 'y' or force == 'Y':
+                break
+        else:
+            break
+    return f"0.0.0.0:{PORT}"
