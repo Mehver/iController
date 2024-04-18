@@ -33,7 +33,7 @@ def portChecker(port):
         else:
             return False  # 端口号不合法
     else:
-        raise NotImplementedError("This OS is not supported for port checking")
+        raise NotImplementedError("This OS is not supported.")
 
 
 def getAddress():
