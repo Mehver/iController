@@ -3,13 +3,13 @@
     <h1>iController <code>v0.6.1</code></h1>
 	<p><a href='https://github.com/Mehver/iController/blob/main/README.md'>English</a> | 简体中文</p>
     <p>
-        <a href='https://github.com/Mehver/iController/releases/download/v0.6.1/icontroller-v0.6.1-portable-win-x64.zip'>
-            <img src="https://img.shields.io/badge/Windows%20(x64)-v0.6.1-yellow?logo=Windows"/>
+        <a href='https://github.com/Mehver/iController/releases/tag/v0.6.0'>
+            <img src="https://img.shields.io/badge/Windows%20(x64)-v0.6.0-yellow?logo=Windows"/>
         </a>
-        <a href='https://github.com/Mehver/iController/releases/download/v0.5.1/icontroller-v0.5.1-portable-mac-arm64.zip'>
+        <a href='https://github.com/Mehver/iController/releases/tag/v0.5.1'>
             <img src="https://img.shields.io/badge/MacOS%20(arm64)-v0.5.1-green?logo=Apple"/>
         </a>
-        <a href='https://github.com/Mehver/iController/releases/download/v0.5.1/icontroller-v0.5.1-portable-mac-x64.zip'>
+        <a href='https://github.com/Mehver/iController/releases/tag/v0.5.1'>
             <img src="https://img.shields.io/badge/MacOS%20(x64)-v0.5.1-green?logo=Apple"/>
         </a>
     </p>
