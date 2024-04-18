@@ -12,7 +12,6 @@ class PyInstallerContext:
         icon_path = context.resource_path('icons/app_icon.png')
         print(f"Icon path: {icon_path}")
     """
-
     def __init__(self):
         # 检测是否是 PyInstaller 打包的环境
         self.bundled = getattr(sys, 'frozen', False)

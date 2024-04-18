@@ -1,13 +1,24 @@
 <div align="center">
     <img src="https://github.com/Mehver/iController/raw/main/%23README/icon/256.png" width="20%"/>
-    <h1>iController <code>v0.6.0</code></h1>
+    <h1>iController <code>v0.6.1</code></h1>
     </tr>
 	<p>English | <a href='https://github.com/Mehver/iController/blob/main/%23README/README-cn.md'>简体中文</a></p>
+    <p>
+        <a href='https://github.com/Mehver/iController/releases/download/v0.6.1/icontroller-v0.6.1-portable-win-x64.zip'>
+            <img src="https://img.shields.io/badge/Windows%20(x64)-v0.6.1-yellow?logo=Windows"/>
+        </a>
+        <a href='https://github.com/Mehver/iController/releases/download/v0.5.1/icontroller-v0.5.1-portable-mac-arm64.zip'>
+            <img src="https://img.shields.io/badge/MacOS%20(arm64)-v0.5.1-green?logo=Apple"/>
+        </a>
+        <a href='https://github.com/Mehver/iController/releases/download/v0.5.1/icontroller-v0.5.1-portable-mac-x64.zip'>
+            <img src="https://img.shields.io/badge/MacOS%20(x64)-v0.5.1-green?logo=Apple"/>
+        </a>
+    </p>
 </div>
 
 ## 1 Description
 
-A host LAN controller software running on `Windows` or `macOS` (read description below) PC, enabling mobile phones to access a web page panel for PC control.
+A host LAN controller software running on `Windows` and `macOS` (read description below) PC, enabling mobile phones to access a web page panel for PC control.
 
 <table>
     <tr>
