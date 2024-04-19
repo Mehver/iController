@@ -3,6 +3,9 @@ import platform
 
 
 async def get_system_info():
+    """
+    app.route('/api/system/info', methods=['GET'])(get_system_info)
+    """
     os_name = platform.system()
     # os_name = 'Windows'  # 测试值
     # os_name = 'Darwin'  # 测试值

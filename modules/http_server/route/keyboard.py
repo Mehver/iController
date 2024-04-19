@@ -5,6 +5,9 @@ import platform
 
 
 async def keyboard_buttons():
+    """
+    app.route('/api/keyboard/buttons', methods=['POST'])(keyboard_buttons)
+    """
     signal = (await request.get_data()).decode('utf-8')
     if signal == 'Backspace':
         pyautogui.press('backspace')
@@ -19,6 +22,9 @@ async def keyboard_buttons():
 
 
 async def keyboard_typewriting():
+    """
+    app.route('/api/keyboard/typewriting', methods=['POST'])(keyboard_typewriting)
+    """
     text = (await request.get_data()).decode('utf-8')
     try:
         pyautogui.write(text, interval=0.05)
@@ -30,6 +36,9 @@ async def keyboard_typewriting():
 
 
 async def keyboard_pastetext():
+    """
+    app.route('/api/keyboard/pastetext', methods=['POST'])(keyboard_pastetext)
+    """
     text = (await request.get_data()).decode('utf-8')
     os_name = platform.system()
     if os_name == 'Windows':

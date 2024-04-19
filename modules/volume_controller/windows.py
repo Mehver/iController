@@ -1,4 +1,4 @@
-from modules.volumeController.base import BaseVolumeController
+from modules.volume_controller.base import BaseVolumeController
 from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
 from comtypes import CLSCTX_ALL, CoInitializeEx, COINIT_MULTITHREADED, CoUninitialize
 from ctypes import cast, POINTER

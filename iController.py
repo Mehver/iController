@@ -1,8 +1,8 @@
 import asyncio
 from hypercorn.config import Config as HypercornConfig
 from hypercorn.asyncio import serve
-from modules.httpServer import httpServer
-from modules.getAddress import getAddress
+from modules.http_server import HttpServer
+from modules.get_address import get_address
 from modules.config import Config
 
 print("""
@@ -18,7 +18,7 @@ v0.6.1
 """)
 
 Config.init()
-app = httpServer()
+app = HttpServer()
 config = HypercornConfig()
-config.bind = [getAddress()]
+config.bind = [get_address()]
 asyncio.run(serve(app, config))
