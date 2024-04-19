@@ -1,3 +1,5 @@
+[![](https://img.shields.io/badge/Windows%20(x64)-v0.6.1-blue?logo=Windows)](https://github.com/Mehver/iController/releases/download/v0.6.1/icontroller-v0.6.1-portable-win-x64.zip)
+
 [![](https://img.shields.io/badge/Windows%20(x64)-v0.6.0-yellow?logo=Windows)](https://github.com/Mehver/iController/releases/download/v0.6.0/icontroller-v0.6.0-portable-win-x64.zip)
 
 [![](https://img.shields.io/badge/Windows%20(x64)-v0.5.1-green?logo=Windows)](https://github.com/Mehver/iController/releases/download/v0.5.1/icontroller-v0.5.1-portable-win-x64.exe)
