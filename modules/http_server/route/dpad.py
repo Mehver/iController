@@ -3,6 +3,9 @@ import pyautogui
 
 
 async def dpad():
+    """
+    app.route('/api/dpad', methods=['POST'])(dpad)
+    """
     signal = (await request.get_data()).decode('utf-8')
     if signal == 'DUp':
         pyautogui.press('up')

@@ -1,8 +1,11 @@
 from quart import request, jsonify
-from modules.volumeController import get_volume_controller
+from modules.volume_controller import get_volume_controller
 
 
 async def volume_get():
+    """
+    app.route('/api/volume/get', methods=['GET'])(volume_get)
+    """
     try:
         vc = get_volume_controller()
         volume = vc.get_current_volume()
@@ -14,6 +17,9 @@ async def volume_get():
 
 
 async def volume_set():
+    """
+    app.route('/api/volume/set', methods=['POST'])(volume_set)
+    """
     volume = "Failed to get volume."
     try:
         vc = get_volume_controller()

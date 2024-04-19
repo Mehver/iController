@@ -4,6 +4,9 @@ from modules.config import Config
 
 
 async def mousewheel():
+    """
+    app.route('/api/mousewheel', methods=['POST'])(mousewheel)
+    """
     raw_data = (await request.get_data(as_text=True)).strip()
     try:
         wheel_amount = int(raw_data)

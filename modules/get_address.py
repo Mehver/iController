@@ -3,7 +3,7 @@ import platform
 from modules.config import Config
 
 
-def portChecker(port):
+def port_checker(port):
     """
     检查端口是否可用。
     - 如果端口是一个数字且在合法范围内（1-65534）
@@ -36,12 +36,12 @@ def portChecker(port):
         raise NotImplementedError("This OS is not supported.")
 
 
-def getAddress():
+def get_address():
     PORT = Config.HttpServer.PORT
     try:
         if not 0 < PORT < 65535:
             raise ValueError
-        if not portChecker(PORT):
+        if not port_checker(PORT):
             raise IndexError
         print(f"Do you want to use the port [{PORT}] given by the configuration file?")
         use = input("Use this port? (Y/n) > ")
@@ -60,7 +60,7 @@ def getAddress():
             PORT = int(PORT)
             if not 0 < PORT < 65535:
                 raise ValueError
-            if not portChecker(PORT):
+            if not port_checker(PORT):
                 raise IndexError
         except ValueError:
             print("Port number must be an integer between 1 and 65534.")
@@ -68,7 +68,7 @@ def getAddress():
             print("This port is already in use by another program.")
             force = input("Do you want to force the use of this port? (y/N) > ")
             if force == 'y' or force == 'Y':
-                break
+                return f"{Config.HttpServer.HOST}:{PORT}"
         else:
             break
     update = input("Do you want to update the configuration file with this port? (Y/n) > ")

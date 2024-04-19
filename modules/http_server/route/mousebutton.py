@@ -3,6 +3,9 @@ import pyautogui
 
 
 async def mousebutton():
+    """
+    app.route('/api/mousebutton', methods=['POST'])(mousebutton)
+    """
     signal = (await request.get_data()).decode('utf-8')
     if signal == 'Left':
         pyautogui.click(button='left')
