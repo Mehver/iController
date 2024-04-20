@@ -13,8 +13,10 @@
     <a href='https://github.com/Mehver/iController/releases/tag/v0.5.1'><img src="https://img.shields.io/badge/MacOS%20(x64)-v0.5.1-green?logo=Apple" alt=""/></a>
 </span>
 
-<a href=''><img src="https://img.shields.io/badge/-📂-blue?style=flat&amp" alt=""></a>
+<img src="https://img.shields.io/badge/-📂-blue?style=flat&amp" alt="">
 
-<a href=''><img src="https://img.shields.io/badge/-📂-green?style=flat&amp" alt=""></a>
+<img src="https://img.shields.io/badge/-📂-green?style=flat&amp" alt="">
 
-<a href=''><img src="https://img.shields.io/badge/-📂-yellow?style=flat&amp" alt=""></a>
+<img src="https://img.shields.io/badge/-📂-yellow?style=flat&amp" alt="">
+
+<a href=''></a>
