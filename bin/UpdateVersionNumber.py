@@ -14,6 +14,6 @@ def UpdateVersionNumber(filename, encoder, lines_list, old_version, new_version)
         file.writelines(lines)
 
 
-UpdateVersionNumber('README.md', "utf-8", [3, 6, 7], OLD_VERSION, NEW_VERSION)
-UpdateVersionNumber('#README/README-cn.md', "utf-8", [3, 6, 7], OLD_VERSION, NEW_VERSION)
+UpdateVersionNumber('README.md', "utf-8", [3, 6], OLD_VERSION, NEW_VERSION)
+UpdateVersionNumber('#README/README-cn.md', "utf-8", [3, 6], OLD_VERSION, NEW_VERSION)
 UpdateVersionNumber('iController.py', "utf-8", [16], OLD_VERSION, NEW_VERSION)

@@ -54,6 +54,21 @@
 
 ---
 
+# [iController v0.6.1](https://github.com/Mehver/iController/releases/tag/v0.6.1)
+
+[![](https://img.shields.io/badge/Windows%20(x64)-v0.6.1-blue?logo=Windows)](https://github.com/Mehver/iController/releases/download/v0.6.1/icontroller-v0.6.1-portable-win-x64.zip)
+
+### Release Note
+- Improved Access Security
+    - Blacklist Mode
+    - Whitelist Mode
+- Persistent Configuration File Auto Update
+
+### What's Changed
+* [ImgBot] Optimize images by @imgbot in https://github.com/Mehver/iController/pull/14
+
+**Full Changelog**: https://github.com/Mehver/iController/compare/v0.5.1...v0.6.1
+
 # [iController v0.6.0](https://github.com/Mehver/iController/releases/tag/v0.6.0)
 
 [![](https://img.shields.io/badge/Windows%20(x64)-v0.6.0-yellow?logo=Windows)](https://github.com/Mehver/iController/releases/download/v0.6.0/icontroller-v0.6.0-portable-win-x64.zip)
