@@ -10,7 +10,8 @@ from modules.http_server.route.touchpad import touchpad
 from modules.http_server.route.touchpad import touchpad_reposition
 from modules.http_server.route.volume import volume_get
 from modules.http_server.route.volume import volume_set
-from modules.http_server.middleware.ip_checker import ip_checker
+from modules.http_server.hook.ip_checker import ip_checker
+from modules.http_server.hook.ip_log import ip_log
 from modules.pyinstaller_context import PyInstallerContext
 
 
@@ -25,11 +26,11 @@ def HttpServer(static_folder='build') -> Quart:
     app = Quart(__name__, static_folder=pyinstallerContext.resource_path(static_folder), static_url_path='')
 
     app.before_request(ip_checker)
+    app.before_request(ip_log)
 
+    @app.route('/')
     async def index():
         return await send_from_directory(app.static_folder, 'index.html')
-
-    app.route('/')(index)
     app.route('/api/dpad', methods=['POST'])(dpad)
     app.route('/api/keyboard/buttons', methods=['POST'])(keyboard_buttons)
     app.route('/api/keyboard/typewriting', methods=['POST'])(keyboard_typewriting)

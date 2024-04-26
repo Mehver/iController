@@ -1,9 +1,9 @@
 <div align="center">
     <img src="https://github.com/Mehver/iController/raw/main/%23README/icon/256.png" width="20%" alt=""/>
-    <h1>iController <code>v0.6.1</code></h1>
+    <h1>iController <code>v0.6.2</code></h1>
 	<p>English | <a href='https://github.com/Mehver/iController/blob/main/%23README/README-cn.md'>简体中文</a></p>
     <span>
-        <a href='https://github.com/Mehver/iController/releases/tag/v0.6.1'><img src="https://img.shields.io/badge/Windows%20(x64)-v0.6.1-blue?logo=Windows" alt=""/></a>&nbsp;
+        <a href='https://github.com/Mehver/iController/releases/tag/v0.6.2'><img src="https://img.shields.io/badge/Windows%20(x64)-v0.6.2-blue?logo=Windows" alt=""/></a>&nbsp;
         <a href='https://github.com/Mehver/iController/releases/tag/v0.5.1'><img src="https://img.shields.io/badge/MacOS%20(arm64)-v0.5.1-green?logo=Apple" alt=""/></a>&nbsp;
         <a href='https://github.com/Mehver/iController/releases/tag/v0.5.1'><img src="https://img.shields.io/badge/MacOS%20(x64)-v0.5.1-green?logo=Apple" alt=""/></a>
     </span>
@@ -52,7 +52,7 @@ Currently, the program is CLI interactive. When starting, you can manually provi
 ### 2.2 macOS
 
 > [!IMPORTANT]
-> Due to the introduction of additional features starting from `v0.6.0`, it is difficult to perfectly support macOS through the non-installation method. Therefore, the packaging files for macOS are temporarily not provided.
+> Due to the introduction of additional features starting from `v0.6.0`, it is difficult to perfectly support macOS through the non-installation method. Therefore, the packaging files for macOS are temporarily not provided, `v0.5.1` is the last stable version that supports macOS.
 
 For `v0.5.1`, you can download from the [Release v0.5.1](https://github.com/Mehver/iController/releases/tag/v0.5.1) page.
 
@@ -128,28 +128,7 @@ mysterious errors. Only Python v3.10.10 is recommended.**
     - Psutil (https://github.com/giampaolo/psutil)
     - PyInstaller (https://github.com/pyinstaller/pyinstaller)
 
-## 5 Similar Projects
-
-- [Trackpad++](https://github.com/pg07codes/trackpadpp)
-    - Author: [pg07codes](https://github.com/pg07codes)
-    - Language: `JavaScript`
-    - License: `MIT`
-    - Description: Trackpad++ allows controlling device's cursor using your mobile phone as a touchpad.
-    - Note: This project does similar things, but using Robot.js instead of PyAutoGUI. Features such as a keyboard are missing. And it's not been
-      updated for a long time. So I decided to make a new one.
-- [AndroidTrackpad](https://github.com/teamclouday/AndroidTrackpad)
-    - Author: [teamclouday](https://github.com/teamclouday)
-    - Language: `C++`, `Java`
-    - License: `MIT`
-    - Description: Use your android phone as trackpad on Windows or Linux systems.
-    - Note: This project is for Android only, and it's not been updated for a long time. The way it works is a bit
-      different, it's not using B/S but C/S architecture, which can be faster but less flexible.
-
-Compare to these projects, iController is designed with PyAutoGUI, which means it can do more things than just
-controlling the cursor. But its weakness is that I didn't pay much time on cross-platform support, and it's more laggy
-than C/S architecture, feels like a remote desktop control.
-
-## 6 License
+## 5 License
 
 MPL 2.0
 
