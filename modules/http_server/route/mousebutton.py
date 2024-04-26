@@ -1,11 +1,10 @@
 from quart import request, jsonify
 import pyautogui
+from modules.log_manager import LogManager
 
 
 async def mousebutton():
-    """
-    app.route('/api/mousebutton', methods=['POST'])(mousebutton)
-    """
+    """app.route('/api/mousebutton', methods=['POST'])(mousebutton)"""
     signal = (await request.get_data()).decode('utf-8')
     if signal == 'Left':
         pyautogui.click(button='left')
@@ -18,5 +17,5 @@ async def mousebutton():
         action = "right click"
     else:
         return "Invalid signal", 400
-    print(f"Mouse performed {action}.")
+    LogManager.log_console(f"Mouse performed {action}.")
     return jsonify({"status": "success", "action": action})

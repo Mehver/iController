@@ -1,12 +1,12 @@
 from quart import jsonify
 import platform
+from modules.log_manager import LogManager
 
 
 async def get_system_info():
-    """
-    app.route('/api/system/info', methods=['GET'])(get_system_info)
-    """
+    """app.route('/api/system/info', methods=['GET'])(get_system_info)"""
     os_name = platform.system()
+    LogManager.log_console(f"Get system platform: {os_name}.")
     # os_name = 'Windows'  # 测试值
     # os_name = 'Darwin'  # 测试值
     # os_version = platform.version()

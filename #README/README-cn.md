@@ -1,9 +1,9 @@
 <div align="center">
     <img src="https://github.com/Mehver/iController/raw/main/%23README/icon/256.png" width="20%" alt=""/>
-    <h1>iController <code>v0.6.1</code></h1>
+    <h1>iController <code>v0.6.2</code></h1>
 	<p><a href='https://github.com/Mehver/iController/blob/main/README.md'>English</a> | 简体中文</p>
     <span>
-        <a href='https://github.com/Mehver/iController/releases/tag/v0.6.1'><img src="https://img.shields.io/badge/Windows%20(x64)-v0.6.1-blue?logo=Windows" alt=""/></a>&nbsp;
+        <a href='https://github.com/Mehver/iController/releases/tag/v0.6.2'><img src="https://img.shields.io/badge/Windows%20(x64)-v0.6.2-blue?logo=Windows" alt=""/></a>&nbsp;
         <a href='https://github.com/Mehver/iController/releases/tag/v0.5.1'><img src="https://img.shields.io/badge/MacOS%20(arm64)-v0.5.1-green?logo=Apple" alt=""/></a>&nbsp;
         <a href='https://github.com/Mehver/iController/releases/tag/v0.5.1'><img src="https://img.shields.io/badge/MacOS%20(x64)-v0.5.1-green?logo=Apple" alt=""/></a>
     </span>
@@ -124,24 +124,7 @@ source venv/bin/activate
     - Psutil (https://github.com/giampaolo/psutil)
     - PyInstaller (https://github.com/pyinstaller/pyinstaller)
 
-## 5 相似项目
-
-- [Trackpad++](https://github.com/pg07codes/trackpadpp)
-  - 作者: [pg07codes](https://github.com/pg07codes)
-  - 开发语言: `JavaScript`
-  - 许可证: `MIT`
-  - 描述: Trackpad++ 允许使用手机作为触摸板来控制设备的光标。
-  - 注: 这个项目做了类似的事情，使用 Robot.js 而不是 PyAutoGUI。缺少键盘等功能。而且已经很久没有更新了。所以我决定做一个新的。
-- [AndroidTrackpad](https://github.com/teamclouday/AndroidTrackpad)
-  - 作者: [teamclouday](https://github.com/teamclouday)
-  - 开发语言: `C++`, `Java`
-  - 许可证: `MIT`
-  - 描述: 使用 Android 手机作为 Windows 或 Linux 系统的触摸板。
-  - 注: 这个项目仅支持 Android，而且已经很久没有更新了。它的工作方式有点不同，它不是使用 B/S 架构，而是使用 C/S 架构，这样可能会更快，但是不够灵活。
-
-与这些项目相比，iController 是使用 PyAutoGUI 设计的，这意味着它可以做更多的事情，而不仅仅是控制光标。但它的缺点是我没有花太多时间在跨平台支持上，而且它比 C/S 架构更卡，延迟的手感更像是远程桌面。
-
-## 6 许可证
+## 5 许可证
 
 MPL 2.0
 

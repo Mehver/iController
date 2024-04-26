@@ -16,6 +16,10 @@ class Config:
         IP_BLACKLIST = []
         IP_WHITELIST = ["127.0.0.1"]
 
+    class Log:
+        SERVER_ACTION_LOG = True
+        SERVER_CONNECTION_LOG = True
+
     @staticmethod
     def try_get_value(config_path, config_class, config_value):
         try:
@@ -43,7 +47,9 @@ class Config:
                 Config.try_get_value(config_path, Config.HttpServer, 'PORT'),
                 Config.try_get_value(config_path, Config.HttpServer, 'IP_CHECK_MODE'),
                 Config.try_get_value(config_path, Config.HttpServer, 'IP_BLACKLIST'),
-                Config.try_get_value(config_path, Config.HttpServer, 'IP_WHITELIST')
+                Config.try_get_value(config_path, Config.HttpServer, 'IP_WHITELIST'),
+                Config.try_get_value(config_path, Config.Log, 'SERVER_ACTION_LOG'),
+                Config.try_get_value(config_path, Config.Log, 'SERVER_CONNECTION_LOG')
             ]
             # 检查results列表中是否有任何一个False，如果有，就执行更新
             if not all(results):
@@ -69,6 +75,10 @@ class Config:
                 'IP_CHECK_MODE': Config.HttpServer.IP_CHECK_MODE,
                 'IP_BLACKLIST': Config.HttpServer.IP_BLACKLIST,
                 'IP_WHITELIST': Config.HttpServer.IP_WHITELIST
+            },
+            'Log': {
+                'SERVER_ACTION_LOG': Config.Log.SERVER_ACTION_LOG,
+                'SERVER_CONNECTION_LOG': Config.Log.SERVER_CONNECTION_LOG
             }
         }
         with open(config_path, 'w') as file:
