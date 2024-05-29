@@ -1,4 +1,4 @@
-// Context.js
+// Context.jsx
 import React, {createContext, Component} from 'react';
 import {setCookie, getCookie} from '../storage/CookieIO';
 
