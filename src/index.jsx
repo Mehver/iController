@@ -2,10 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import {ContextProvider} from './utils/Context';
-import GeneralDidMount from "./component/GeneralDidMount";
-import TopBar from "./component/TopBar";
-import Screen from "./component/Screen";
-import SideBar from "./component/SideBar";
+import GeneralDidMount from "./components/GeneralDidMount";
+import TopBar from "./components/TopBar";
+import Screen from "./components/Screen";
+import SideBar from "./components/SideBar";
 
 // 设置延时函数
 let resizeTimer;
