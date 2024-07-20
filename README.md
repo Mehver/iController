@@ -77,7 +77,7 @@ of `Settings > Privacy & Security > Developer Tools > Terminal`.
 npm run react
 ```
 
-**Compile**
+**Build**
 
 ```shell
 npm run build
