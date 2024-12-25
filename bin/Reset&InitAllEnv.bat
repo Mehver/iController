@@ -1,5 +1,5 @@
 cd /d %~dp0
-cd ../../
+cd ../
 for /d /r . %%d in (__pycache__) do @if exist "%%d" rd /s /q "%%d"
 for /r . %%i in (*.toc) do @del "%%i"
 rd /s /q dist
