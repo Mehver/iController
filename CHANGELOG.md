@@ -67,6 +67,15 @@
 ### Release Notes
 - Security Updates
 
+### What's Changed
+* Bump body-parser and express by @dependabot in https://github.com/Mehver/iController/pull/20
+* Bump rollup from 2.79.1 to 2.79.2 by @dependabot in https://github.com/Mehver/iController/pull/21
+* Bump cookie and express by @dependabot in https://github.com/Mehver/iController/pull/22
+* Bump http-proxy-middleware from 2.0.6 to 2.0.7 by @dependabot in https://github.com/Mehver/iController/pull/23
+* Bump nanoid from 3.3.7 to 3.3.8 by @dependabot in https://github.com/Mehver/iController/pull/26
+* Bump cross-spawn from 7.0.3 to 7.0.6 by @dependabot in https://github.com/Mehver/iController/pull/24
+* Bump path-to-regexp and express by @dependabot in https://github.com/Mehver/iController/pull/25
+
 **Full Changelog**: https://github.com/Mehver/iController/compare/v0.6.3...v0.6.4
 
 

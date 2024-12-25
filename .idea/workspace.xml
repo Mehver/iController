@@ -4,30 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="32bb533f-281d-471a-87aa-a61fbb338262" name="更改" comment="">
-      <change afterPath="$PROJECT_DIR$/bin/PyInstallerOneFile.bat" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/Reset&amp;InitAllEnv.bat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/iController.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/iController.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/dev-docker/mac-node16_bullseye-p3000.sh" beforeDir="false" afterPath="$PROJECT_DIR$/bin/dev/mac-node16_bullseye-p3000.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/dev-docker/mac-node16_bullseye.sh" beforeDir="false" afterPath="$PROJECT_DIR$/bin/dev/mac-node16_bullseye.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/dev-docker/win-node16_bullseye-p3000.bat" beforeDir="false" afterPath="$PROJECT_DIR$/bin/dev/win-node16_bullseye-p3000.bat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/dev-docker/win-node16_bullseye.bat" beforeDir="false" afterPath="$PROJECT_DIR$/bin/dev/win-node16_bullseye.bat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/dev-docker/win-python3(10)_bullseye-p3000.bat" beforeDir="false" afterPath="$PROJECT_DIR$/bin/dev/win-python3(10)_bullseye-p3000.bat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/dev-docker/win-python3(10)_bullseye.bat" beforeDir="false" afterPath="$PROJECT_DIR$/bin/dev/win-python3(10)_bullseye.bat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/dev-packaging/mac-onedir.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/dev-packaging/mac-onefile.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/dev-packaging/mac-resetenv.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/dev-packaging/win-onedir.bat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/dev-packaging/win-onefile.bat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/dev-packaging/win-resetenv.bat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/iController.spec" beforeDir="false" afterPath="$PROJECT_DIR$/iController.spec" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-    </list>
+    <list default="true" id="32bb533f-281d-471a-87aa-a61fbb338262" name="更改" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -44,20 +21,20 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
