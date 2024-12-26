@@ -1,6 +1,6 @@
 import socket
 import platform
-from modules.config import Config
+from ServerApp.config import Config
 
 
 def port_checker(port):

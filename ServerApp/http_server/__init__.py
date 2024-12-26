@@ -1,25 +1,25 @@
 from quart import Quart, send_from_directory
-from modules.http_server.route.dpad import dpad
-from modules.http_server.route.keyboard import keyboard_buttons
-from modules.http_server.route.keyboard import keyboard_typewriting
-from modules.http_server.route.keyboard import keyboard_pastetext
-from modules.http_server.route.system import get_system_info
-from modules.http_server.route.mousebutton import mousebutton
-from modules.http_server.route.mousewheel import mousewheel
-from modules.http_server.route.touchpad import touchpad
-from modules.http_server.route.touchpad import touchpad_reposition
-from modules.http_server.route.volume import volume_get
-from modules.http_server.route.volume import volume_set
-from modules.http_server.hook.ip_checker import ip_checker
-from modules.http_server.hook.ip_log import ip_log
-from modules.pyinstaller_context import PyInstallerContext
+from ServerApp.http_server.route.dpad import dpad
+from ServerApp.http_server.route.keyboard import keyboard_buttons
+from ServerApp.http_server.route.keyboard import keyboard_typewriting
+from ServerApp.http_server.route.keyboard import keyboard_pastetext
+from ServerApp.http_server.route.system import get_system_info
+from ServerApp.http_server.route.mousebutton import mousebutton
+from ServerApp.http_server.route.mousewheel import mousewheel
+from ServerApp.http_server.route.touchpad import touchpad
+from ServerApp.http_server.route.touchpad import touchpad_reposition
+from ServerApp.http_server.route.volume import volume_get
+from ServerApp.http_server.route.volume import volume_set
+from ServerApp.http_server.hook.ip_checker import ip_checker
+from ServerApp.http_server.hook.ip_log import ip_log
+from ServerApp.pyinstaller_context import PyInstallerContext
 
 
-def HttpServer(static_folder='build') -> Quart:
+def HttpServer(static_folder) -> Quart:
     """
     Http server for iController.
 
-    :param static_folder: The folder for static files build by React, default is "build".
+    :param static_folder: The folder for static files build by React
     :return: Quart server object.
     """
     pyinstallerContext = PyInstallerContext()

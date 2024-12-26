@@ -1,6 +1,6 @@
 from quart import request
-from modules.log_manager import LogManager
-from modules.config import Config
+from ServerApp.log_manager import LogManager
+from ServerApp.config import Config
 
 
 async def ip_log():
