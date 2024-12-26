@@ -2,7 +2,7 @@ from quart import jsonify, request
 import pyautogui
 import pyperclip
 import platform
-from modules.log_manager import LogManager
+from ServerApp.log_manager import LogManager
 
 
 async def keyboard_buttons():

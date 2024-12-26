@@ -1,5 +1,5 @@
 from quart import request, abort
-from modules.config import Config
+from ServerApp.config import Config
 
 
 async def ip_checker():

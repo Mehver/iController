@@ -1,6 +1,6 @@
 import os
 from datetime import datetime
-from modules.config import Config
+from ServerApp.config import Config
 
 
 class LogManager:

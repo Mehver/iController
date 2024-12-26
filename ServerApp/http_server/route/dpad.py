@@ -1,6 +1,6 @@
 from quart import jsonify, request
 import pyautogui
-from modules.log_manager import LogManager
+from ServerApp.log_manager import LogManager
 
 
 async def dpad():
