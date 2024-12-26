@@ -1,7 +1,5 @@
 [![](https://img.shields.io/badge/Windows%20(x64)-v0.6.4-blue?logo=Windows)](https://github.com/Mehver/iController/releases/download/v0.6.4/icontroller-v0.6.4-portable-win-x64.zip)
 
-[![](https://img.shields.io/badge/Windows%20(x64)-v0.6.3-blue?logo=Windows)](https://github.com/Mehver/iController/releases/download/v0.6.3/icontroller-v0.6.3-portable-win-x64.zip)
-
 [![](https://img.shields.io/badge/Windows%20(x64)-v0.6.2-blue?logo=Windows)](https://github.com/Mehver/iController/releases/download/v0.6.2/icontroller-v0.6.2-portable-win-x64.zip)
 
 [![](https://img.shields.io/badge/Windows%20(x64)-v0.6.1-blue?logo=Windows)](https://github.com/Mehver/iController/releases/download/v0.6.1/icontroller-v0.6.1-portable-win-x64.zip)
@@ -80,8 +78,6 @@
 
 
 # [iController v0.6.3](https://github.com/Mehver/iController/releases/tag/v0.6.3)
-
-[![](https://img.shields.io/badge/Windows%20(x64)-v0.6.3-blue?logo=Windows)](https://github.com/Mehver/iController/releases/download/v0.6.3/icontroller-v0.6.3-portable-win-x64.zip)
 
 ### Release Notes
 - Security Updates
