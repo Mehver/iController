@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import './index.css';
 import {ContextProvider} from './utils/Context';
 import GeneralDidMount from "./components/GeneralDidMount";
@@ -20,7 +20,8 @@ const handleResize = () => {
 // 监听屏幕大小改变或旋转事件
 window.addEventListener('resize', handleResize);
 
-ReactDOM.render(
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
     <React.StrictMode>
         <div className="App">
             <header className="App-header">

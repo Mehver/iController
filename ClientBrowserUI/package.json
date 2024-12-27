@@ -5,15 +5,15 @@
     "build": "npx react-scripts build"
   },
   "dependencies": {
-    "@emotion/react": "^11.11.0",
-    "@emotion/styled": "^11.11.0",
-    "@mui/icons-material": "^5.11.16",
-    "@mui/material": "^5.13.1",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/icons-material": "^6.3.0",
+    "@mui/material": "^6.3.0",
     "lodash": "^4.17.21",
-    "primereact": "^10.5.3",
-    "react": "18.2.0",
+    "primereact": "^10.8.5",
+    "react": "19.0.0",
     "react-color": "^2.19.3",
-    "react-dom": "18.2.0",
+    "react-dom": "19.0.0",
     "react-scripts": "5.0.1"
   },
   "browserslist": {
