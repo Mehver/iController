@@ -4,6 +4,7 @@ from hypercorn.asyncio import serve
 from ServerApp.http_server import HttpServer
 from ServerApp.get_address import get_address
 from ServerApp.config import Config
+from ServerApp.pyinstaller_context import PyInstallerContext
 
 print("""
  _   ___            _             _ _           
@@ -18,7 +19,8 @@ v0.6.4
 """)
 
 Config.init()
-app = HttpServer("ClientBrowserUI/build")
+static_folder = PyInstallerContext().resource_path("ClientBrowserUI/build")
+app = HttpServer(static_folder)
 config = HypercornConfig()
 config.bind = [get_address()]
 asyncio.run(serve(app, config))
