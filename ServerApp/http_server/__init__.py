@@ -12,7 +12,6 @@ from ServerApp.http_server.route.volume import volume_get
 from ServerApp.http_server.route.volume import volume_set
 from ServerApp.http_server.hook.ip_checker import ip_checker
 from ServerApp.http_server.hook.ip_log import ip_log
-from ServerApp.pyinstaller_context import PyInstallerContext
 
 
 def HttpServer(static_folder) -> Quart:
@@ -22,7 +21,7 @@ def HttpServer(static_folder) -> Quart:
     :param static_folder: The folder for static files build by React
     :return: Quart server object.
     """
-    app = Quart(__name__, static_folder=PyInstallerContext().resource_path(static_folder), static_url_path='')
+    app = Quart(__name__, static_folder=static_folder, static_url_path='')
 
     app.before_request(ip_checker)
     app.before_request(ip_log)
