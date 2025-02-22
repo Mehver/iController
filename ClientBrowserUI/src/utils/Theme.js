@@ -1,12 +1,8 @@
-import {createTheme} from "@mui/material/styles";
-
-export let primaryColor = '#6df';
-export let primaryColorTrans = 'rgba(102, 204, 255, 0.5)';
-export let secondaryColor = '#333';
-export let secondaryColorTrans = 'rgba(51, 51, 51, 0.5)';
+export let defaultPrimaryColor = '#6DF';
+export let defaultSecondaryColor = '#333';
 
 // 自动检测颜色格式并转换为半透明颜色值
-const convertHexToRGBA = (hex, opacity) => {
+export const convertHexToRGBA = (hex, opacity) => {
     let tempHex = hex.replace('#', '');
     // 检测并转换3位十六进制颜色为6位
     if (tempHex.length === 3) {
@@ -22,63 +18,28 @@ const convertHexToRGBA = (hex, opacity) => {
     return `rgba(${r}, ${g}, ${b}, ${opacity})`;
 };
 
-// 更新主题
-const updateTheme = () => {
-    customTheme.palette.primary.main = primaryColor;
-    customTheme.palette.secondary.main = secondaryColor;
-};
-
-export const setPrimaryColor = (color) => {
-    const newColorTrans = convertHexToRGBA(color, 0.5);
-    if (newColorTrans) {
-        primaryColor = color;
-        primaryColorTrans = newColorTrans;
-        updateTheme();
-        // 修改 head 中的 <meta name="theme-color" content="#66ddff"/>
-        const metaThemeColor = document.querySelector("meta[name=theme-color]");
-        if (metaThemeColor) {
-            metaThemeColor.setAttribute("content", color);
-        }
-        // 改变CSS中的background-color
-        const html = document.querySelector("html");
-        const body = document.querySelector("body");
-        const fullScreenBackground = document.querySelector(".full-screen-background");
-        const appHeader = document.querySelector(".App-header");
-        if (html) {
-            html.style.backgroundColor = color;
-        }
-        if (body) {
-            body.style.backgroundColor = color;
-        }
-        if (fullScreenBackground) {
-            fullScreenBackground.style.backgroundColor = color;
-        }
-        if (appHeader) {
-            appHeader.style.color = color;
-        }
+export const updateColorCSS = (primaryColor, secondaryColor) => {
+    // 修改 head 中的 <meta name="theme-color" content="primaryColor"/>
+    const metaThemeColor = document.querySelector("meta[name=theme-color]");
+    if (metaThemeColor) {
+        metaThemeColor.setAttribute("content", primaryColor);
     }
-};
-
-export const setSecondaryColor = (color) => {
-    const newColorTrans = convertHexToRGBA(color, 0.5);
-    if (newColorTrans) {
-        secondaryColor = color;
-        secondaryColorTrans = newColorTrans;
-        updateTheme();
-        const appHeader = document.querySelector(".App-header");
-        if (appHeader) {
-            appHeader.style.backgroundColor = color;
-        }
+    const html = document.querySelector("html");
+    const body = document.querySelector("body");
+    const fullScreenBackground = document.querySelector(".full-screen-background");
+    const appHeader = document.querySelector(".App-header");
+    if (html) {
+        html.style.backgroundColor = primaryColor;
     }
-};
+    if (body) {
+        body.style.backgroundColor = primaryColor;
+    }
+    if (fullScreenBackground) {
+        fullScreenBackground.style.backgroundColor = primaryColor;
+    }
+    if (appHeader) {
+        appHeader.style.color = primaryColor;
+        appHeader.style.backgroundColor = secondaryColor;
+    }
+}
 
-export let customTheme = createTheme({
-    palette: {
-        primary: {
-            main: primaryColor,
-        },
-        secondary: {
-            main: secondaryColor,
-        },
-    },
-});

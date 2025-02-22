@@ -8,17 +8,11 @@ rd /s /q dist
 rd /s /q build
 rd /s /q venv
 rd /s /q logs
+rd /s /q node_modules
 rd /s /q ClientBrowserUI\build
+rd /s /q ClientBrowserUI\node_modules
 
-where docker >nul 2>nul
-if %errorlevel% neq 0 (
-     cd ClientBrowserUI
-     npm install
-     npm run build
-     cd ..
-) else (
-    docker run -it --rm -v %cd%:/docker -w /docker node:16-bullseye bash -c "cd ClientBrowserUI; npm i; npm run build; exit"
-)
+docker run -it --rm -v %cd%:/docker -w /docker node:16-bullseye bash -c "cd ClientBrowserUI; npm i; npm run build; exit"
 
 python -m venv venv
 call venv\Scripts\activate

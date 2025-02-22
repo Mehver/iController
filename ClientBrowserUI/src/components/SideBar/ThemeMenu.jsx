@@ -10,12 +10,7 @@ import {
     HuePicker,
     TwitterPicker
 } from 'react-color';
-import {
-    primaryColor as theme_primaryColor,
-    setPrimaryColor as theme_setPrimaryColor,
-    secondaryColor as theme_secondaryColor,
-    setSecondaryColor as theme_setSecondaryColor
-} from '../../utils/Theme';
+import {defaultPrimaryColor,defaultSecondaryColor,updateColorCSS} from '../../utils/Theme';
 
 class ThemeMenu extends Component {
     constructor(props) {
@@ -24,12 +19,12 @@ class ThemeMenu extends Component {
 
     handlePrimaryColorChange = (color) => {
         this.context.setPrimaryColor(color.hex);
-        theme_setPrimaryColor(color.hex);
+        updateColorCSS(color.hex, this.context.secondaryColor);
     }
 
     handleSecondaryColorChange = (color) => {
         this.context.setSecondaryColor(color.hex);
-        theme_setSecondaryColor(color.hex);
+        updateColorCSS(this.context.primaryColor, color.hex);
     }
 
     render() {
@@ -45,7 +40,7 @@ class ThemeMenu extends Component {
                     </ListItem>
                     <ListItem>
                         <HuePicker
-                            color={this.context.primaryColor}
+                            color="primary"
                             onChangeComplete={(color) => {
                                 this.handlePrimaryColorChange(color);
                             }}
@@ -53,10 +48,10 @@ class ThemeMenu extends Component {
                     </ListItem>
                     <ListItem>
                         <TwitterPicker
-                            color={this.context.primaryColor}
+                            color="primary"
                             colors={[
-                                '#66DDFF',
-                                '#333333',
+                                defaultPrimaryColor,
+                                defaultSecondaryColor,
                                 '#FFFFFF',
                                 '#000000',
                                 '#ABB8C3',
@@ -89,8 +84,8 @@ class ThemeMenu extends Component {
                         <TwitterPicker
                             color={this.context.secondaryColor}
                             colors={[
-                                '#333333',
-                                '#66DDFF',
+                                defaultSecondaryColor,
+                                defaultPrimaryColor,
                                 '#000000',
                                 '#FFFFFF',
                                 '#0693E3',

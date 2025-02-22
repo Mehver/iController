@@ -19,10 +19,7 @@ import {
     VisibilityOffOutlined,
     VisibilityOutlined
 } from '@mui/icons-material';
-import {ThemeProvider} from '@mui/material/styles';
-import {
-    customTheme
-} from '../../utils/Theme';
+import {createTheme, ThemeProvider} from '@mui/material/styles';
 
 class ModuleSettingMenu extends Component {
     constructor(props) {
@@ -37,6 +34,18 @@ class ModuleSettingMenu extends Component {
             iconSizeSX.fontSize = `${fontSize}rem`;
             boxIconSX.marginRight = '-50px';
         }
+
+        let customTheme = createTheme({
+            palette: {
+                primary: {
+                    main: this.context.primaryColor,
+                },
+                secondary: {
+                    main: this.context.secondaryColor,
+                },
+            },
+        });
+
         return (
             <ThemeProvider theme={customTheme}>
                 <List component="div" disablePadding>
@@ -84,7 +93,7 @@ class ModuleSettingMenu extends Component {
                         <ListItemButton onClick={() => {
                             this.context.setMouseWheelMenuType((this.context.mouseWheelMenuType + 1) % 3);
                         }}>
-                            <SvgIcon sx={iconSizeSX} style={{ color: 'transparent' }}/>
+                            <SvgIcon sx={iconSizeSX} style={{color: 'transparent'}}/>
                             <ListItemText primary="&nbsp;&nbsp;&nbsp;Mouse Wheel"/>
                             <Box sx={boxIconSX}>{this.context.mouseWheelMenuType === 0 ?
                                 <LooksOneOutlined sx={iconSizeSX}/> :

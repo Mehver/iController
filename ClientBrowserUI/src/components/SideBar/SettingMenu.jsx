@@ -16,11 +16,7 @@ import {
     CheckBoxOutlineBlankRounded,
     CheckBoxRounded
 } from '@mui/icons-material';
-import {ThemeProvider} from '@mui/material/styles';
-import {
-    customTheme,
-    secondaryColor
-} from '../../utils/Theme';
+import {createTheme, ThemeProvider} from '@mui/material/styles';
 
 class SettingMenu extends Component {
     constructor(props) {
@@ -78,6 +74,18 @@ class SettingMenu extends Component {
             iconSizeSX.fontSize = `${window.innerWidth / 300.0}rem`;
             boxIconSX.marginRight = '-50px';
         }
+
+        let customTheme = createTheme({
+            palette: {
+                primary: {
+                    main: this.context.primaryColor,
+                },
+                secondary: {
+                    main: this.context.secondaryColor,
+                },
+            },
+        });
+
         return (
             <ThemeProvider theme={customTheme}>
                 <List component="div" disablePadding>
@@ -109,9 +117,9 @@ class SettingMenu extends Component {
                                     value="l"
                                     control={<Radio
                                         sx={{
-                                            color: secondaryColor,
+                                            color: this.context.secondaryColor,
                                             '&.Mui-checked': {
-                                                color: secondaryColor,
+                                                color: this.context.secondaryColor,
                                             },
                                         }}
                                         color="secondary"
@@ -122,9 +130,9 @@ class SettingMenu extends Component {
                                     value="r"
                                     control={<Radio
                                         sx={{
-                                            color: secondaryColor,
+                                            color: this.context.secondaryColor,
                                             '&.Mui-checked': {
-                                                color: secondaryColor,
+                                                color: this.context.secondaryColor,
                                             },
                                         }}
                                         color="secondary"
@@ -154,8 +162,8 @@ class SettingMenu extends Component {
                             color="secondary"
                             sx={{
                                 input: {
-                                    color: secondaryColor,
-                                    caretColor: secondaryColor,
+                                    color: this.context.secondaryColor,
+                                    caretColor: this.context.secondaryColor,
                                 }
                             }}
                             focused='true'
@@ -178,8 +186,8 @@ class SettingMenu extends Component {
                             color="secondary"
                             sx={{
                                 input: {
-                                    color: secondaryColor,
-                                    caretColor: secondaryColor,
+                                    color: this.context.secondaryColor,
+                                    caretColor: this.context.secondaryColor,
                                 }
                             }}
                             focused='true'

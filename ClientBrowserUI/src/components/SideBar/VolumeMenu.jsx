@@ -2,9 +2,9 @@ import React, {Component} from 'react';
 import debounce from 'lodash/debounce';
 import {Slider, List, ListItem, Divider} from "@mui/material";
 import {VolumeDown, VolumeUp} from "@mui/icons-material";
-import {ThemeProvider} from '@mui/material/styles';
-import {customTheme} from "../../utils/Theme";
+import {createTheme, ThemeProvider} from '@mui/material/styles';
 import {api_volume_get, api_volume_set} from "../../api/volume";
+import {Context} from "../../utils/Context";
 
 class VolumeMenu extends Component {
     state = {
@@ -63,6 +63,17 @@ class VolumeMenu extends Component {
     }, 300); // 300ms的防抖时间
 
     render() {
+        let customTheme = createTheme({
+            palette: {
+                primary: {
+                    main: this.context.primaryColor,
+                },
+                secondary: {
+                    main: this.context.secondaryColor,
+                },
+            },
+        });
+
         return (
             <ThemeProvider theme={customTheme}>
                 <List component="div" disablePadding>
@@ -81,5 +92,7 @@ class VolumeMenu extends Component {
         );
     }
 }
+
+VolumeMenu.contextType = Context;
 
 export default VolumeMenu;

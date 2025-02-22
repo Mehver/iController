@@ -18,7 +18,6 @@ import {
     ColorLensRounded,
     Settings
 } from '@mui/icons-material';
-import {primaryColor, secondaryColor} from '../../utils/Theme';
 import ModulesSettingMenu from './ModulesSettingMenu';
 import MouseWheelMenu from './MouseWheelMenu';
 import KeyboardMenu from './KeyboardMenu';
@@ -35,8 +34,8 @@ class SideBar extends Component {
         let drawerWidth = '280px';
         let drawerPaperProps = {
             sx: {
-                backgroundColor: primaryColor,
-                color: secondaryColor,
+                backgroundColor: this.context.primaryColor,
+                color: this.context.secondaryColor,
                 width: drawerWidth,
             },
         };
@@ -58,8 +57,8 @@ class SideBar extends Component {
             };
             drawerPaperProps = {
                 sx: {
-                    backgroundColor: primaryColor,
-                    color: secondaryColor,
+                    backgroundColor: this.context.primaryColor,
+                    color: this.context.secondaryColor,
                     width: drawerWidth,
                     // 调整字体和图标大小
                     '& .MuiListItemIcon-root': {
