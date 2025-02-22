@@ -1,8 +1,8 @@
 import {Component} from 'react';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
-import {ThemeProvider} from '@mui/material/styles';
-import {customTheme, primaryColorTrans} from '../../utils/Theme';
+import {createTheme, ThemeProvider} from '@mui/material/styles';
+import {convertHexToRGBA} from '../../utils/Theme';
 import {Context} from '../../utils/Context';
 import {api_mousebutton} from '../../api/mousebutton';
 import {Typography} from "@mui/material";
@@ -27,8 +27,20 @@ class MouseButtons extends Component {
             width: '100%',
             // 使用 !important 否则按下时边框不会变粗
             borderWidth: '5px !important',
-            borderColor: primaryColorTrans + ' !important',
+            borderColor: convertHexToRGBA(this.context.primaryColor) + ' !important',
         };
+
+        let customTheme = createTheme({
+            palette: {
+                primary: {
+                    main: this.context.primaryColor,
+                },
+                secondary: {
+                    main: this.context.secondaryColor,
+                },
+            },
+        });
+
         return (
             <ThemeProvider theme={customTheme}>
                 <Box sx={mouseLMRBoxSX}>
