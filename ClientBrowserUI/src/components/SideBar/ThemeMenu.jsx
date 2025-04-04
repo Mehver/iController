@@ -11,6 +11,7 @@ import {
     TwitterPicker
 } from 'react-color';
 import {defaultPrimaryColor,defaultSecondaryColor,updateColorCSS} from '../../utils/Theme';
+import i18n from '../../utils/i18n';
 
 class ThemeMenu extends Component {
     constructor(props) {
@@ -35,7 +36,7 @@ class ThemeMenu extends Component {
                     disablePadding
                 >
                     <ListItem>
-                        <Typography style={{fontSize: '1rem'}}>Primary Color</Typography>
+                        <Typography style={{fontSize: '1rem'}}>{i18n.Sidebar.ThemeMenu.PrimaryColor[this.context.i18n]}</Typography>
                         <div style={{flex: 1}}/>
                     </ListItem>
                     <ListItem>
@@ -69,7 +70,7 @@ class ThemeMenu extends Component {
                         />
                     </ListItem>
                     <ListItem>
-                        <Typography style={{fontSize: '1rem'}}>Secondary Color</Typography>
+                        <Typography style={{fontSize: '1rem'}}>{i18n.Sidebar.ThemeMenu.SecondaryColor[this.context.i18n]}</Typography>
                         <div style={{flex: 1}}/>
                     </ListItem>
                     <ListItem>

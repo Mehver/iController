@@ -16,14 +16,17 @@ import {
     FilterTiltShift,
     Tune,
     ColorLensRounded,
+    GTranslate,
     Settings
 } from '@mui/icons-material';
-import ModulesSettingMenu from './ModulesSettingMenu';
+import LayoutSettingMenu from './LayoutSettingMenu';
 import MouseWheelMenu from './MouseWheelMenu';
 import KeyboardMenu from './KeyboardMenu';
 import VolumeMenu from './VolumeMenu';
 import ThemeMenu from './ThemeMenu';
+import LanguageMenu from './LanguageMenu';
 import SettingMenu from './SettingMenu';
+import i18n from '../../utils/i18n';
 
 class SideBar extends Component {
     constructor(props) {
@@ -90,7 +93,7 @@ class SideBar extends Component {
                                         this.context.setOpenMenuSW(1);
                                     }
                                 } else {
-                                    this.context.toggleSidebarModulesSettingMenu();
+                                    this.context.toggleSidebarLayoutSettingMenu();
                                 }
                             }
                         }}>
@@ -99,21 +102,21 @@ class SideBar extends Component {
                                 fontSize: '1rem',
                                 fontWeight: 'bold',
                             }}>
-                                &nbsp;&nbsp;&nbsp;Modules Settings
+                                &nbsp;&nbsp;&nbsp;{i18n.Sidebar.index.LayoutSettings[this.context.i18n]}
                             </Typography>
                             <Box sx={boxIconSX}>{this.context.autoCollapse ?
                                 this.context.openMenuSW === 1 ?
                                     <ExpandMore sx={iconSizeSX}/> :
                                     <ChevronRightOutlined sx={iconSizeSX}/> :
-                                this.context.sidebarModulesSettingMenu ?
+                                this.context.sidebarLayoutSettingMenu ?
                                     <ExpandMore sx={iconSizeSX}/> :
                                     <ChevronRightOutlined sx={iconSizeSX}/>
                             }</Box>
                         </ListItemButton>
                     </ListItem>
                     <Collapse
-                        in={this.context.autoCollapse ? this.context.openMenuSW === 1 : this.context.sidebarModulesSettingMenu}>
-                        <ModulesSettingMenu/>
+                        in={this.context.autoCollapse ? this.context.openMenuSW === 1 : this.context.sidebarLayoutSettingMenu}>
+                        <LayoutSettingMenu/>
                     </Collapse>
                     <ListItem>
                         <ListItemButton onClick={() => {
@@ -134,7 +137,7 @@ class SideBar extends Component {
                                 fontSize: '1rem',
                                 fontWeight: 'bold',
                             }}>
-                                &nbsp;&nbsp;&nbsp;Keyboard
+                                &nbsp;&nbsp;&nbsp;{i18n.Sidebar.index.Keyboard[this.context.i18n]}
                             </Typography>
                             <Box sx={boxIconSX}>{this.context.autoCollapse ?
                                 this.context.openMenuSW === 2 ?
@@ -169,7 +172,7 @@ class SideBar extends Component {
                                 fontSize: '1rem',
                                 fontWeight: 'bold',
                             }}>
-                                &nbsp;&nbsp;&nbsp;Mouse Wheel
+                                &nbsp;&nbsp;&nbsp;{i18n.Sidebar.index.MouseWheel[this.context.i18n]}
                             </Typography>
                             <Box sx={boxIconSX}>{this.context.autoCollapse ?
                                 this.context.openMenuSW === 3 ?
@@ -204,7 +207,7 @@ class SideBar extends Component {
                                 fontSize: '1rem',
                                 fontWeight: 'bold',
                             }}>
-                                &nbsp;&nbsp;&nbsp;Volume
+                                &nbsp;&nbsp;&nbsp;{i18n.Sidebar.index.Volume[this.context.i18n]}
                             </Typography>
                             <Box sx={boxIconSX}>{this.context.autoCollapse ?
                                 this.context.openMenuSW === 4 ?
@@ -239,7 +242,7 @@ class SideBar extends Component {
                                 fontSize: '1rem',
                                 fontWeight: 'bold',
                             }}>
-                                &nbsp;&nbsp;&nbsp;Color Scheme
+                                &nbsp;&nbsp;&nbsp;{i18n.Sidebar.index.ColorScheme[this.context.i18n]}
                             </Typography>
                             <Box sx={boxIconSX}>{this.context.autoCollapse ?
                                 this.context.openMenuSW === 5 ?
@@ -265,6 +268,41 @@ class SideBar extends Component {
                                         this.context.setOpenMenuSW(6);
                                     }
                                 } else {
+                                    this.context.toggleSidebarLanguageMenu();
+                                }
+                            }
+                        }}>
+                            <GTranslate sx={iconSizeSX}/>
+                            <Typography style={{
+                                fontSize: '1rem',
+                                fontWeight: 'bold',
+                            }}>
+                                &nbsp;&nbsp;&nbsp;{i18n.Sidebar.index.Language[this.context.i18n]}
+                            </Typography>
+                            <Box sx={boxIconSX}>{this.context.autoCollapse ?
+                                this.context.openMenuSW === 6 ?
+                                    <ExpandMore sx={iconSizeSX}/> :
+                                    <ChevronRightOutlined sx={iconSizeSX}/> :
+                                this.context.sidebarLanguageMenu ?
+                                    <ExpandMore sx={iconSizeSX}/> :
+                                    <ChevronRightOutlined sx={iconSizeSX}/>
+                            }</Box>
+                        </ListItemButton>
+                    </ListItem>
+                    <Collapse
+                        in={this.context.autoCollapse ? this.context.openMenuSW === 6 : this.context.sidebarLanguageMenu}>
+                        <LanguageMenu/>
+                    </Collapse>
+                    <ListItem>
+                        <ListItemButton onClick={() => {
+                            {
+                                if (this.context.autoCollapse) {
+                                    if (this.context.openMenuSW === 7) {
+                                        this.context.setOpenMenuSW(0);
+                                    } else {
+                                        this.context.setOpenMenuSW(7);
+                                    }
+                                } else {
                                     this.context.toggleSidebarSettingMenu();
                                 }
                             }
@@ -274,10 +312,10 @@ class SideBar extends Component {
                                 fontSize: '1rem',
                                 fontWeight: 'bold',
                             }}>
-                                &nbsp;&nbsp;&nbsp;Advanced Settings
+                                &nbsp;&nbsp;&nbsp;{i18n.Sidebar.index.AdvancedSettings[this.context.i18n]}
                             </Typography>
                             <Box sx={boxIconSX}>{this.context.autoCollapse ?
-                                this.context.openMenuSW === 6 ?
+                                this.context.openMenuSW === 7 ?
                                     <ExpandMore sx={iconSizeSX}/> :
                                     <ChevronRightOutlined sx={iconSizeSX}/> :
                                 this.context.sidebarSettingMenu ?
@@ -287,7 +325,7 @@ class SideBar extends Component {
                         </ListItemButton>
                     </ListItem>
                     <Collapse
-                        in={this.context.autoCollapse ? this.context.openMenuSW === 6 : this.context.sidebarSettingMenu}>
+                        in={this.context.autoCollapse ? this.context.openMenuSW === 7 : this.context.sidebarSettingMenu}>
                         <SettingMenu/>
                     </Collapse>
                 </List>

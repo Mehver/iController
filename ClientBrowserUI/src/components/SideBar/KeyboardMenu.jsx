@@ -20,6 +20,7 @@ import {
     api_keyboard_pastetext
 } from "../../api/keyboard";
 import {api_get_system_info} from "../../api/system";
+import i18n from '../../utils/i18n';
 
 class KeyboardMenu extends Component {
     constructor(props) {
@@ -133,7 +134,8 @@ class KeyboardMenu extends Component {
                     </ListItem>
                     <ListItem display="flex" alignItems="center">
                         {this.state.serverIsMac ? (
-                            <Typography style={{fontSize: '1rem'}}>*MacOS ASCII Only</Typography>
+                            // If it's MacOS, then it only supports ASCII
+                            <Typography style={{fontSize: '1rem'}}>{i18n.Sidebar.KeyboardMenu.MacOSOnlyMode[this.context.i18n]}</Typography>
                         ) : (
                             <>
                                 <Radio
@@ -151,7 +153,7 @@ class KeyboardMenu extends Component {
                                     }}
                                     color='secondary'
                                 />
-                                <Typography style={{fontSize: '1rem'}}>Paste</Typography>
+                                <Typography style={{fontSize: '1rem'}}>{i18n.Sidebar.KeyboardMenu.Paste[this.context.i18n]}</Typography>
                                 <Radio
                                     checked={this.context.keyboardDataSendMod === 'b'}
                                     onChange={() => {
@@ -167,7 +169,7 @@ class KeyboardMenu extends Component {
                                     }}
                                     color='secondary'
                                 />
-                                <Typography style={{fontSize: '1rem'}}>Type</Typography>
+                                <Typography style={{fontSize: '1rem'}}>{i18n.Sidebar.KeyboardMenu.Type[this.context.i18n]}</Typography>
                             </>
                         )}
                         <div style={{flex: 1}}/>

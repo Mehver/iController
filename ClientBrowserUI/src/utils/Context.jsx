@@ -16,16 +16,18 @@ const settingsConfig = {
     button23: {default: 0, cookie: 'button23', type: 'int'},
     autoCollapse: {default: false, cookie: 'autoCollapse', type: 'boolean', toggle: true},
     mouseWheelMenuType: {default: 0, cookie: 'mouseWheelMenuType', type: 'int'},
-    sidebarModulesSettingMenu: {default: false, cookie: 'sidebarModulesSettingMenu', type: 'boolean', toggle: true},
+    sidebarLayoutSettingMenu: {default: false, cookie: 'sidebarModulesSettingMenu', type: 'boolean', toggle: true},
     sidebarMouseWheelMenu: {default: false, cookie: 'sidebarMouseWheelMenu', type: 'boolean', toggle: true},
     sidebarKeyboardMenu: {default: false, cookie: 'sidebarKeyboardMenu', type: 'boolean', toggle: true},
     sidebarVolumeMenu: {default: false, cookie: 'sidebarVolumeMenu', type: 'boolean', toggle: true},
     sidebarSettingMenu: {default: false, cookie: 'sidebarSettingMenu', type: 'boolean', toggle: true},
     sidebarThemeMenu: {default: false, cookie: 'sidebarThemeMenu', type: 'boolean', toggle: true},
+    sidebarLanguageMenu: {default: false, cookie: 'sidebarLanguageMenu', type: 'boolean', toggle: true},
     primaryColor: {default: defaultPrimaryColor, cookie: 'primaryColor'},
     secondaryColor: {default: defaultSecondaryColor, cookie: 'secondaryColor'},
     openMenuSW: {default: 0, cookie: 'openMenuSW', type: 'int'},
     keyboardDataSendMod: {default: 'a', cookie: 'keyboardDataSendMod'},
+    i18n: {default: 'en', cookie: 'i18n'},
 };
 
 // 根据配置解析 cookie 值
