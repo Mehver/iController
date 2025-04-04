@@ -1,9 +1,9 @@
 <div align="center">
     <img src="https://github.com/Mehver/iController/raw/main/docs/icon/256.png" width="20%" alt=""/>
-    <h1>iController <code>v0.6.4</code></h1>
+    <h1>iController <code>v0.6.5</code></h1>
 	<p>English | <a href='https://github.com/Mehver/iController/blob/main/docs/README-cn.md'>简体中文</a></p>
     <span>
-        <a href='https://github.com/Mehver/iController/releases/tag/v0.6.4'><img src="https://img.shields.io/badge/Windows%20(x64)-v0.6.4-blue?logo=Windows" alt=""/></a>&nbsp;
+        <a href='https://github.com/Mehver/iController/releases/tag/v0.6.5'><img src="https://img.shields.io/badge/Windows%20(x64)-v0.6.5-blue?logo=Windows" alt=""/></a>&nbsp;
         <a href='https://github.com/Mehver/iController/releases/tag/v0.5.1'><img src="https://img.shields.io/badge/MacOS%20(arm64)-v0.5.1-green?logo=Apple" alt=""/></a>&nbsp;
         <a href='https://github.com/Mehver/iController/releases/tag/v0.5.1'><img src="https://img.shields.io/badge/MacOS%20(x64)-v0.5.1-green?logo=Apple" alt=""/></a>
     </span>
