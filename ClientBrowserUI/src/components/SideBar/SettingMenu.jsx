@@ -17,6 +17,7 @@ import {
     CheckBoxRounded
 } from '@mui/icons-material';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
+import i18n from '../../utils/i18n';
 
 class SettingMenu extends Component {
     constructor(props) {
@@ -90,7 +91,7 @@ class SettingMenu extends Component {
             <ThemeProvider theme={customTheme}>
                 <List component="div" disablePadding>
                     <ListItem>
-                        <Typography style={{fontSize: '1rem'}}>Auto-Collapse Submenus</Typography>
+                        <Typography style={{fontSize: '1rem'}}>{i18n.Sidebar.SettingMenu.AutoCollapseSubmenus[this.context.i18n]}</Typography>
                         <div style={{flex: 1}}/>
                         <ListItemButton onClick={() => {
                             this.context.toggleAutoCollapse();
@@ -102,7 +103,7 @@ class SettingMenu extends Component {
                         </ListItemButton>
                     </ListItem>
                     <ListItem>
-                        <Typography style={{fontSize: '1rem'}}>Sidebar Toggle</Typography>
+                        <Typography style={{fontSize: '1rem'}}>{i18n.Sidebar.SettingMenu.SidebarToggle[this.context.i18n]}</Typography>
                         <div style={{flex: 1}}/>
                         <FormControl component="fieldset">
                             <RadioGroup
@@ -143,14 +144,14 @@ class SettingMenu extends Component {
                         </FormControl>
                     </ListItem>
                     <ListItem>
-                        <Typography style={{fontSize: '1rem'}}>Adjustment Parameters</Typography>
+                        <Typography style={{fontSize: '1rem'}}>{i18n.Sidebar.SettingMenu.AdjustmentParameters[this.context.i18n]}</Typography>
                         <div style={{flex: 1}}/>
                     </ListItem>
                     <ListItem>
                         <Typography style={{fontSize: '1rem'}}>&nbsp;</Typography>
                         <div style={{flex: 1}}/>
                         <TextField
-                            label="Touchpad Sensitivity"
+                            label={i18n.Sidebar.SettingMenu.TPadSensitivity[this.context.i18n]}
                             variant="outlined"
                             value={tPadSensitivity}
                             onChange={(e) => this.handleTextFieldChange(e, 'tPadSensitivity')}
@@ -174,7 +175,7 @@ class SettingMenu extends Component {
                         <Typography style={{fontSize: '1rem'}}>&nbsp;</Typography>
                         <div style={{flex: 1}}/>
                         <TextField
-                            label="Mouse Wheel Sensitivity"
+                            label={i18n.Sidebar.SettingMenu.MWheelSensitivity[this.context.i18n]}
                             variant="outlined"
                             value={mWheelSensitivity}
                             onChange={(e) => this.handleTextFieldChange(e, 'mWheelSensitivity')}
