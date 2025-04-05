@@ -26,6 +26,15 @@ jobs:
         with:
           python-version: '3.10.10'
 
+      - name: Update Version Number
+        run: |
+          $oldVersion = Get-Content .\.github\metadata\PreviousVersion.txt
+          echo "OLD_VERSION=$oldVersion" >> $env:GITHUB_ENV
+          cd bin
+          python UpdateVersionNumber.py $oldVersion ${{ github.event.release.tag_name }}
+          cd ..
+        shell: pwsh
+
       - name: Python Install Dependencies
         run: pip install -r requirements.txt
 
@@ -53,3 +62,20 @@ jobs:
           asset_path: ${{ env.ARTIFACT_PATH }}
           asset_name: icontroller-${{ github.event.release.tag_name }}-portable-win-x64.zip
           asset_content_type: application/zip
+
+      - name: Commit Version Number Update to main
+        if: ${{ success() }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # 在当前 detached HEAD 下创建一个临时分支保存改动
+          git checkout -b version-update-temp
+          git add .
+          git commit -m "Update version number from $env:OLD_VERSION to ${{ github.event.release.tag_name }}" || echo "No changes to commit"
+          # 切换到主分支，这里假设主分支名称为 main
+          git fetch origin main
+          git checkout main
+          # 将临时分支的改动合并到主分支
+          git merge version-update-temp --no-ff -m "Merge version update from $env:OLD_VERSION to ${{ github.event.release.tag_name }}"
+          git push origin main
+        shell: pwsh
