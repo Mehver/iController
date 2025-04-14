@@ -3,7 +3,22 @@ import ThemeMenu from "../components/SideBar/ThemeMenu";
 import LayoutSettingMenu from "../components/SideBar/LayoutSettingMenu";
 
 const i18n = {
-    Screen: {},
+    Screen: {
+        Touchpad: {
+            TouchpadCoordinates: {
+                en: "Touchpad Coordinates",
+                zh: "触摸板坐标",
+            },
+            LongPress: {
+                en: "Long press to reposition cursor to the screen center",
+                zh: "长按将光标重新定位到屏幕中心",
+            },
+            LongPressDetect: {
+                en: "Long press detected, cursor repositioned",
+                zh: "检测到长按, 光标重新定位",
+            },
+        },
+    },
     Sidebar: {
         index: {
             LayoutSettings: {

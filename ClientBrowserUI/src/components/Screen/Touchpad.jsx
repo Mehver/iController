@@ -5,6 +5,7 @@ import {
     api_touchpad_reposition
 } from '../../api/touchpad';
 import {Typography} from "@mui/material";
+import i18n from '../../utils/i18n';
 
 function throttle(func, limit) {
     let inThrottle;
@@ -49,16 +50,17 @@ class Touchpad extends Component {
     }
 
     handleLongPress = () => {
-        // console.log('Long press detected');
+        console.log('Long press detected');
         api_touchpad_reposition();
+        alert(i18n.Screen.Touchpad.LongPressDetect[this.context.i18n]);
     }
 
     handleDoubleClick = () => {
-        // console.log('Double click detected');
+        console.log('Double click detected');
     }
 
     handleTripleClick = () => {
-        // console.log('Triple click detected');
+        console.log('Triple click detected');
     }
 
     handleTouchStart = (e) => {
@@ -147,10 +149,10 @@ class Touchpad extends Component {
                             id={'touchPad'}
                         >
                             <Typography style={{fontSize: '1.1rem'}}>
-                                Touchpad Coordinates ({parseInt(this.state.xPercent)}%, {parseInt(this.state.yPercent)}%)
+                                {i18n.Screen.Touchpad.TouchpadCoordinates[this.context.i18n]} ({parseInt(this.state.xPercent)}%, {parseInt(this.state.yPercent)}%)
                             </Typography>
                             <Typography style={{fontSize: '0.6rem'}}>
-                                *Long press to reposition cursor to the center
+                                *{i18n.Screen.Touchpad.LongPress[this.context.i18n]}
                             </Typography>
                         </div>
                     </> : null
