@@ -49,8 +49,8 @@ class LanguageMenu extends Component {
                         }}
                         focused={true}
                     >
-                        <option value="en">English</option>
-                        <option value="zh">中文</option>
+                        <option value="en">{i18n.Sidebar.LanguageMenu.EN[this.context.i18n]}</option>
+                        <option value="zh">{i18n.Sidebar.LanguageMenu.ZH[this.context.i18n]}</option>
                     </TextField>
                 </ListItem>
             </ThemeProvider>

@@ -105,6 +105,14 @@ const i18n = {
                 en: "Language",
                 zh: "语言",
             },
+            EN: {
+                en: "English",
+                zh: "English (英文)",
+            },
+            ZH: {
+                en: "中文 (Simplified Chinese)",
+                zh: "中文",
+            },
         },
         SettingMenu: {
             AutoCollapseSubmenus: {
