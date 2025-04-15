@@ -45,7 +45,18 @@ class LanguageMenu extends Component {
                             input: {
                                 color: this.context.secondaryColor,
                                 caretColor: this.context.secondaryColor,
-                            }
+                            },
+                            '& select': {
+                                color: this.context.secondaryColor,
+                            },
+                            '& svg': {
+                                color: this.context.secondaryColor,
+                            },
+                            '& option': {
+                                // On Chrome, use this color for the dropdown options, while the dropdown selector's background is white
+                                // On Safari, the dropdown selector use browser's UI, so this color doesn't matter
+                                color: '#000',
+                            },
                         }}
                         focused={true}
                     >
