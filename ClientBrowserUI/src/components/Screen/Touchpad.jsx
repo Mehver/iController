@@ -1,9 +1,6 @@
 import {Component} from 'react';
 import {Context} from '../../utils/Context';
-import {
-    api_touchpad,
-    api_touchpad_reposition
-} from '../../api/touchpad';
+import {api_touchpad, api_touchpad_reposition} from '../../api/touchpad';
 import {Typography} from "@mui/material";
 import i18n from '../../utils/i18n';
 
@@ -34,19 +31,21 @@ class Touchpad extends Component {
             lastTouchTime: 0,
             touchCount: 0,
         };
-        this.handleTouchMove = throttle(this.handleTouchMove.bind(this), 1000 * 0.05);
+        // 对 handleTouchMove 进行 throttle 限制
+        this.handleTouchMove = throttle(this.handleTouchMove.bind(this), 50);
         this.longPressTimer = null;
         this.doubleTapTimer = null;
     }
 
     componentDidMount() {
-        // 获取窗口尺寸
-        // noinspection JSUnresolvedFunction
         window.addEventListener('resize', this.updateWindowDimensions);
-        // // 禁用页面滚动
-        // // 移动到 GeneralDidMount.js 实现
-        // document.body.style.overflow = 'hidden';
-        // document.documentElement.style.overflow = 'hidden';
+    }
+
+    updateWindowDimensions = () => {
+        this.setState({
+            screenWidth: window.innerWidth,
+            screenHeight: window.innerHeight
+        });
     }
 
     handleLongPress = () => {
@@ -56,11 +55,11 @@ class Touchpad extends Component {
     }
 
     handleDoubleClick = () => {
-        console.log('Double click detected');
+        // console.log('Double click detected');
     }
 
     handleTripleClick = () => {
-        console.log('Triple click detected');
+        // console.log('Triple click detected');
     }
 
     handleTouchStart = (e) => {
@@ -95,8 +94,6 @@ class Touchpad extends Component {
 
     handleTouchMove = (e) => {
         e.preventDefault();
-        clearTimeout(this.longPressTimer);
-
         const touch = e.touches[0];
         const {initialX, initialY, screenWidth, screenHeight} = this.state;
         const shorterSide = screenWidth < screenHeight ? screenWidth : screenHeight;
@@ -104,6 +101,13 @@ class Touchpad extends Component {
         const yRelative = touch.clientY - initialY;
         const xPercent = (xRelative / (shorterSide / 2)) * 100 * this.context.tPadSensitivity;
         const yPercent = (yRelative / (shorterSide / 2)) * 100 * this.context.tPadSensitivity;
+
+        // 计算滑动的整体百分比幅度，采用欧几里得距离
+        const movementDistance = Math.sqrt(xPercent * xPercent + yPercent * yPercent);
+        // 如果滑动幅度超过5%，则取消长按定时器
+        if (movementDistance > 5) {
+            clearTimeout(this.longPressTimer);
+        }
 
         this.setState({
             xPercent: xPercent.toFixed(2),
@@ -140,22 +144,22 @@ class Touchpad extends Component {
         return (
             <>
                 {this.context.buttonSW1 ?
-                    <>
-                        <div
-                            onTouchStart={this.handleTouchStart}
-                            onTouchMove={this.handleTouchMove}
-                            onTouchEnd={this.handleTouchEnd}
-                            style={touchPadStyle}
-                            id={'touchPad'}
-                        >
-                            <Typography style={{fontSize: '1.1rem'}}>
-                                {i18n.Screen.Touchpad.TouchpadCoordinates[this.context.i18n]} ({parseInt(this.state.xPercent)}%, {parseInt(this.state.yPercent)}%)
-                            </Typography>
-                            <Typography style={{fontSize: '0.6rem'}}>
-                                *{i18n.Screen.Touchpad.LongPress[this.context.i18n]}
-                            </Typography>
-                        </div>
-                    </> : null
+                    <div
+                        onTouchStart={this.handleTouchStart}
+                        onTouchMove={this.handleTouchMove}
+                        onTouchEnd={this.handleTouchEnd}
+                        style={touchPadStyle}
+                        id={'touchPad'}
+                    >
+                        <Typography style={{fontSize: '1.1rem'}}>
+                            {i18n.Screen.Touchpad.TouchpadCoordinates[this.context.i18n]} (
+                            {parseInt(this.state.xPercent)}%, {parseInt(this.state.yPercent)}%)
+                        </Typography>
+                        <Typography style={{fontSize: '0.6rem'}}>
+                            *{i18n.Screen.Touchpad.LongPress[this.context.i18n]}
+                        </Typography>
+                    </div>
+                    : null
                 }
             </>
         );
