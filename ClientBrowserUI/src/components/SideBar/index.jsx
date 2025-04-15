@@ -63,8 +63,8 @@ class SideBar extends Component {
             padding: 0,
         };
 
-        const iconSizeSX = {};
-        const boxIconSX = {};
+        let iconSizeSX = {};
+        let boxIconSX = {};
 
         if (window.innerWidth < 280) {
             const fontSize = window.innerWidth / 300.0;
