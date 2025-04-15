@@ -34,6 +34,22 @@ class SideBar extends Component {
     }
 
     render() {
+        const MenuIndex = {
+            AllClose: 0,
+            LayoutSettingMenu: 1,
+            KeyboardMenu: 2,
+            MouseWheelMenu: 3,
+            VolumeMenu: 4,
+            ThemeMenu: 5,
+            LanguageMenu: 6,
+            SettingMenu: 7,
+        };
+
+        const textStyle = {
+            fontSize: '1rem',
+            fontWeight: 'bold',
+        };
+
         let drawerWidth = '280px';
         let drawerPaperProps = {
             sx: {
@@ -46,8 +62,10 @@ class SideBar extends Component {
             width: drawerWidth,
             padding: 0,
         };
-        let iconSizeSX = {};
-        let boxIconSX = {};
+
+        const iconSizeSX = {};
+        const boxIconSX = {};
+
         if (window.innerWidth < 280) {
             const fontSize = window.innerWidth / 300.0;
             drawerWidth = '80%';
@@ -75,6 +93,7 @@ class SideBar extends Component {
             iconSizeSX.fontSize = `${fontSize}rem`;
             boxIconSX.marginRight = '-50px';
         }
+
         return (
             <Drawer
                 anchor={this.context.drawerRL === 'r' ? 'right' : 'left'}
@@ -87,10 +106,10 @@ class SideBar extends Component {
                         <ListItemButton onClick={() => {
                             {
                                 if (this.context.autoCollapse) {
-                                    if (this.context.openMenuSW === 1) {
-                                        this.context.setOpenMenuSW(0);
+                                    if (this.context.openMenuSW === MenuIndex.LayoutSettingMenu) {
+                                        this.context.setOpenMenuSW(MenuIndex.AllClose);
                                     } else {
-                                        this.context.setOpenMenuSW(1);
+                                        this.context.setOpenMenuSW(MenuIndex.LayoutSettingMenu);
                                     }
                                 } else {
                                     this.context.toggleSidebarLayoutSettingMenu();
@@ -98,14 +117,11 @@ class SideBar extends Component {
                             }
                         }}>
                             <Tune sx={iconSizeSX}/>
-                            <Typography style={{
-                                fontSize: '1rem',
-                                fontWeight: 'bold',
-                            }}>
+                            <Typography style={textStyle}>
                                 &nbsp;&nbsp;&nbsp;{i18n.Sidebar.index.LayoutSettings[this.context.i18n]}
                             </Typography>
                             <Box sx={boxIconSX}>{this.context.autoCollapse ?
-                                this.context.openMenuSW === 1 ?
+                                this.context.openMenuSW === MenuIndex.LayoutSettingMenu ?
                                     <ExpandMore sx={iconSizeSX}/> :
                                     <ChevronRightOutlined sx={iconSizeSX}/> :
                                 this.context.sidebarLayoutSettingMenu ?
@@ -115,17 +131,17 @@ class SideBar extends Component {
                         </ListItemButton>
                     </ListItem>
                     <Collapse
-                        in={this.context.autoCollapse ? this.context.openMenuSW === 1 : this.context.sidebarLayoutSettingMenu}>
+                        in={this.context.autoCollapse ? this.context.openMenuSW === MenuIndex.LayoutSettingMenu : this.context.sidebarLayoutSettingMenu}>
                         <LayoutSettingMenu/>
                     </Collapse>
                     <ListItem>
                         <ListItemButton onClick={() => {
                             {
                                 if (this.context.autoCollapse) {
-                                    if (this.context.openMenuSW === 2) {
-                                        this.context.setOpenMenuSW(0);
+                                    if (this.context.openMenuSW === MenuIndex.KeyboardMenu) {
+                                        this.context.setOpenMenuSW(MenuIndex.AllClose);
                                     } else {
-                                        this.context.setOpenMenuSW(2);
+                                        this.context.setOpenMenuSW(MenuIndex.KeyboardMenu);
                                     }
                                 } else {
                                     this.context.toggleSidebarKeyboardMenu();
@@ -133,14 +149,11 @@ class SideBar extends Component {
                             }
                         }}>
                             <Keyboard sx={iconSizeSX}/>
-                            <Typography style={{
-                                fontSize: '1rem',
-                                fontWeight: 'bold',
-                            }}>
+                            <Typography style={textStyle}>
                                 &nbsp;&nbsp;&nbsp;{i18n.Sidebar.index.Keyboard[this.context.i18n]}
                             </Typography>
                             <Box sx={boxIconSX}>{this.context.autoCollapse ?
-                                this.context.openMenuSW === 2 ?
+                                this.context.openMenuSW === MenuIndex.KeyboardMenu ?
                                     <ExpandMore sx={iconSizeSX}/> :
                                     <ChevronRightOutlined sx={iconSizeSX}/> :
                                 this.context.sidebarKeyboardMenu ?
@@ -150,17 +163,17 @@ class SideBar extends Component {
                         </ListItemButton>
                     </ListItem>
                     <Collapse
-                        in={this.context.autoCollapse ? this.context.openMenuSW === 2 : this.context.sidebarKeyboardMenu}>
+                        in={this.context.autoCollapse ? this.context.openMenuSW === MenuIndex.KeyboardMenu : this.context.sidebarKeyboardMenu}>
                         <KeyboardMenu/>
                     </Collapse>
                     <ListItem>
                         <ListItemButton onClick={() => {
                             {
                                 if (this.context.autoCollapse) {
-                                    if (this.context.openMenuSW === 3) {
-                                        this.context.setOpenMenuSW(0);
+                                    if (this.context.openMenuSW === MenuIndex.MouseWheelMenu) {
+                                        this.context.setOpenMenuSW(MenuIndex.AllClose);
                                     } else {
-                                        this.context.setOpenMenuSW(3);
+                                        this.context.setOpenMenuSW(MenuIndex.MouseWheelMenu);
                                     }
                                 } else {
                                     this.context.toggleSidebarMouseWheelMenu();
@@ -168,14 +181,11 @@ class SideBar extends Component {
                             }
                         }}>
                             <FilterTiltShift sx={iconSizeSX}/>
-                            <Typography style={{
-                                fontSize: '1rem',
-                                fontWeight: 'bold',
-                            }}>
+                            <Typography style={textStyle}>
                                 &nbsp;&nbsp;&nbsp;{i18n.Sidebar.index.MouseWheel[this.context.i18n]}
                             </Typography>
                             <Box sx={boxIconSX}>{this.context.autoCollapse ?
-                                this.context.openMenuSW === 3 ?
+                                this.context.openMenuSW === MenuIndex.MouseWheelMenu ?
                                     <ExpandMore sx={iconSizeSX}/> :
                                     <ChevronRightOutlined sx={iconSizeSX}/> :
                                 this.context.sidebarMouseWheelMenu ?
@@ -185,17 +195,17 @@ class SideBar extends Component {
                         </ListItemButton>
                     </ListItem>
                     <Collapse
-                        in={this.context.autoCollapse ? this.context.openMenuSW === 3 : this.context.sidebarMouseWheelMenu}>
+                        in={this.context.autoCollapse ? this.context.openMenuSW === MenuIndex.MouseWheelMenu : this.context.sidebarMouseWheelMenu}>
                         <MouseWheelMenu/>
                     </Collapse>
                     <ListItem>
                         <ListItemButton onClick={() => {
                             {
                                 if (this.context.autoCollapse) {
-                                    if (this.context.openMenuSW === 4) {
-                                        this.context.setOpenMenuSW(0);
+                                    if (this.context.openMenuSW === MenuIndex.VolumeMenu) {
+                                        this.context.setOpenMenuSW(MenuIndex.AllClose);
                                     } else {
-                                        this.context.setOpenMenuSW(4);
+                                        this.context.setOpenMenuSW(MenuIndex.VolumeMenu);
                                     }
                                 } else {
                                     this.context.toggleSidebarVolumeMenu();
@@ -203,14 +213,11 @@ class SideBar extends Component {
                             }
                         }}>
                             <Speaker sx={iconSizeSX}/>
-                            <Typography style={{
-                                fontSize: '1rem',
-                                fontWeight: 'bold',
-                            }}>
+                            <Typography style={textStyle}>
                                 &nbsp;&nbsp;&nbsp;{i18n.Sidebar.index.Volume[this.context.i18n]}
                             </Typography>
                             <Box sx={boxIconSX}>{this.context.autoCollapse ?
-                                this.context.openMenuSW === 4 ?
+                                this.context.openMenuSW === MenuIndex.VolumeMenu ?
                                     <ExpandMore sx={iconSizeSX}/> :
                                     <ChevronRightOutlined sx={iconSizeSX}/> :
                                 this.context.sidebarVolumeMenu ?
@@ -220,17 +227,17 @@ class SideBar extends Component {
                         </ListItemButton>
                     </ListItem>
                     <Collapse
-                        in={this.context.autoCollapse ? this.context.openMenuSW === 4 : this.context.sidebarVolumeMenu}>
+                        in={this.context.autoCollapse ? this.context.openMenuSW === MenuIndex.VolumeMenu : this.context.sidebarVolumeMenu}>
                         <VolumeMenu/>
                     </Collapse>
                     <ListItem>
                         <ListItemButton onClick={() => {
                             {
                                 if (this.context.autoCollapse) {
-                                    if (this.context.openMenuSW === 5) {
-                                        this.context.setOpenMenuSW(0);
+                                    if (this.context.openMenuSW === MenuIndex.ThemeMenu) {
+                                        this.context.setOpenMenuSW(MenuIndex.AllClose);
                                     } else {
-                                        this.context.setOpenMenuSW(5);
+                                        this.context.setOpenMenuSW(MenuIndex.ThemeMenu);
                                     }
                                 } else {
                                     this.context.toggleSidebarThemeMenu();
@@ -238,14 +245,11 @@ class SideBar extends Component {
                             }
                         }}>
                             <ColorLensRounded sx={iconSizeSX}/>
-                            <Typography style={{
-                                fontSize: '1rem',
-                                fontWeight: 'bold',
-                            }}>
+                            <Typography style={textStyle}>
                                 &nbsp;&nbsp;&nbsp;{i18n.Sidebar.index.ColorScheme[this.context.i18n]}
                             </Typography>
                             <Box sx={boxIconSX}>{this.context.autoCollapse ?
-                                this.context.openMenuSW === 5 ?
+                                this.context.openMenuSW === MenuIndex.ThemeMenu ?
                                     <ExpandMore sx={iconSizeSX}/> :
                                     <ChevronRightOutlined sx={iconSizeSX}/> :
                                 this.context.sidebarThemeMenu ?
@@ -255,17 +259,17 @@ class SideBar extends Component {
                         </ListItemButton>
                     </ListItem>
                     <Collapse
-                        in={this.context.autoCollapse ? this.context.openMenuSW === 5 : this.context.sidebarThemeMenu}>
+                        in={this.context.autoCollapse ? this.context.openMenuSW === MenuIndex.ThemeMenu : this.context.sidebarThemeMenu}>
                         <ThemeMenu/>
                     </Collapse>
                     <ListItem>
                         <ListItemButton onClick={() => {
                             {
                                 if (this.context.autoCollapse) {
-                                    if (this.context.openMenuSW === 6) {
-                                        this.context.setOpenMenuSW(0);
+                                    if (this.context.openMenuSW === MenuIndex.LanguageMenu) {
+                                        this.context.setOpenMenuSW(MenuIndex.AllClose);
                                     } else {
-                                        this.context.setOpenMenuSW(6);
+                                        this.context.setOpenMenuSW(MenuIndex.LanguageMenu);
                                     }
                                 } else {
                                     this.context.toggleSidebarLanguageMenu();
@@ -273,14 +277,11 @@ class SideBar extends Component {
                             }
                         }}>
                             <GTranslate sx={iconSizeSX}/>
-                            <Typography style={{
-                                fontSize: '1rem',
-                                fontWeight: 'bold',
-                            }}>
+                            <Typography style={textStyle}>
                                 &nbsp;&nbsp;&nbsp;{i18n.Sidebar.index.Language[this.context.i18n]}
                             </Typography>
                             <Box sx={boxIconSX}>{this.context.autoCollapse ?
-                                this.context.openMenuSW === 6 ?
+                                this.context.openMenuSW === MenuIndex.LanguageMenu ?
                                     <ExpandMore sx={iconSizeSX}/> :
                                     <ChevronRightOutlined sx={iconSizeSX}/> :
                                 this.context.sidebarLanguageMenu ?
@@ -290,17 +291,17 @@ class SideBar extends Component {
                         </ListItemButton>
                     </ListItem>
                     <Collapse
-                        in={this.context.autoCollapse ? this.context.openMenuSW === 6 : this.context.sidebarLanguageMenu}>
+                        in={this.context.autoCollapse ? this.context.openMenuSW === MenuIndex.LanguageMenu : this.context.sidebarLanguageMenu}>
                         <LanguageMenu/>
                     </Collapse>
                     <ListItem>
                         <ListItemButton onClick={() => {
                             {
                                 if (this.context.autoCollapse) {
-                                    if (this.context.openMenuSW === 7) {
-                                        this.context.setOpenMenuSW(0);
+                                    if (this.context.openMenuSW === MenuIndex.SettingMenu) {
+                                        this.context.setOpenMenuSW(MenuIndex.AllClose);
                                     } else {
-                                        this.context.setOpenMenuSW(7);
+                                        this.context.setOpenMenuSW(MenuIndex.SettingMenu);
                                     }
                                 } else {
                                     this.context.toggleSidebarSettingMenu();
@@ -308,14 +309,11 @@ class SideBar extends Component {
                             }
                         }}>
                             <Settings sx={iconSizeSX}/>
-                            <Typography style={{
-                                fontSize: '1rem',
-                                fontWeight: 'bold',
-                            }}>
+                            <Typography style={textStyle}>
                                 &nbsp;&nbsp;&nbsp;{i18n.Sidebar.index.AdvancedSettings[this.context.i18n]}
                             </Typography>
                             <Box sx={boxIconSX}>{this.context.autoCollapse ?
-                                this.context.openMenuSW === 7 ?
+                                this.context.openMenuSW === MenuIndex.SettingMenu ?
                                     <ExpandMore sx={iconSizeSX}/> :
                                     <ChevronRightOutlined sx={iconSizeSX}/> :
                                 this.context.sidebarSettingMenu ?
@@ -325,7 +323,7 @@ class SideBar extends Component {
                         </ListItemButton>
                     </ListItem>
                     <Collapse
-                        in={this.context.autoCollapse ? this.context.openMenuSW === 7 : this.context.sidebarSettingMenu}>
+                        in={this.context.autoCollapse ? this.context.openMenuSW === MenuIndex.SettingMenu : this.context.sidebarSettingMenu}>
                         <SettingMenu/>
                     </Collapse>
                 </List>
