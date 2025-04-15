@@ -1,7 +1,3 @@
-import KeyboardMenu from "../components/SideBar/KeyboardMenu";
-import ThemeMenu from "../components/SideBar/ThemeMenu";
-import LayoutSettingMenu from "../components/SideBar/LayoutSettingMenu";
-
 const i18n = {
     Screen: {
         Touchpad: {
