@@ -81,6 +81,18 @@ class KeyboardMenu extends Component {
             },
         });
 
+        const radioSX = {
+            color: this.context.secondaryColor,
+            '&.Mui-checked': {
+                color: this.context.secondaryColor,
+            },
+        };
+        const radioProps = {
+            sx: radioSX,
+            color: 'secondary',
+        };
+        const funcButton_iconSX = {color: this.context.secondaryColor};
+
         return (
             <ThemeProvider theme={customTheme}>
                 <List component="div" disablePadding>
@@ -135,41 +147,41 @@ class KeyboardMenu extends Component {
                     <ListItem display="flex" alignItems="center">
                         {this.state.serverIsMac ? (
                             // If it's MacOS, then it only supports ASCII
-                            <Typography style={{fontSize: '1rem'}}>{i18n.Sidebar.KeyboardMenu.MacOSOnlyMode[this.context.i18n]}</Typography>
+                            <Typography
+                                style={i18n.Sidebar.KeyboardMenu.MacOSOnlyMode.FontSize[this.context.i18n]}
+                            >
+                                {i18n.Sidebar.KeyboardMenu.MacOSOnlyMode[this.context.i18n]}
+                            </Typography>
                         ) : (
                             <>
                                 <Radio
+                                    {...radioProps}
                                     checked={this.context.keyboardDataSendMod === 'a'}
                                     onChange={() => {
                                         this.context.setKeyboardDataSendMod('a');
                                     }}
                                     value={this.context.keyboardDataSendMod}
                                     inputProps={{'aria-label': 'a'}}
-                                    sx={{
-                                        color: this.context.secondaryColor,
-                                        '&.Mui-checked': {
-                                            color: this.context.secondaryColor,
-                                        },
-                                    }}
-                                    color='secondary'
                                 />
-                                <Typography style={{fontSize: '1rem'}}>{i18n.Sidebar.KeyboardMenu.Paste[this.context.i18n]}</Typography>
+                                <Typography
+                                    style={i18n.Sidebar.KeyboardMenu.Paste.FontSize[this.context.i18n]}
+                                >
+                                    {i18n.Sidebar.KeyboardMenu.Paste[this.context.i18n]}
+                                </Typography>
                                 <Radio
+                                    {...radioProps}
                                     checked={this.context.keyboardDataSendMod === 'b'}
                                     onChange={() => {
                                         this.context.setKeyboardDataSendMod('b');
                                     }}
                                     value={this.context.keyboardDataSendMod}
                                     inputProps={{'aria-label': 'b'}}
-                                    sx={{
-                                        color: this.context.secondaryColor,
-                                        '&.Mui-checked': {
-                                            color: this.context.secondaryColor,
-                                        },
-                                    }}
-                                    color='secondary'
                                 />
-                                <Typography style={{fontSize: '1rem'}}>{i18n.Sidebar.KeyboardMenu.Type[this.context.i18n]}</Typography>
+                                <Typography
+                                    style={i18n.Sidebar.KeyboardMenu.Type.FontSize[this.context.i18n]}
+                                >
+                                    {i18n.Sidebar.KeyboardMenu.Type[this.context.i18n]}
+                                </Typography>
                             </>
                         )}
                         <div style={{flex: 1}}/>
@@ -177,13 +189,13 @@ class KeyboardMenu extends Component {
                             onClick={() => this.handleSendButton('Enter')}
                             style={{marginLeft: '10px'}}
                         >
-                            <SubdirectoryArrowLeftOutlined sx={{color: this.context.secondaryColor}}/>
+                            <SubdirectoryArrowLeftOutlined sx={funcButton_iconSX}/>
                         </IconButton>
                         <IconButton
                             onClick={() => this.handleSendButton('Backspace')}
                             style={{marginRight: '10px'}}
                         >
-                            <BackspaceOutlined sx={{color: this.context.secondaryColor}}/>
+                            <BackspaceOutlined sx={funcButton_iconSX}/>
                         </IconButton>
                     </ListItem>
                 </List>

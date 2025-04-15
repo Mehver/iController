@@ -68,14 +68,26 @@ const i18n = {
             MacOSOnlyMode: {
                 en: "*MacOS ASCII Only",
                 zh: "*MacOS 仅限 ASCII",
+                FontSize : {
+                    en: {fontSize: '1rem'},
+                    zh: {fontSize: '1rem'},
+                },
             },
             Paste: {
                 en: "Paste",
                 zh: "粘贴",
+                FontSize : {
+                    en: {fontSize: '1rem'},
+                    zh: {fontSize: '0.99rem'},
+                },
             },
             Type: {
                 en: "Type",
                 zh: "输入",
+                FontSize : {
+                    en: {fontSize: '1rem'},
+                    zh: {fontSize: '0.99rem'},
+                },
             },
         },
         ThemeMenu: {
