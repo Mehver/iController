@@ -87,11 +87,38 @@ class SettingMenu extends Component {
             },
         });
 
+        const listItemTextTypoStyle = {fontSize: '1rem'};
+        const secondaryColorTag = "secondary";
+
+        const parametersAdjustmentTypoSX = {
+            input: {
+                color: this.context.secondaryColor,
+                caretColor: this.context.secondaryColor,
+            }
+        };
+        const parametersAdjustmentTypoProps = {
+            focused: "true",
+            size: "small",
+            fullWidth: "true",
+            variant: "outlined",
+            type: "number",
+            inputProps: {step: "0.01", min: "0"},
+        };
+
+        const formControlLabelRadioSX = {
+            color: this.context.secondaryColor,
+            '&.Mui-checked': {
+                color: this.context.secondaryColor,
+            },
+        };
+
         return (
             <ThemeProvider theme={customTheme}>
                 <List component="div" disablePadding>
                     <ListItem>
-                        <Typography style={{fontSize: '1rem'}}>{i18n.Sidebar.SettingMenu.AutoCollapseSubmenus[this.context.i18n]}</Typography>
+                        <Typography style={listItemTextTypoStyle}>
+                            {i18n.Sidebar.SettingMenu.AutoCollapseSubmenus[this.context.i18n]}
+                        </Typography>
                         <div style={{flex: 1}}/>
                         <ListItemButton onClick={() => {
                             this.context.toggleAutoCollapse();
@@ -103,7 +130,9 @@ class SettingMenu extends Component {
                         </ListItemButton>
                     </ListItem>
                     <ListItem>
-                        <Typography style={{fontSize: '1rem'}}>{i18n.Sidebar.SettingMenu.SidebarToggle[this.context.i18n]}</Typography>
+                        <Typography style={listItemTextTypoStyle}>
+                            {i18n.Sidebar.SettingMenu.SidebarToggle[this.context.i18n]}
+                        </Typography>
                         <div style={{flex: 1}}/>
                         <FormControl component="fieldset">
                             <RadioGroup
@@ -112,31 +141,21 @@ class SettingMenu extends Component {
                                 name="row-radio-buttons-group"
                                 value={this.state.drawerSide}
                                 onChange={this.handleRadioChange}
-                                color="secondary"
+                                color={secondaryColorTag}
                             >
                                 <FormControlLabel
                                     value="l"
                                     control={<Radio
-                                        sx={{
-                                            color: this.context.secondaryColor,
-                                            '&.Mui-checked': {
-                                                color: this.context.secondaryColor,
-                                            },
-                                        }}
-                                        color="secondary"
+                                        sx={formControlLabelRadioSX}
+                                        color={secondaryColorTag}
                                     />}
                                     label="L"
                                 />
                                 <FormControlLabel
                                     value="r"
                                     control={<Radio
-                                        sx={{
-                                            color: this.context.secondaryColor,
-                                            '&.Mui-checked': {
-                                                color: this.context.secondaryColor,
-                                            },
-                                        }}
-                                        color="secondary"
+                                        sx={formControlLabelRadioSX}
+                                        color={secondaryColorTag}
                                     />}
                                     label="R"
                                 />
@@ -144,56 +163,48 @@ class SettingMenu extends Component {
                         </FormControl>
                     </ListItem>
                     <ListItem>
-                        <Typography style={{fontSize: '1rem'}}>{i18n.Sidebar.SettingMenu.AdjustmentParameters[this.context.i18n]}</Typography>
+                        <Typography style={listItemTextTypoStyle}>
+                            {i18n.Sidebar.SettingMenu.AdjustmentParameters[this.context.i18n]}
+                        </Typography>
                         <div style={{flex: 1}}/>
                     </ListItem>
                     <ListItem>
-                        <Typography style={{fontSize: '1rem'}}>&nbsp;</Typography>
+                        <Typography style={listItemTextTypoStyle}>&nbsp;</Typography>
                         <div style={{flex: 1}}/>
                         <TextField
                             label={i18n.Sidebar.SettingMenu.TPadSensitivity[this.context.i18n]}
-                            variant="outlined"
+                            variant={parametersAdjustmentTypoProps.variant}
                             value={tPadSensitivity}
                             onChange={(e) => this.handleTextFieldChange(e, 'tPadSensitivity')}
                             onBlur={() => this.handleBlur('tPadSensitivity')}
-                            type="number"
-                            inputProps={{step: "0.01", min: "0"}}
-                            size="small"
-                            fullWidth='true'
-                            color="secondary"
-                            sx={{
-                                input: {
-                                    color: this.context.secondaryColor,
-                                    caretColor: this.context.secondaryColor,
-                                }
-                            }}
-                            focused='true'
+                            type={parametersAdjustmentTypoProps.type}
+                            inputProps={parametersAdjustmentTypoProps.inputProps}
+                            size={parametersAdjustmentTypoProps.size}
+                            fullWidth={parametersAdjustmentTypoProps.fullWidth}
+                            color={secondaryColorTag}
+                            sx={parametersAdjustmentTypoSX}
+                            focused={parametersAdjustmentTypoProps.focused}
                         />
-                        <Typography style={{fontSize: '1rem'}}>&nbsp;</Typography>
+                        <Typography style={listItemTextTypoStyle}>&nbsp;</Typography>
                     </ListItem>
                     <ListItem>
-                        <Typography style={{fontSize: '1rem'}}>&nbsp;</Typography>
+                        <Typography style={listItemTextTypoStyle}>&nbsp;</Typography>
                         <div style={{flex: 1}}/>
                         <TextField
                             label={i18n.Sidebar.SettingMenu.MWheelSensitivity[this.context.i18n]}
-                            variant="outlined"
+                            variant={parametersAdjustmentTypoProps.variant}
                             value={mWheelSensitivity}
                             onChange={(e) => this.handleTextFieldChange(e, 'mWheelSensitivity')}
                             onBlur={() => this.handleBlur('mWheelSensitivity')}
-                            type="number"
-                            inputProps={{step: "0.01", min: "0"}}
-                            size="small"
-                            fullWidth='true'
-                            color="secondary"
-                            sx={{
-                                input: {
-                                    color: this.context.secondaryColor,
-                                    caretColor: this.context.secondaryColor,
-                                }
-                            }}
-                            focused='true'
+                            type={parametersAdjustmentTypoProps.type}
+                            inputProps={parametersAdjustmentTypoProps.inputProps}
+                            size={parametersAdjustmentTypoProps.size}
+                            fullWidth={parametersAdjustmentTypoProps.fullWidth}
+                            color={secondaryColorTag}
+                            sx={parametersAdjustmentTypoSX}
+                            focused={parametersAdjustmentTypoProps.focused}
                         />
-                        <Typography style={{fontSize: '1rem'}}>&nbsp;</Typography>
+                        <Typography style={listItemTextTypoStyle}>&nbsp;</Typography>
                     </ListItem>
                 </List>
             </ThemeProvider>
