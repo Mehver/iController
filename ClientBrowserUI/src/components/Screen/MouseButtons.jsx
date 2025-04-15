@@ -20,7 +20,8 @@ class MouseButtons extends Component {
             marginBottom: '50px',
             bottom: 0,
             position: 'fixed',
-            width: '100%',
+            // 如果屏幕宽度小于 500px，则设置为 100%, 否则设置为 500px
+            width: window.innerWidth < 500 ? '100%' : '500px',
             backgroundColor: 'transparent',
         };
         const buttonSX = {
