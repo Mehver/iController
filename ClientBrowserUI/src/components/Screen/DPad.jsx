@@ -19,8 +19,7 @@ class DPad extends Component {
     }
 
     render() {
-        // 计算正方形的边长
-        let dPadButtonSize = Math.min(window.innerWidth, window.innerHeight) / 4.2;
+        let dPadButtonSize = Math.min((Math.min(window.innerWidth, window.innerHeight) / 3 * 0.8), 120);
         let buttonSX = {
             width: dPadButtonSize,
             height: dPadButtonSize,
@@ -54,7 +53,7 @@ class DPad extends Component {
                     width: '100%',
                     backgroundColor: 'transparent',
                     position: 'absolute',
-                    bottom: (window.innerHeight) / 2.3 - 50,
+                    bottom: '150px',
                 }}>
                     <Collapse in={this.context.buttonSW4}>
                         <Box>
