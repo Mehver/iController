@@ -58,9 +58,16 @@ class SideBar extends Component {
                 width: drawerWidth,
             },
         };
+        
         let listSX = {
             width: drawerWidth,
             padding: 0,
+            overflow: 'auto',              // 确保能滚动，但隐藏滚动条
+            '&::-webkit-scrollbar': {
+                display: 'none',           // Chrome/Safari/WebKit
+            },
+            scrollbarWidth: 'none',      // Firefox
+            msOverflowStyle: 'none',     // IE 10+
         };
 
         let iconSizeSX = {};
@@ -70,8 +77,7 @@ class SideBar extends Component {
             const fontSize = window.innerWidth / 300.0;
             drawerWidth = '80%';
             listSX = {
-                width: drawerWidth,
-                padding: 0,
+                ...listSX,
                 '& .MuiSwitch-sizeSmall': {
                     transform: 'scale(0.8)',
                 },
