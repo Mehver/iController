@@ -109,6 +109,8 @@ source venv/bin/activate
 
 ## 4 使用的技术栈
 
+> 本项目所使用的全部依赖均为开源组件，且均基于宽松许可协议（如 MIT、BSD、Apache）。未包含任何具有传染性（如 GPL、AGPL）授权条款的组件。
+
 - Node.js
     - React.js
         - Material UI (https://github.com/mui/material-ui)
@@ -126,6 +128,12 @@ source venv/bin/activate
 
 ## 5 许可证
 
-MPL 2.0
+本项目采用 BSD 3-Clause 协议开源发布。代码可以在注明出处的前提下自由使用与再发布。
 
-Copyright © 2024-PRESENT GitHub@Mehver/iController , All Rights Reserved.
+本项目所使用的全部依赖均为开源组件，且均基于宽松许可协议（如 MIT、BSD、Apache）。未包含任何具有传染性（如 GPL、AGPL）授权条款的组件。
+
+This project is released under the BSD 3-Clause License. Code may be reused with proper attribution.
+
+Copyright (c) 2024-Present, Mehver (https://github.com/Mehver). All rights reserved.
+
+All dependencies are open-source and licensed under permissive licenses. No copyleft (e.g., GPL, AGPL) components are included.

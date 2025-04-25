@@ -107,11 +107,11 @@ to enter the virtual environment. Or add the virtual environment to your IDE.
 
 ### 3.4 Compile / Package
 
-Recommend use `win-onefile.bat` / `mac-onefile.sh` in `./bin/packaging/` to package the application. **Note that after testing, some Python v3.10.x versions may have
-mysterious errors. Only Python v3.10.10 is recommended.**
-
+Recommend use `win-onefile.bat` / `mac-onefile.sh` in `./bin/packaging/` to package the application. **Note that after testing, some Python v3.10.x versions may have mysterious errors. Only Python v3.10.10 is recommended.**
 
 ## 4 Built With / Tech Stack
+
+> All dependencies are open-source and licensed under permissive licenses. No copyleft (e.g., GPL, AGPL) components are included.
 
 - Node.js
     - React.js
@@ -130,6 +130,8 @@ mysterious errors. Only Python v3.10.10 is recommended.**
 
 ## 5 License
 
-MPL 2.0
+This project is released under the BSD 3-Clause License. Code may be reused with proper attribution.
 
-Copyright © 2024-PRESENT GitHub@Mehver/iController , All Rights Reserved.
+Copyright (c) 2024-Present, Mehver (https://github.com/Mehver). All rights reserved.
+
+All dependencies are open-source and licensed under permissive licenses. No copyleft (e.g., GPL, AGPL) components are included.
