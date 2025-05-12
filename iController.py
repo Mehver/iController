@@ -6,7 +6,7 @@ from ServerApp.get_address import get_address
 from ServerApp.config import Config
 from ServerApp.pyinstaller_context import PyInstallerContext
 
-VERSION = "v0.6.5"
+VERSION = "v0.6.6"
 
 print(f"""
  _   ___            _             _ _           
