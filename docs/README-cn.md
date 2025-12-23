@@ -85,7 +85,7 @@ npm run build
 
 **Windows**
 
-对于 Python 环境，推荐使用 `./bin/dev-pyvenv/newenv.bat` 创建一个新的虚拟环境。然后运行：
+对于 Python 环境，推荐使用 `./bin/DevPyVenv/win-newenv.bat` 创建一个新的虚拟环境。然后运行：
 
 ```shell
 venv\Scripts\activate
@@ -95,7 +95,7 @@ venv\Scripts\activate
 
 **macOS**
 
-对于 Python 环境，推荐使用 `./bin/dev-pyvenv/newenv.sh` 创建一个新的虚拟环境。然后运行：
+对于 Python 环境，推荐使用 `./bin/DevPyVenv/mac-newenv.sh` 创建一个新的虚拟环境。然后运行：
 
 ```shell
 source venv/bin/activate

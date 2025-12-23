@@ -87,7 +87,7 @@ npm run build
 
 **Windows**
 
-For Python environment, recommend using `./bin/dev-pyvenv/newenv.bat` to create a new virtual environment. Then run:
+For Python environment, recommend using `./bin/DevPyVenv/win-newenv.bat` to create a new virtual environment. Then run:
 
 ```shell
 venv\Scripts\activate
@@ -97,7 +97,7 @@ to enter the virtual environment. Or add the virtual environment to your IDE.
 
 **macOS**
 
-For Python environment, recommend using `./bin/dev-pyvenv/newenv.sh` to create a new virtual environment. Then run:
+For Python environment, recommend using `./bin/DevPyVenv/mac-newenv.sh` to create a new virtual environment. Then run:
 
 ```shell
 source venv/bin/activate
