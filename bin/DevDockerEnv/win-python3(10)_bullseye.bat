@@ -1,1 +1,0 @@
-docker run -it --rm -v %cd%\..\..:/docker -w /docker python:3.10-bullseye bash -c "pip install -r requirements.txt; exec bash"

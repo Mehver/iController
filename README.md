@@ -71,7 +71,9 @@ of `Settings > Privacy & Security > Developer Tools > Terminal`.
 
 ### 3.2 Frontend
 
-First, use `cd ClientBrowserUI` to enter the front-end development directory.
+All front-end development is carried out in the `./ClientBrowserUI/` directory. The final static ES6 front-end assets are generated using `npm run build`. In both development mode and during packaging, the backend can automatically route requests to the built resource path.
+
+You can set up a Node.js environment on your system and install dependencies using `npm i`. However, the recommended approach is to use the `.bat` or `.sh` scripts provided under `./bin/DevDockerEnv/` in this project to start the official Docker environment and install dependencies with a single command. Scripts whose filenames contain `-p3000` map port 3000, making them convenient for React.js development and debugging.
 
 **Development**
 
@@ -87,25 +89,21 @@ npm run build
 
 ### 3.3 Backend
 
-**Windows**
+For the Python environment, since this program is intended to control the mouse in a GUI environment, using containers to isolate the development environment provides limited value. Therefore, it is recommended to use a [Python local virtual environment](https://docs.python.org/3/library/venv.html) to install dependency libraries. It is recommended to use the `.bat` or `.sh` scripts under `./bin/DevPyVenv/` to create the virtual environment and install dependencies into this local virtual environment with a single command.
 
-For Python environment, recommend using `./bin/DevPyVenv/win-newenv.bat` to create a new virtual environment. Then run:
+You can either bind the virtual environment to your IDE or manually activate the virtual environment. For details, see the [official documentation](https://docs.python.org/3/library/venv.html#how-venvs-work). Specifically:
+
+**Windows**
 
 ```shell
 venv\Scripts\activate
 ```
 
-to enter the virtual environment. Or add the virtual environment to your IDE.
-
 **macOS**
-
-For Python environment, recommend using `./bin/DevPyVenv/mac-newenv.sh` to create a new virtual environment. Then run:
 
 ```shell
 source venv/bin/activate
 ```
-
-to enter the virtual environment. Or add the virtual environment to your IDE.
 
 ### 3.4 Compile / Package
 
