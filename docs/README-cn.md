@@ -69,6 +69,8 @@
 
 ### 3.2 前端
 
+首先 `cd ClientBrowserUI` 进入前端的开发文件夹。
+
 **开发**
 
 ```shell

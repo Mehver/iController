@@ -71,6 +71,8 @@ of `Settings > Privacy & Security > Developer Tools > Terminal`.
 
 ### 3.2 Frontend
 
+First, use `cd ClientBrowserUI` to enter the front-end development directory.
+
 **Development**
 
 ```shell
