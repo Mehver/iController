@@ -1,0 +1,33 @@
+name: disposable-run
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        type: boolean
+        default: true
+      confirm:
+        type: string
+        description: 'Type YES to really modify releases'
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  run:
+    if: ${{ github.event.inputs.dry_run == 'true' || github.event.inputs.confirm == 'YES' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - run: npm install @octokit/rest
+
+      - run: node .github/disposable/2025-12-25-release-notes-fix-windows-logo/fix.js
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DRY_RUN: ${{ github.event.inputs.dry_run }}
