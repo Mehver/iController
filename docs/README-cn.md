@@ -69,7 +69,9 @@
 
 ### 3.2 前端
 
-首先 `cd ClientBrowserUI` 进入前端的开发文件夹。
+所有前端开发都在 `./ClientBrowserUI/` 文件夹下进行。最终通过 `npm run build` 生成静态ES6前端资源，后端在开发模式和打包时都能自动路由到build后的资源路径。
+
+你可以在系统中配置 Node.js 环境并通过 `npm i` 来安装依赖库。更推荐的方式是直接使用本项目提供的 `./bin/DevDockerEnv/` 下的 `.bat` 或 `.sh` 脚本来一键启动官方的 Docker 环境并安装依赖。其中文件名包含 `-p3000` 的脚本会映射 3000 端口便于进行 React.js 开发调试。
 
 **开发**
 
@@ -77,7 +79,7 @@
 npm run react
 ```
 
-**Compile**
+**Build**
 
 ```shell
 npm run build
@@ -85,25 +87,21 @@ npm run build
 
 ### 3.3 后端
 
-**Windows**
+对于 Python 环境，由于此程序的目标是控制 GUI 环境下的鼠标，通过容器隔离开发环境的意义不大。因此推荐使用 [Python 的局部化虚拟环境](https://docs.python.org/zh-cn/3/library/venv.html) 来安装依赖库。推荐使用 `./bin/DevPyVenv/` 下的 `.bat` 或 `.sh` 来一键创建虚拟环境并安装依赖库到此局部虚拟环境。
 
-对于 Python 环境，推荐使用 `./bin/DevPyVenv/win-newenv.bat` 创建一个新的虚拟环境。然后运行：
+你可以通过IDE绑定虚拟环境或手动进入虚拟环境。详情可见[官方文档](https://docs.python.org/zh-cn/3/library/venv.html#how-venvs-work)，具体而言：
+
+**Windows**
 
 ```shell
 venv\Scripts\activate
 ```
 
-进入虚拟环境。或添加环境到IDE。
-
 **macOS**
-
-对于 Python 环境，推荐使用 `./bin/DevPyVenv/mac-newenv.sh` 创建一个新的虚拟环境。然后运行：
 
 ```shell
 source venv/bin/activate
 ```
-
-进入虚拟环境。或添加环境到IDE。
 
 ### 3.4 编译 / 打包
 
