@@ -1,4 +1,4 @@
-name: disposable-run
+name: Disposable Run
 
 on:
   workflow_dispatch:
