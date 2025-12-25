@@ -1,6 +1,6 @@
 from quart import request, jsonify
-from ServerApp.volume_controller import get_volume_controller
-from ServerApp.log_manager import LogManager
+from HostCore.volume_controller import get_volume_controller
+from HostCore.log_manager import LogManager
 
 
 async def volume_get():
