@@ -1,6 +1,6 @@
 import os
 from datetime import datetime
-from ServerApp.config import Config
+from HostCore.config import Config
 
 
 class LogManager:

@@ -1,6 +1,6 @@
 import socket
 import platform
-from ServerApp.config import Config
+from HostCore.config import Config
 
 
 def port_checker(port):

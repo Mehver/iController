@@ -1,12 +1,12 @@
+VERSION = "v0.6.6"
+
 import asyncio
 from hypercorn.config import Config as HypercornConfig
 from hypercorn.asyncio import serve
-from ServerApp.http_server import HttpServer
-from ServerApp.get_address import get_address
-from ServerApp.config import Config
-from ServerApp.pyinstaller_context import PyInstallerContext
-
-VERSION = "v0.6.6"
+from HostCore.http_server import HttpServer
+from HostCore.config import Config
+from HostCore.pyinstaller_context import PyInstallerContext
+from HostDesktopCLI.get_address import get_address
 
 print(f"""
  _   ___            _             _ _           

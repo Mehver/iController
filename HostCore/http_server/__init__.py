@@ -1,17 +1,17 @@
 from quart import Quart, send_from_directory
-from ServerApp.http_server.route.dpad import dpad
-from ServerApp.http_server.route.keyboard import keyboard_buttons
-from ServerApp.http_server.route.keyboard import keyboard_typewriting
-from ServerApp.http_server.route.keyboard import keyboard_pastetext
-from ServerApp.http_server.route.system import get_system_info
-from ServerApp.http_server.route.mousebutton import mousebutton
-from ServerApp.http_server.route.mousewheel import mousewheel
-from ServerApp.http_server.route.touchpad import touchpad
-from ServerApp.http_server.route.touchpad import touchpad_reposition
-from ServerApp.http_server.route.volume import volume_get
-from ServerApp.http_server.route.volume import volume_set
-from ServerApp.http_server.hook.ip_checker import ip_checker
-from ServerApp.http_server.hook.ip_log import ip_log
+from HostCore.http_server.route.dpad import dpad
+from HostCore.http_server.route.keyboard import keyboard_buttons
+from HostCore.http_server.route.keyboard import keyboard_typewriting
+from HostCore.http_server.route.keyboard import keyboard_pastetext
+from HostCore.http_server.route.system import get_system_info
+from HostCore.http_server.route.mousebutton import mousebutton
+from HostCore.http_server.route.mousewheel import mousewheel
+from HostCore.http_server.route.touchpad import touchpad
+from HostCore.http_server.route.touchpad import touchpad_reposition
+from HostCore.http_server.route.volume import volume_get
+from HostCore.http_server.route.volume import volume_set
+from HostCore.http_server.hook.ip_checker import ip_checker
+from HostCore.http_server.hook.ip_log import ip_log
 
 
 def HttpServer(static_folder) -> Quart:

@@ -1,7 +1,7 @@
 from quart import request, jsonify
 import pyautogui
-from ServerApp.config import Config
-from ServerApp.log_manager import LogManager
+from HostCore.config import Config
+from HostCore.log_manager import LogManager
 
 
 async def mousewheel():
