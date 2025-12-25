@@ -5,7 +5,12 @@ a = Analysis(
     ['iController.py'],
     pathex=[],
     binaries=[],
-    datas=[('ClientBrowserUI/build', 'ClientBrowserUI/build/'), ('ServerApp', 'ServerApp/')],
+    datas=[
+        ('ClientBrowserUI/build', 'ClientBrowserUI/build/'),
+        ('HostCore', 'HostCore/'),
+        ('HostDesktopCLI', 'HostDesktopCLI/'),
+        ('HostDesktopGUI', 'HostDesktopGUI/')
+    ],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
