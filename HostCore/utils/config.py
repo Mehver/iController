@@ -18,7 +18,7 @@ class Config:
 
     class Log:
         SERVER_ACTION_LOG = True
-        SERVER_CONNECTION_LOG = True
+        SERVER_CONNECTION_LOG = False
 
     @staticmethod
     def try_get_value(config_path, config_class, config_value):
