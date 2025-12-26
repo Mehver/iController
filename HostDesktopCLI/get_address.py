@@ -1,7 +1,7 @@
 import socket
 import platform
 import ipaddress
-from HostCore.config import Config
+from HostCore.utils.config import Config
 
 
 def port_checker(port):

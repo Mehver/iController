@@ -4,7 +4,7 @@ import asyncio
 from hypercorn.config import Config as HypercornConfig
 from hypercorn.asyncio import serve
 from HostCore.http_server import HttpServer
-from HostCore.config import Config
+from HostCore.utils.config import Config
 from HostCore.pyinstaller_context import PyInstallerContext
 from HostDesktopCLI.get_address import get_address
 
