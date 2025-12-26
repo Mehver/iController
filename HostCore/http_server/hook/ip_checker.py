@@ -1,5 +1,5 @@
 from quart import request, abort
-from HostCore.config import Config
+from HostCore.utils.config import Config
 
 
 async def ip_checker():

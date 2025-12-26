@@ -1,6 +1,6 @@
 from quart import jsonify
 import platform
-from HostCore.log_manager import LogManager
+from HostCore.utils.log_manager import LogManager
 
 
 async def get_system_info():

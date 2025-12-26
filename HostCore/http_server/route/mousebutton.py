@@ -1,6 +1,6 @@
 from quart import request, jsonify
 import pyautogui
-from HostCore.log_manager import LogManager
+from HostCore.utils.log_manager import LogManager
 
 
 async def mousebutton():
