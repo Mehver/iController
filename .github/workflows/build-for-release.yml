@@ -66,6 +66,15 @@ jobs:
         with:
           python-version: '3.10.10'
 
+      - name: Update Version Number
+        run: |
+          $oldVersion = Get-Content .\.github\metadata\PreviousVersion.txt
+          echo "OLD_VERSION=$oldVersion" >> $env:GITHUB_ENV
+          cd bin
+          python UpdateVersionNumber.py $oldVersion ${{ github.event.release.tag_name }}
+          cd ..
+        shell: pwsh
+
       - name: Python Install Dependencies
         run: pip install -r ./requirements/iControllerCLI.txt
 
@@ -114,6 +123,15 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: '3.10.10'
+
+      - name: Update Version Number
+        run: |
+          $oldVersion = Get-Content .\.github\metadata\PreviousVersion.txt
+          echo "OLD_VERSION=$oldVersion" >> $env:GITHUB_ENV
+          cd bin
+          python UpdateVersionNumber.py $oldVersion ${{ github.event.release.tag_name }}
+          cd ..
+        shell: pwsh
 
       - name: Python Install Dependencies
         run: pip install -r ./requirements/iControllerGUI.txt
