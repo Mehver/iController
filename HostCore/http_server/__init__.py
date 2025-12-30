@@ -18,7 +18,7 @@ def HttpServer(static_folder) -> Quart:
     """
     Http server for iController.
 
-    :param static_folder: The folder for static files build by React
+    :param static_folder: The folder for static files pyinstaller by React
     :return: Quart server object.
     """
     app = Quart(__name__, static_folder=static_folder, static_url_path='')

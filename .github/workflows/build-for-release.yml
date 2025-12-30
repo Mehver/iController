@@ -5,7 +5,47 @@ on:
     types: [ created ]
 
 jobs:
-  build-windows-x64:
+  update-version-number:
+    needs:
+      - build-windows-x64-cli
+      - build-windows-x64-gui
+    if: ${{ needs.build-windows-x64-cli.result == 'success' && needs.build-windows-x64-gui.result == 'success' }}
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.10.10'
+
+      - name: Update Version Number
+        run: |
+          $oldVersion = Get-Content .\.github\metadata\PreviousVersion.txt
+          echo "OLD_VERSION=$oldVersion" >> $env:GITHUB_ENV
+          cd bin
+          python UpdateVersionNumber.py $oldVersion ${{ github.event.release.tag_name }}
+          cd ..
+        shell: pwsh
+
+      - name: Commit Version Number Update to main
+        if: ${{ success() }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # 在当前 detached HEAD 下创建一个临时分支保存改动
+          git checkout -b version-update-temp
+          git add .
+          git commit -m "Update version number from $env:OLD_VERSION to ${{ github.event.release.tag_name }}" || echo "No changes to commit"
+          # 切换到主分支，这里假设主分支名称为 main
+          git fetch origin main
+          git checkout main
+          # 将临时分支的改动合并到主分支
+          git merge version-update-temp --no-ff -m "Merge version update from $env:OLD_VERSION to ${{ github.event.release.tag_name }}"
+          git push origin main
+        shell: pwsh
+
+  build-windows-x64-cli:
     runs-on: windows-2022
     steps:
       - uses: actions/checkout@v2
@@ -26,25 +66,16 @@ jobs:
         with:
           python-version: '3.10.10'
 
-      - name: Update Version Number
-        run: |
-          $oldVersion = Get-Content .\.github\metadata\PreviousVersion.txt
-          echo "OLD_VERSION=$oldVersion" >> $env:GITHUB_ENV
-          cd bin
-          python UpdateVersionNumber.py $oldVersion ${{ github.event.release.tag_name }}
-          cd ..
-        shell: pwsh
-
       - name: Python Install Dependencies
-        run: pip install -r requirements.txt
+        run: pip install -r ./requirements/iControllerCLI.txt
 
       - name: PyInstaller Build iController.exe
-        run: pyinstaller iController.spec
+        run: pyinstaller ./pyinstaller/iControllerCLI.spec
 
       - name: Create Zip Package
         run: |
-          $folderName = "icontroller-${{ github.event.release.tag_name }}-portable-win-x64"
-          $fileName = "iController-${{ github.event.release.tag_name }}.exe"
+          $folderName = "icontroller-${{ github.event.release.tag_name }}-portable-win-x64-cli"
+          $fileName = "iController-${{ github.event.release.tag_name }}-CLI.exe"
           Rename-Item .\dist\iController.exe $fileName
           $folderPath = ".\dist\$folderName"
           New-Item -ItemType Directory -Path $folderPath
@@ -60,22 +91,54 @@ jobs:
         with:
           upload_url: ${{ github.event.release.upload_url }}
           asset_path: ${{ env.ARTIFACT_PATH }}
-          asset_name: icontroller-${{ github.event.release.tag_name }}-portable-win-x64.zip
+          asset_name: icontroller-${{ github.event.release.tag_name }}-portable-win-x64-cli.zip
           asset_content_type: application/zip
 
-      - name: Commit Version Number Update to main
-        if: ${{ success() }}
+  build-windows-x64-gui:
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - name: React Build Frontend
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          # 在当前 detached HEAD 下创建一个临时分支保存改动
-          git checkout -b version-update-temp
-          git add .
-          git commit -m "Update version number from $env:OLD_VERSION to ${{ github.event.release.tag_name }}" || echo "No changes to commit"
-          # 切换到主分支，这里假设主分支名称为 main
-          git fetch origin main
-          git checkout main
-          # 将临时分支的改动合并到主分支
-          git merge version-update-temp --no-ff -m "Merge version update from $env:OLD_VERSION to ${{ github.event.release.tag_name }}"
-          git push origin main
+          cd ClientBrowserUI
+          npm install
+          npm run build
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.10.10'
+
+      - name: Python Install Dependencies
+        run: pip install -r ./requirements/iControllerGUI.txt
+
+      - name: PyInstaller Build iController.exe
+        run: pyinstaller ./pyinstaller/iControllerGUI.spec
+
+      - name: Create Zip Package
+        run: |
+          $folderName = "icontroller-${{ github.event.release.tag_name }}-portable-win-x64-gui"
+          $fileName = "iController-${{ github.event.release.tag_name }}-GUI.exe"
+          Rename-Item .\dist\iController.exe $fileName
+          $folderPath = ".\dist\$folderName"
+          New-Item -ItemType Directory -Path $folderPath
+          Move-Item -Path ".\dist\$fileName" -Destination $folderPath
+          Compress-Archive -Path $folderPath -DestinationPath ".\dist\$folderName.zip"
+          echo "ARTIFACT_PATH=./dist/$folderName.zip" >> $env:GITHUB_ENV
         shell: pwsh
+
+      - name: Upload to Release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ${{ env.ARTIFACT_PATH }}
+          asset_name: icontroller-${{ github.event.release.tag_name }}-portable-win-x64-gui.zip
+          asset_content_type: application/zip

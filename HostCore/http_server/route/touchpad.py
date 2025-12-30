@@ -2,8 +2,8 @@ import threading
 import pyautogui
 import struct
 from quart import request, jsonify
-from HostCore.utils.config import Config
-from HostCore.utils.log_manager import LogManager
+from HostCore.infra.files.config import Config
+from HostCore.infra.files.log_manager import LogManager
 
 
 def handle_touchpad(data):

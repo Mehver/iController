@@ -8,8 +8,7 @@ a = Analysis(
     datas=[
         ('ClientBrowserUI/build', 'ClientBrowserUI/build/'),
         ('HostCore', 'HostCore/'),
-        ('HostDesktopCLI', 'HostDesktopCLI/'),
-        ('HostDesktopGUI', 'HostDesktopGUI/')
+        ('HostDesktopCLI', 'HostDesktopCLI/')
     ],
     hiddenimports=[],
     hookspath=[],
