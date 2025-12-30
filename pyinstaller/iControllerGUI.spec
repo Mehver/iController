@@ -4,14 +4,14 @@ from PyInstaller.utils.hooks import collect_all
 qt_datas, qt_binaries, qt_hiddenimports = collect_all("PySide6")
 
 a = Analysis(
-    ['iController.py'],
-    pathex=[],
+    ['../iController.py'],
+    pathex=['..'],
     binaries = qt_binaries + [],
     datas = qt_datas + [
-        ('ClientBrowserUI/build', 'ClientBrowserUI/build/'),
-        ('HostCore', 'HostCore/'),
-        ('HostDesktopCLI', 'HostDesktopCLI/'),
-        ('HostDesktopGUI', 'HostDesktopGUI/')
+        ('../ClientBrowserUI/build', 'ClientBrowserUI/build/'),
+        ('../HostCore', 'HostCore/'),
+        ('../HostDesktopCLI', 'HostDesktopCLI/'),
+        ('../HostDesktopGUI', 'HostDesktopGUI/')
     ],
     hiddenimports = qt_hiddenimports + [],
     hookspath=[],
@@ -41,5 +41,5 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon=['docs\\icon\\256a.ico'],
+    icon=['../docs/icon/256a.ico'],
 )

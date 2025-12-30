@@ -2,13 +2,13 @@
 
 
 a = Analysis(
-    ['iController.py'],
-    pathex=[],
+    ['../iController.py'],
+    pathex=['..'],
     binaries=[],
     datas=[
-        ('ClientBrowserUI/build', 'ClientBrowserUI/build/'),
-        ('HostCore', 'HostCore/'),
-        ('HostDesktopCLI', 'HostDesktopCLI/')
+        ('../ClientBrowserUI/build', 'ClientBrowserUI/build/'),
+        ('../HostCore', 'HostCore/'),
+        ('../HostDesktopCLI', 'HostDesktopCLI/')
     ],
     hiddenimports=[],
     hookspath=[],
@@ -38,5 +38,5 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon=['docs\\icon\\256a.ico'],
+    icon=['../docs/icon/256a.ico'],
 )
