@@ -1,8 +1,8 @@
 import socket
 import platform
 import ipaddress
-from HostCore.utils.config import Config
-
+from HostCore.infra.files.config import Config
+from HostCore.utils.find_local_ip import find_local_ip
 
 def port_checker(port):
     """
@@ -42,7 +42,7 @@ def get_address():
     PORT = Config.HttpServer.PORT
 
     try:
-        local_ip = pick_local_ip_via_route()
+        local_ip = find_local_ip()
     except:
         local_ip = None
 
@@ -102,6 +102,8 @@ def get_address():
             Config.HttpServer.HOST = HOST
             Config.save()
 
+    print()
+
     try:
         if not 0 < PORT < 65535:
             raise ValueError
@@ -112,12 +114,13 @@ def get_address():
             print(f"Web server will runs on [{HOST}:{PORT}].")
             return f"{HOST}:{PORT}"
     except ValueError:
-        print(f"The port [{PORT}] in the configuration file is not a valid port number.")
+        print(f"The port [{PORT}] in the configuration file is not a valid port number,")
+        print("you need to specify a new port.")
     except IndexError:
         print(f"The port [{PORT}] in the configuration file is already in use by another program.")
         force = input("Do you want to force the use of this port? (y/N) > ")
         if force.lower() == 'y':
-            print(f"Web server will runs on [{HOST}:{PORT}].")
+            print(f"Web server will runs on [{HOST}:{PORT}].\n")
             return f"{HOST}:{PORT}"
     while True:
         PORT = input("Give a port > ")
@@ -133,7 +136,7 @@ def get_address():
             print("This port is already in use by another program.")
             force = input("Do you want to force the use of this port? (y/N) > ")
             if force.lower() == 'y':
-                print(f"Web server will runs on [{HOST}:{PORT}].")
+                print(f"Web server will runs on [{HOST}:{PORT}].\n")
                 return f"{HOST}:{PORT}"
         else:
             break
@@ -141,25 +144,6 @@ def get_address():
     if update.lower() == 'y':
         Config.HttpServer.PORT = PORT
         Config.save()
-    print(f"Web server will runs on [{HOST}:{PORT}].")
+    print(f"Web server will runs on [{HOST}:{PORT}].\n")
     return f"{HOST}:{PORT}"
 
-
-def pick_local_ip_via_route(target=("8.8.8.8", 80)) -> str | None:
-    """
-    返回用于到达 target 的本机IPv4地址（通常是当前默认出站网卡的LAN IP）。
-    不保证 target 可达，但会触发路由选择。
-    """
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    try:
-        s.connect(target)
-        ip = s.getsockname()[0]
-        # 过滤不想要的
-        ip_obj = ipaddress.ip_address(ip)
-        if ip_obj.is_loopback or ip_obj.is_link_local or ip_obj.is_multicast:
-            return None
-        return ip
-    except OSError:
-        return None
-    finally:
-        s.close()

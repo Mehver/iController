@@ -1,6 +1,6 @@
 from quart import request
-from HostCore.utils.log_manager import LogManager
-from HostCore.utils.config import Config
+from HostCore.infra.files.log_manager import LogManager
+from HostCore.infra.files.config import Config
 
 
 async def ip_log():
