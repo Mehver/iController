@@ -11,8 +11,11 @@ const settingsConfig = {
     drawerRL: {default: 'l', cookie: 'drawerRL'},
     tPadSensitivity: {default: 1.0, cookie: 'tPadSensitivity', type: 'float'},
     mWheelSensitivity: {default: 1.0, cookie: 'mWheelSensitivity', type: 'float'},
-    buttonSW1: {default: false, cookie: 'buttonSW1', type: 'boolean', toggle: true},
+    // Touchpad visibility
+    buttonSW1: {default: true, cookie: 'buttonSW1', type: 'boolean', toggle: true},
+    // DPad visibility
     buttonSW4: {default: true, cookie: 'buttonSW4', type: 'boolean', toggle: true},
+    // Mouse buttons: 0 - hide, 1 - LMR, 2 - LR
     button23: {default: 0, cookie: 'button23', type: 'int'},
     autoCollapse: {default: false, cookie: 'autoCollapse', type: 'boolean', toggle: true},
     mouseWheelMenuType: {default: 0, cookie: 'mouseWheelMenuType', type: 'int'},
