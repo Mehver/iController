@@ -6,6 +6,8 @@ from HostCore.infra.files.config import Config
 class LogManager:
     log_dir = "./logs"
     ip_log_file = os.path.join(log_dir, "ips.log")
+    if not os.path.exists(log_dir):
+        os.makedirs(log_dir)
 
     @staticmethod
     def check_new_ip(ip_address):
@@ -24,13 +26,14 @@ class LogManager:
         if not os.path.exists(LogManager.log_dir):
             os.makedirs(LogManager.log_dir)
         # 记录IP和首次连接时间
-        if not LogManager.check_new_ip(ip_address):
+        if not LogManager.check_new_ip(ip_address) and Config.Log.SERVER_IPS_LOG:
             with open(LogManager.ip_log_file, 'a') as f:
                 f.write(f"[{ip_address}] first connected on [{datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:22]}]\n")
         # 记录详细的日志到日期文件中
-        today_log_file = os.path.join(LogManager.log_dir, datetime.now().strftime("Connect_%Y-%m-%d.log"))
-        with open(today_log_file, 'a') as f:
-            f.write(f"[{ip_address}] connected on [{datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:22]}]\n")
+        if Config.Log.SERVER_CONNECTION_LOG:
+            today_log_file = os.path.join(LogManager.log_dir, datetime.now().strftime("Connect_%Y-%m-%d.log"))
+            with open(today_log_file, 'a') as f:
+                f.write(f"[{ip_address}] connected on [{datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:22]}]\n")
 
     @staticmethod
     def log_console(message):

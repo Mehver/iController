@@ -6,7 +6,7 @@ from HostCore.infra.files.config import Config
 from HostCore.utils.pyinstaller_context import PyInstallerContext
 from HostDesktopCLI.get_address import get_address
 from HostDesktopCLI.cli_logo import cli_logo
-from HostCore.utils.url_to_qrcode import url_to_qrcode_print
+from HostDesktopCLI.cli_qrcode import url_to_qrcode_print
 
 def HostDesktopCLI(version='dev'):
     print(cli_logo(version))
