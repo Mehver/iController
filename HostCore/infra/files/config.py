@@ -18,6 +18,7 @@ class Config:
 
     class Log:
         SERVER_ACTION_LOG = True
+        SERVER_IPS_LOG = True
         SERVER_CONNECTION_LOG = False
 
     @staticmethod
@@ -49,6 +50,7 @@ class Config:
                 Config.try_get_value(config_path, Config.HttpServer, 'IP_BLACKLIST'),
                 Config.try_get_value(config_path, Config.HttpServer, 'IP_WHITELIST'),
                 Config.try_get_value(config_path, Config.Log, 'SERVER_ACTION_LOG'),
+                Config.try_get_value(config_path, Config.Log, 'SERVER_IPS_LOG'),
                 Config.try_get_value(config_path, Config.Log, 'SERVER_CONNECTION_LOG')
             ]
             # 检查results列表中是否有任何一个False，如果有，就执行更新
@@ -78,6 +80,7 @@ class Config:
             },
             'Log': {
                 'SERVER_ACTION_LOG': Config.Log.SERVER_ACTION_LOG,
+                'SERVER_IPS_LOG': Config.Log.SERVER_IPS_LOG,
                 'SERVER_CONNECTION_LOG': Config.Log.SERVER_CONNECTION_LOG
             }
         }

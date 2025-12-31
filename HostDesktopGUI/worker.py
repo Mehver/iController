@@ -39,7 +39,7 @@ class ServerWorker(QObject):
             from HostCore.http_server import HttpServer
             from HostCore.infra.files.config import Config
             from HostCore.utils.pyinstaller_context import PyInstallerContext
-            from HostCore.utils.url_to_qrcode import url_to_qrcode_print
+            from HostDesktopCLI.cli_qrcode import url_to_qrcode_print
             from HostDesktopCLI.get_address import get_address
             from HostDesktopCLI.cli_logo import cli_logo
 
