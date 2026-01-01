@@ -4,9 +4,9 @@
 
 ### 1.1 Dev environment security vulnerability 开发环境安全漏洞
 
-https://github.com/Mehver/iController/security/dependabot/49
+dependabot/49 https://github.com/advisories/GHSA-4v9v-hfq4-rm2v
 
-https://github.com/Mehver/iController/security/dependabot/50
+dependabot/50 https://github.com/advisories/GHSA-9jgg-88mc-972h
 
 These two vulnerabilities only affects the `webpack-dev-server` used during development via `npm start`. If a developer’s machine visits a malicious website by browser, the attacker may be able to exfiltrate source code through the local dev server.
 
