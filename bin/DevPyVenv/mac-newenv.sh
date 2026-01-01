@@ -10,9 +10,6 @@ rm -rf dist
 rm -rf build
 rm -rf venv
 rm -rf logs
-rm -rf node_modules
-rm -rf ClientBrowserUI/build
-rm -rf ClientBrowserUI/node_modules
 
 python3 -m venv venv
 source venv/bin/activate
