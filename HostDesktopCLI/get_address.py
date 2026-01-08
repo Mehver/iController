@@ -1,40 +1,7 @@
-import socket
-import platform
 import ipaddress
 from HostCore.infra.files.config import Config
-from HostCore.utils.find_local_ip import find_local_ip
-
-def port_checker(port):
-    """
-    检查端口是否可用。
-    - 如果端口是一个数字且在合法范围内（1-65534）
-    - 并且没有被别的程序使用，则返回True。
-    """
-    os_name = platform.system()
-    if os_name == 'Windows':
-        # Windows下使用psutil检查
-        import psutil
-        if isinstance(port, int) and 0 < port < 65535:
-            connections = psutil.net_connections()
-            for conn in connections:
-                if conn.laddr.port == port:
-                    return False  # 端口已被占用
-            return True  # 端口未被占用，可用
-        else:
-            return False  # 端口号不合法
-    elif os_name == 'Darwin':
-        # MacOS下使用socket尝试绑定端口检查
-        if isinstance(port, int) and 0 < port < 65535:
-            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-                try:
-                    s.bind(('localhost', port))
-                    return True  # 端口未被占用，可用
-                except socket.error:
-                    return False  # 端口已被占用
-        else:
-            return False  # 端口号不合法
-    else:
-        raise NotImplementedError("This OS is not supported.")
+from HostCore.utils.check_ip import check_ip
+from HostCore.utils.check_port import check_port
 
 
 def get_address():
@@ -42,8 +9,10 @@ def get_address():
     PORT = Config.HttpServer.PORT
 
     try:
-        local_ip = find_local_ip()
-    except:
+        local_ip = check_ip()
+    except Exception:
+    # except Exception as e:
+        # print(f"[DEBUG] get_address {e}")
         local_ip = None
 
     print(f"Your current Host IP provide by configuration file is [{HOST}].")
@@ -57,7 +26,7 @@ def get_address():
             choice = (input("Select 1/2/3/4 (default: 1) > ").strip() or "1")
             if choice in {"1", "2", "3", "4"}:
                 break
-            print("Invalid selection. Please enter 1, 2, or 3.")
+            print("Invalid selection. Please enter 1, 2, 3, or 4.")
     else:
         print(f"【1】 Use the IP provide by configuration file [{HOST}]")
         print(f"【2】 Use [0.0.0.0] (listen on all interfaces / 'broadcast')")
@@ -69,7 +38,7 @@ def get_address():
             elif choice in {"2", "3"}:
                 choice = f"{int(choice) + 1}"
                 break
-            print("Invalid selection. Please enter 1 or 2.")
+            print("Invalid selection. Please enter 1, 2 or 3.")
 
     if choice == "1":
         pass
@@ -94,7 +63,7 @@ def get_address():
                 continue
             HOST = manual
             break
-    if choice == "2" or choice == "4":
+    if choice == "2" or choice == "3" or choice == "4":
         overwrite = input(
             f"Do you want to overwrite the configuration file with this IP? (y/N) > "
         ).strip()
@@ -107,7 +76,7 @@ def get_address():
     try:
         if not 0 < PORT < 65535:
             raise ValueError
-        if not port_checker(PORT):
+        if not check_port(PORT):
             raise IndexError
         use = input(f"Do you want to use the port [:{PORT}] given by the configuration file? (Y/n) > ")
         if use.lower() != 'n':
@@ -128,7 +97,7 @@ def get_address():
             PORT = int(PORT)
             if not 0 < PORT < 65535:
                 raise ValueError
-            if not port_checker(PORT):
+            if not check_port(PORT):
                 raise IndexError
         except ValueError:
             print("Port number must be an integer between 1 and 65534.")

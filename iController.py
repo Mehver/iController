@@ -6,15 +6,15 @@ def run_cli():
     try:
         from HostDesktopCLI import HostDesktopCLI
         HostDesktopCLI(VERSION)
-    except ImportError:
-        print("【Error】 Cannot import HostDesktopCLI")
+    except ImportError as e:
+        print(f"【Error】 Cannot import HostDesktopCLI: {e}")
 
 def run_gui():
     try:
         from HostDesktopGUI import HostDesktopGUI
         HostDesktopGUI(VERSION)
-    except ImportError:
-        print("【Error】 Cannot import HostDesktopGUI")
+    except ImportError as e:
+        print(f"【Error】 Cannot import HostDesktopGUI: {e}")
 
 def main():
     if PyInstallerContext().check_build():

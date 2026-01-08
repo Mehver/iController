@@ -11,8 +11,10 @@ from PySide6.QtWidgets import (
     QMenu,
 )
 
-from .worker import ServerWorker, ServerState
-from .gui_config import APP_NAME, APP_ICON_PATH
+from HostDesktopGUI.worker import ServerWorker, ServerState
+from HostDesktopGUI.gui_config import APP_NAME, APP_ICON_PATH
+
+from HostCore.utils.check_platform import is_mac
 
 
 class EmittingStream(QObject):
@@ -115,7 +117,12 @@ class ShellWindow(QWidget):
         # --- 系统托盘图标 ---
         self.tray_icon = QSystemTrayIcon(self)
         self.tray_icon.setToolTip(APP_NAME)
-        self.tray_icon.setIcon(icon)
+        if is_mac:
+            mask_icon = QIcon(str(APP_ICON_PATH))
+            mask_icon.setIsMask(True)
+            self.tray_icon.setIcon(mask_icon)
+        else:
+            self.tray_icon.setIcon(icon)
 
         tray_menu = QMenu(self)
         action_show = tray_menu.addAction("Show 显示主窗口")
@@ -217,12 +224,12 @@ class ShellWindow(QWidget):
         else:
             # 真正退出：停掉 worker / 线程 / 托盘
             try:
-                self.stop_requested.emit()
+                self.worker.stop_server()
             except Exception:
                 pass
 
             self.thread.quit()
-            self.thread.wait(2000)
+            self.thread.wait(5000)
 
             if self.tray_icon is not None:
                 self.tray_icon.hide()
