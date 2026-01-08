@@ -1,9 +1,9 @@
 from HostCore.volume_controller.base import BaseVolumeController
-import platform
+from HostCore.utils.check_platform import get_platform
 
 
 def get_volume_controller() -> BaseVolumeController:
-    os_name = platform.system()
+    os_name = get_platform()
     if os_name == 'Windows':
         from HostCore.volume_controller.windows import WindowsVolumeController
         return WindowsVolumeController()
@@ -11,5 +11,5 @@ def get_volume_controller() -> BaseVolumeController:
         from HostCore.volume_controller.mac import MacVolumeController
         return MacVolumeController()
     else:
-        raise NotImplementedError("This OS is not supported for volume control")
+        raise NotImplementedError(f"This OS ({os_name}) is not supported.")
 

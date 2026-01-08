@@ -4,8 +4,8 @@ import builtins
 from PySide6.QtWidgets import QApplication
 from PySide6.QtGui import QIcon
 
-from .gui_config import APP_NAME, APP_ICON_PATH
-from .main_window import ShellWindow, gui_input
+from HostDesktopGUI.gui_config import APP_NAME, APP_ICON_PATH
+from HostDesktopGUI.main_window import ShellWindow, gui_input
 
 
 # 保持一个全局引用，防止窗口被 GC
@@ -34,5 +34,18 @@ def HostDesktopGUI(version: str = "dev"):
     _window_ref = ShellWindow(version)
     _window_ref.resize(980, 620)
     _window_ref.show()
+
+    def _cleanup():
+        try:
+            _window_ref.worker.stop_server()
+        except Exception:
+            pass
+        try:
+            _window_ref.thread.quit()
+            _window_ref.thread.wait(5000)
+        except Exception:
+            pass
+
+    app.aboutToQuit.connect(_cleanup)
 
     sys.exit(app.exec())
