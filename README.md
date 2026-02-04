@@ -84,7 +84,7 @@ npm run react
 **Build**
 
 ```shell
-npm run pyinstaller
+npm run build
 ```
 
 ### 3.3 Backend
