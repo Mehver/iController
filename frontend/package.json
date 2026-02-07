@@ -4,8 +4,8 @@
   "engines": { "node": ">=20" },
   "proxy": "http://localhost:3030",
   "scripts": {
-    "start": "npx react-scripts start",
-    "build": "npx react-scripts build",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
     "start-win": "set NODE_OPTIONS=--max_old_space_size=4096 && npx react-scripts start",
     "build-win": "set NODE_OPTIONS=--max_old_space_size=4096 && npx react-scripts build"
   },
