@@ -11,14 +11,16 @@ rm -rf build
 rm -rf venv
 rm -rf logs
 rm -rf node_modules
-rm -rf ClientBrowserUI/build
-rm -rf ClientBrowserUI/node_modules
+rm -rf frontend/build
+rm -rf frontend/node_modules
 
 docker run -it --rm \
   -v "$PWD":/docker \
   -w /docker \
   node:16-bullseye \
-  bash -c "cd ClientBrowserUI; npm i; npm run build; exit"
+  bash -c "cd frontend; npm i; npm run build; exit"
+
+cd backend
 
 python3 -m venv venv
 source venv/bin/activate

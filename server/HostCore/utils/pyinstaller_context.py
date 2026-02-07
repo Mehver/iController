@@ -24,7 +24,7 @@ class PyInstallerContext:
         except ImportError:
             self.mode = "cli"
 
-    def resource_path(self, relative_path):
+    def frontend_resource_path(self):
         # 获取资源的绝对路径
         if self.bundled:
             # noinspection PyProtectedMember
@@ -32,8 +32,9 @@ class PyInstallerContext:
             base_path = sys._MEIPASS
         else:
             # 否则，使用当前文件的目录作为基准路径
-            base_path = os.path.abspath("")
-        return os.path.join(base_path, relative_path)
+            base_path = os.path.abspath(os.path.dirname(__file__))
+            base_path = os.path.abspath(os.path.join(base_path, ".."))
+        return os.path.join(base_path, "./frontend/build")
 
     def check_build(self):
         if self.bundled:

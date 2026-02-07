@@ -9,10 +9,12 @@ rd /s /q build
 rd /s /q venv
 rd /s /q logs
 rd /s /q node_modules
-rd /s /q ClientBrowserUI\build
-rd /s /q ClientBrowserUI\node_modules
+rd /s /q frontend\build
+rd /s /q frontend\node_modules
 
-docker run -it --rm -v %cd%:/docker -w /docker node:16-bullseye bash -c "cd ClientBrowserUI; npm i; npm run build; exit"
+docker run -it --rm -v %cd%:/docker -w /docker node:16-bullseye bash -c "cd frontend; npm i; npm run build; exit"
+
+cd backend
 
 python -m venv venv
 call venv\Scripts\activate

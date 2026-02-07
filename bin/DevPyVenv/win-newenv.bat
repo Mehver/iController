@@ -9,6 +9,8 @@ rd /s /q build
 rd /s /q venv
 rd /s /q logs
 
+cd backend
+
 python -m venv venv
 call venv\Scripts\activate
 pip install -r ./requirements/iControllerGUI.txt
