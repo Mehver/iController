@@ -11,7 +11,7 @@ from HostDesktopCLI.cli_qrcode import url_to_qrcode_print
 def HostDesktopCLI(version='dev'):
     print(cli_logo(version))
     Config.init()
-    static_folder = PyInstallerContext().resource_path("./ClientBrowserUI/build")
+    static_folder = PyInstallerContext().frontend_resource_path()
     app = HttpServer(static_folder)
     host_ip_address = get_address()
     url_to_qrcode_print(host_ip_address)

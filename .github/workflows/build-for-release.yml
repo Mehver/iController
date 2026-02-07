@@ -23,7 +23,7 @@ jobs:
         run: |
           $oldVersion = Get-Content .\.github\metadata\PreviousVersion.txt
           echo "OLD_VERSION=$oldVersion" >> $env:GITHUB_ENV
-          cd bin
+          cd tools
           python UpdateVersionNumber.py $oldVersion ${{ github.event.release.tag_name }}
           cd ..
         shell: pwsh
@@ -56,8 +56,8 @@ jobs:
           node-version: '16'
 
       - name: React Build Frontend
+        working-directory: frontend
         run: |
-          cd ClientBrowserUI
           npm install
           npm run build
 
@@ -70,18 +70,21 @@ jobs:
         run: |
           $oldVersion = Get-Content .\.github\metadata\PreviousVersion.txt
           echo "OLD_VERSION=$oldVersion" >> $env:GITHUB_ENV
-          cd bin
+          cd tools
           python UpdateVersionNumber.py $oldVersion ${{ github.event.release.tag_name }}
           cd ..
         shell: pwsh
 
       - name: Python Install Dependencies
+        working-directory: backend
         run: pip install -r ./requirements/iControllerCLI.txt
 
       - name: PyInstaller Build iController.exe
+        working-directory: backend
         run: pyinstaller ./pyinstaller/iControllerCLI.spec
 
       - name: Create Zip Package
+        working-directory: backend
         run: |
           $folderName = "icontroller-${{ github.event.release.tag_name }}-portable-win-x64-cli"
           $fileName = "iController-${{ github.event.release.tag_name }}-CLI.exe"
@@ -90,7 +93,8 @@ jobs:
           New-Item -ItemType Directory -Path $folderPath
           Move-Item -Path ".\dist\$fileName" -Destination $folderPath
           Compress-Archive -Path $folderPath -DestinationPath ".\dist\$folderName.zip"
-          echo "ARTIFACT_PATH=./dist/$folderName.zip" >> $env:GITHUB_ENV
+          $artifactPath = "$env:GITHUB_WORKSPACE/backend/dist/$folderName.zip"
+          echo "ARTIFACT_PATH=$artifactPath" >> $env:GITHUB_ENV
         shell: pwsh
 
       - name: Upload to Release
@@ -114,8 +118,8 @@ jobs:
           node-version: '16'
 
       - name: React Build Frontend
+        working-directory: frontend
         run: |
-          cd ClientBrowserUI
           npm install
           npm run build
 
@@ -128,18 +132,21 @@ jobs:
         run: |
           $oldVersion = Get-Content .\.github\metadata\PreviousVersion.txt
           echo "OLD_VERSION=$oldVersion" >> $env:GITHUB_ENV
-          cd bin
+          cd tools
           python UpdateVersionNumber.py $oldVersion ${{ github.event.release.tag_name }}
           cd ..
         shell: pwsh
 
       - name: Python Install Dependencies
+        working-directory: backend
         run: pip install -r ./requirements/iControllerGUI.txt
 
       - name: PyInstaller Build iController.exe
+        working-directory: backend
         run: pyinstaller ./pyinstaller/iControllerGUI.spec
 
       - name: Create Zip Package
+        working-directory: backend
         run: |
           $folderName = "icontroller-${{ github.event.release.tag_name }}-portable-win-x64-gui"
           $fileName = "iController-${{ github.event.release.tag_name }}-GUI.exe"
@@ -148,7 +155,8 @@ jobs:
           New-Item -ItemType Directory -Path $folderPath
           Move-Item -Path ".\dist\$fileName" -Destination $folderPath
           Compress-Archive -Path $folderPath -DestinationPath ".\dist\$folderName.zip"
-          echo "ARTIFACT_PATH=./dist/$folderName.zip" >> $env:GITHUB_ENV
+          $artifactPath = "$env:GITHUB_WORKSPACE/backend/dist/$folderName.zip"
+          echo "ARTIFACT_PATH=$artifactPath" >> $env:GITHUB_ENV
         shell: pwsh
 
       - name: Upload to Release

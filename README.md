@@ -71,7 +71,7 @@ of `Settings > Privacy & Security > Developer Tools > Terminal`.
 
 ### 3.2 Frontend
 
-All front-end development is carried out in the `./ClientBrowserUI/` directory. The final static ES6 front-end assets are generated using `npm run build`. In both development mode and during packaging, the backend can automatically route requests to the built resource path.
+All front-end development is carried out in the `./frontend/` directory. The final static ES6 front-end assets are generated using `npm run build`. In both development mode and during packaging, the backend can automatically route requests to the built resource path.
 
 You can set up a Node.js environment on your system and install dependencies using `npm i`. However, the recommended approach is to use the `.bat` or `.sh` scripts provided under `./bin/DevDockerEnv/` in this project to start the official Docker environment and install dependencies with a single command. Scripts whose filenames contain `-p3000` map port 3000, making them convenient for React.js development and debugging.
 

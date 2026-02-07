@@ -7,9 +7,10 @@ rm -f config.yaml
 rm -rf dist
 rm -rf build
 rm -rf venv
+rm -rf "backend/venv"
 rm -rf logs
 rm -rf node_modules
-rm -rf "ClientBrowserUI/build"
-rm -rf "ClientBrowserUI/node_modules"
+rm -rf "frontend/build"
+rm -rf "frontend/node_modules"
 printf "Press Enter to continue..."
 read _

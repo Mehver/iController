@@ -1,19 +1,16 @@
 # -*- mode: python ; coding: utf-8 -*-
 
-from PyInstaller.utils.hooks import collect_all
-qt_datas, qt_binaries, qt_hiddenimports = collect_all("PySide6")
 
 a = Analysis(
     ['../iController.py'],
     pathex=['..'],
-    binaries = qt_binaries + [],
-    datas = qt_datas + [
-        ('../ClientBrowserUI/build', 'ClientBrowserUI/build/'),
+    binaries=[],
+    datas=[
+        ('../../frontend/build', 'frontend/build/'),
         ('../HostCore', 'HostCore/'),
-        ('../HostDesktopCLI', 'HostDesktopCLI/'),
-        ('../HostDesktopGUI', 'HostDesktopGUI/')
+        ('../HostDesktopCLI', 'HostDesktopCLI/')
     ],
-    hiddenimports = qt_hiddenimports + [],
+    hiddenimports=[],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
@@ -35,7 +32,7 @@ exe = EXE(
     upx=True,
     upx_exclude=[],
     runtime_tmpdir=None,
-    console=False,
+    console=True,
     disable_windowed_traceback=False,
     argv_emulation=False,
     target_arch=None,
