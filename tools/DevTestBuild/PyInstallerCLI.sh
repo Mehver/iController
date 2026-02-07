@@ -14,14 +14,17 @@ rm -rf venv
 rm -rf "backend/venv"
 rm -rf logs
 rm -rf node_modules
+rm -rf .pnpm-store
 rm -rf "frontend/build"
 rm -rf "frontend/node_modules"
+rm -rf "frontend/.pnpm-store"
 
 docker run -it --rm \
+  -e COREPACK_ENABLE_DOWNLOAD_PROMPT=0 \
   -v "$PWD":/docker \
   -w /docker \
-  node:16-bullseye \
-  bash -c "cd frontend; npm i; npm run build; exit"
+  node:20-bullseye \
+  bash -c "cd frontend; corepack enable && corepack prepare pnpm --activate; pnpm install; pnpm run build; exit"
 
 cd backend
 

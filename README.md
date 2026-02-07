@@ -66,7 +66,7 @@ of `Settings > Privacy & Security > Developer Tools > Terminal`.
 
 ### 3.1 Requirements
 
-- [Node.js](https://nodejs.org/en/) v16.20.2
+- [Node.js](https://nodejs.org/en/) v20
 - [Python](https://www.python.org/) v3.10.10
 
 ### 3.2 Frontend

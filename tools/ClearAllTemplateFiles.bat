@@ -11,6 +11,8 @@ rd /s /q venv
 rd /s /q backend\venv
 rd /s /q logs
 rd /s /q node_modules
+rd /s /q .pnpm-store
 rd /s /q frontend\build
 rd /s /q frontend\node_modules
+rd /s /q frontend\.pnpm-store
 pause

@@ -12,7 +12,9 @@ rm -rf venv
 rm -rf "backend/venv"
 rm -rf logs
 rm -rf node_modules
+rm -rf .pnpm-store
 rm -rf "frontend/build"
 rm -rf "frontend/node_modules"
+rm -rf "frontend/.pnpm-store"
 printf "Press Enter to continue..."
 read _
