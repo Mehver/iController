@@ -33,7 +33,7 @@ class PyInstallerContext:
         else:
             # 否则，使用当前文件的目录作为基准路径
             base_path = os.path.abspath(os.path.dirname(__file__))
-            base_path = os.path.abspath(os.path.join(base_path, ".."))
+            base_path = os.path.abspath(os.path.join(base_path, "../../../"))
         return os.path.join(base_path, "./frontend/build")
 
     def check_build(self):
