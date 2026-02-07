@@ -1,5 +1,5 @@
 <div align="center">
-    <img src="https://github.com/Mehver/iController/raw/main/_docs/icon/256.png" width="20%" alt=""/>
+    <img src="https://github.com/Mehver/iController/raw/main/.assets/icon/256.png" width="20%" alt=""/>
     <h1>iController <code>v0.7.2</code></h1>
 	<p><a href='https://github.com/Mehver/iController/blob/main/README.md'>English</a> | 简体中文</p>
     <span>
@@ -16,16 +16,16 @@
 <table>
     <tr>
         <td>
-            <img src="https://github.com/Mehver/iController/raw/main/_docs/A.png" width="390px" alt=""/>
+            <img src="https://github.com/Mehver/iController/raw/main/.assets/A.png" width="390px" alt=""/>
         </td>
         <td>
-            <img src="https://github.com/Mehver/iController/raw/main/_docs/B.png" width="390px" alt=""/>
+            <img src="https://github.com/Mehver/iController/raw/main/.assets/B.png" width="390px" alt=""/>
         </td>
         <td>
-            <img src="https://github.com/Mehver/iController/raw/main/_docs/C.png" width="390px" alt=""/>
+            <img src="https://github.com/Mehver/iController/raw/main/.assets/C.png" width="390px" alt=""/>
         </td>
         <td>
-            <img src="https://github.com/Mehver/iController/raw/main/_docs/D.png" width="390px" alt=""/>
+            <img src="https://github.com/Mehver/iController/raw/main/.assets/D.png" width="390px" alt=""/>
         </td>
     </tr>
 </table>
@@ -47,7 +47,7 @@
 
 目前程序是CLI交互的，启动时，你可以手动提供端口号，程序会自动检测确保端口可用且无冲突，启动后使用手机浏览器通过电脑的局域网IP地址和端口访问。
 
-<img src="https://github.com/Mehver/iController/raw/main/_docs/0.png" width="50%" alt="">
+<img src="https://github.com/Mehver/iController/raw/main/.assets/0.png" width="50%" alt="">
 
 ### 2.2 macOS
 
@@ -58,7 +58,7 @@
 
 注意：对于 `macOS`，由于权限问题，直接下载的 iController 无法被系统信任，目前唯一的解决方法是打开 `设置 > 隐私与安全性 > 开发者工具 > 终端` 这一开关。
 
-<img src="https://github.com/Mehver/iController/raw/main/_docs/1.jpg" width="50%" alt="">
+<img src="https://github.com/Mehver/iController/raw/main/.assets/1.jpg" width="50%" alt="">
 
 ## 3 开发
 
