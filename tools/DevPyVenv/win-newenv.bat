@@ -1,13 +1,16 @@
 cd /d %~dp0
 cd ../../
 
-for /d /r . %%d in (__pycache__) do @if exist "%%d" rd /s /q "%%d"
-for /r . %%i in (*.toc) do @del "%%i"
-del config.yaml
-rd /s /q dist
-rd /s /q build
-rd /s /q venv
-rd /s /q logs
+find . -type d -name "__pycache__" -prune -exec rm -rf {} +
+find . -type f -name "*.toc" -exec rm -f {} +
+rm -f config.yaml
+rm -rf dist
+rm -rf build
+rm -rf "backend/build"
+rm -rf "backend/dist"
+rm -rf venv
+rm -rf "backend/venv"
+rm -rf logs
 
 cd backend
 
