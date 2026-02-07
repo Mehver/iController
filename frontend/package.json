@@ -1,5 +1,7 @@
 {
   "name": "iController",
+  "packageManager": "pnpm@10.28.2",
+  "engines": { "node": ">=20" },
   "proxy": "http://localhost:3030",
   "scripts": {
     "start": "npx react-scripts start",

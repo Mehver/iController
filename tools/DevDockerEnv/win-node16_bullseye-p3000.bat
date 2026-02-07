@@ -1,6 +1,7 @@
 docker run -it --rm ^
+  -e COREPACK_ENABLE_DOWNLOAD_PROMPT=0 ^
   -p 3000:3000 ^
   -v "%cd%\..\..:/docker" ^
   -w /docker/frontend ^
-  node:16-bullseye ^
-  bash -c "npm install && bash"
+  node:20-bullseye ^
+  bash -c "corepack enable && corepack prepare pnpm --activate && pnpm install && bash"

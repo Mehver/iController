@@ -207,3 +207,4 @@ cython_debug/
 
 .idea/workspace.xml
 .idea/iController.iml
+/.pnpm-store
