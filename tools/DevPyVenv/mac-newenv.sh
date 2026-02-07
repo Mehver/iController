@@ -3,12 +3,15 @@
 cd "$(dirname "$0")"
 cd ../../ || exit 1
 
-find . -type d -name "__pycache__" -exec rm -rf {} +
-find . -type f -name "*.toc" -delete
+find . -type d -name "__pycache__" -prune -exec rm -rf {} +
+find . -type f -name "*.toc" -exec rm -f {} +
 rm -f config.yaml
 rm -rf dist
 rm -rf build
+rm -rf "backend/build"
+rm -rf "backend/dist"
 rm -rf venv
+rm -rf "backend/venv"
 rm -rf logs
 
 cd backend || exit 1

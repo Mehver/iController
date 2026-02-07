@@ -6,6 +6,8 @@ find . -type f -name "*.toc" -exec rm -f {} +
 rm -f config.yaml
 rm -rf dist
 rm -rf build
+rm -rf "backend/build"
+rm -rf "backend/dist"
 rm -rf venv
 rm -rf "backend/venv"
 rm -rf logs
