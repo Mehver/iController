@@ -1,7 +1,7 @@
 <div align="center">
-    <img src="https://github.com/Mehver/iController/raw/main/docs/icon/256.png" width="20%" alt=""/>
+    <img src="https://github.com/Mehver/iController/raw/main/_docs/icon/256.png" width="20%" alt=""/>
     <h1>iController <code>v0.7.2</code></h1>
-	<p>English | <a href='https://github.com/Mehver/iController/blob/main/docs/README-cn.md'>简体中文</a></p>
+	<p>English | <a href='https://github.com/Mehver/iController/blob/main/_docs/README-cn.md'>简体中文</a></p>
     <span>
         <a href='https://github.com/Mehver/iController/releases/tag/v0.7.2'><img src="https://img.shields.io/badge/Windows%20(x64)-v0.7.2-blue?logo=data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjI1MDAiIHByZXNlcnZlQXNwZWN0UmF0aW89InhNaWRZTWlkIiB3aWR0aD0iMjQ5MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Qm94PSItMSAtMSAyNTggMjU5Ij48cGF0aCBkPSJNLTEtMWgyNTh2MjU5SC0xeiIvPjxwYXRoIGQ9Ik0wIDM2LjM1N0wxMDQuNjIgMjIuMTFsLjA0NSAxMDAuOTE0LTEwNC41Ny41OTVMMCAzNi4zNTh2LS4wMDF6bTEwNC41NyA5OC4yOTNsLjA4IDEwMS4wMDJMLjA4MSAyMjEuMjc1bC0uMDA2LTg3LjMwMiAxMDQuNDk0LjY3N3ptMTIuNjgyLTExNC40MDVMMjU1Ljk2OCAwdjEyMS43NGwtMTM4LjcxNiAxLjFWMjAuMjQ2ek0yNTYgMTM1LjZsLS4wMzMgMTIxLjE5MS0xMzguNzE2LTE5LjU3OC0uMTk0LTEwMS44NHoiIGZpbGw9IiNmZmYiLz48L3N2Zz4=" alt=""/></a>&nbsp;
         <a href='https://github.com/Mehver/iController/releases/tag/v0.5.1'><img src="https://img.shields.io/badge/MacOS%20(arm64)-v0.5.1-green?logo=Apple" alt=""/></a>&nbsp;
@@ -16,16 +16,16 @@ A host LAN controller software running on `Windows` and `macOS` (read descriptio
 <table>
     <tr>
         <td>
-            <img src="https://github.com/Mehver/iController/raw/main/docs/A.png" width="390px" alt=""/>
+            <img src="https://github.com/Mehver/iController/raw/main/_docs/A.png" width="390px" alt=""/>
         </td>
         <td>
-            <img src="https://github.com/Mehver/iController/raw/main/docs/B.png" width="390px" alt=""/>
+            <img src="https://github.com/Mehver/iController/raw/main/_docs/B.png" width="390px" alt=""/>
         </td>
         <td>
-            <img src="https://github.com/Mehver/iController/raw/main/docs/C.png" width="390px" alt=""/>
+            <img src="https://github.com/Mehver/iController/raw/main/_docs/C.png" width="390px" alt=""/>
         </td>
         <td>
-            <img src="https://github.com/Mehver/iController/raw/main/docs/D.png" width="390px" alt=""/>
+            <img src="https://github.com/Mehver/iController/raw/main/_docs/D.png" width="390px" alt=""/>
         </td>
     </tr>
 </table>
@@ -47,7 +47,7 @@ Download portable application from the [Release](https://github.com/Mehver/iCont
 
 Currently, the program is CLI interactive. When starting, you can manually provide the port number, and the program will automatically detect to ensure that the port is available and conflict-free. After starting, use the mobile browser to access the LAN IP address and port of the computer.
 
-<img src="https://github.com/Mehver/iController/raw/main/docs/0.png" width="50%" alt="">
+<img src="https://github.com/Mehver/iController/raw/main/_docs/0.png" width="50%" alt="">
 
 ### 2.2 macOS
 
@@ -60,7 +60,7 @@ Note: For macOS, due to permission issues, the
 directly downloaded iController cannot be trusted by the system, the only solution at present is to open the switch
 of `Settings > Privacy & Security > Developer Tools > Terminal`.
 
-<img src="https://github.com/Mehver/iController/raw/main/docs/1.jpg" width="50%" alt="">
+<img src="https://github.com/Mehver/iController/raw/main/_docs/1.jpg" width="50%" alt="">
 
 ## 3 Development
 

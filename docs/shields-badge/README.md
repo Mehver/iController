@@ -1,11 +1,11 @@
 ![MacOS(x64)](https://shields.io/badge/MacOS%20(x64)--9cf?logo=Apple&style=social)
-![MacOS(x64)](https://github.com/Mehver/iController/raw/main/docs/shields-badge/MacOS(x64).svg)
+![MacOS(x64)](https://github.com/Mehver/iController/raw/main/_docs/shields-badge/MacOS(x64).svg)
 
 ![MacOS(arm64)](https://shields.io/badge/MacOS%20(arm64)--9cf?logo=Apple&style=social)
-![MacOS(arm64)](https://github.com/Mehver/iController/raw/main/docs/shields-badge/MacOS(arm64).svg)
+![MacOS(arm64)](https://github.com/Mehver/iController/raw/main/_docs/shields-badge/MacOS(arm64).svg)
 
 ![Windows(x64)](https://shields.io/badge/Windows%20(x64)--9cf?logo=Windows&style=social)
-![Windows(x64)](https://github.com/Mehver/iController/raw/main/docs/shields-badge/Windows(x64).svg)
+![Windows(x64)](https://github.com/Mehver/iController/raw/main/_docs/shields-badge/Windows(x64).svg)
 
 <span>
     <a href='https://github.com/Mehver/iController/releases/tag/v0.6.1'><img src="https://img.shields.io/badge/Windows%20(x64)-v0.6.1-blue?logo=Windows" alt=""/></a>&nbsp;
