@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Set up Python
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.10.10'
@@ -50,20 +50,18 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Set up Node.js
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: '10.28.2'
+          run_install: false
+
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'pnpm'
           cache-dependency-path: frontend/pnpm-lock.yaml
-
-      - name: Enable Corepack
-        run: corepack enable
-
-      - name: Prepare pnpm (non-interactive)
-        run: corepack prepare pnpm --activate
-        env:
-          COREPACK_ENABLE_DOWNLOAD_PROMPT: 0
 
       - name: React Build Frontend
         working-directory: frontend
@@ -71,7 +69,7 @@ jobs:
           pnpm install --frozen-lockfile
           pnpm run build
 
-      - name: Set up Python
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.10.10'
@@ -124,20 +122,18 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Set up Node.js
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: '10.28.2'
+          run_install: false
+
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'pnpm'
           cache-dependency-path: frontend/pnpm-lock.yaml
-
-      - name: Enable Corepack
-        run: corepack enable
-
-      - name: Prepare pnpm (non-interactive)
-        run: corepack prepare pnpm --activate
-        env:
-          COREPACK_ENABLE_DOWNLOAD_PROMPT: 0
 
       - name: React Build Frontend
         working-directory: frontend
@@ -145,7 +141,7 @@ jobs:
           pnpm install --frozen-lockfile
           pnpm run build
 
-      - name: Set up Python
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.10.10'
