@@ -98,6 +98,5 @@ root.render(
                 </ContextProvider>
             </header>
         </div>
-    </React.StrictMode>,
-    document.getElementById('root')
+    </React.StrictMode>
 );
