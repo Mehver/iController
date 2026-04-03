@@ -4,18 +4,33 @@
 
 ### 1.1 Dev environment security vulnerability 开发环境安全漏洞
 
-dependabot/49 https://github.com/advisories/GHSA-4v9v-hfq4-rm2v
+> [!NOTE]
+>
+> For source codes `<= commit c7671cccc4da7e21fd288521a515b011197ac18c (2026-04-03)`, the frontend of this project was built using CRA (react-scripts).
+>
+> Since CRA/react-scripts is no longer maintained, it contains multiple known vulnerabilities in its dependency tree, which mainly affect the development environment.
+>
+> The project has since migrated to Vite.
+>
+> Important notes:
+>
+> - Frontend code is built into static assets during release
+> - Release builds do not include CRA/react-scripts as a runtime dependency
+>
+> Therefore, these vulnerabilities **do not affect distributed releases**, but may impact development environments in older versions.
+>
+> ---
+>
+> 在 `<= commit c7671cccc4da7e21fd288521a515b011197ac18c (2026-04-03)` 的源码中，项目的前端基于 CRA (react-scripts) 构建。
+>
+> 由于 CRA/react-scripts 已停止维护，其依赖中存在多个已知漏洞，这些问题主要影响开发环境的安全性。
+>
+> 项目已在后续版本迁移至 Vite。
+>
+> 需要说明的是：
+>
+> - 前端代码在发布时会被构建为静态资源
+> - Release 版本不包含 CRA/react-scripts 运行时依赖
+>
+> 因此，这些漏洞**不会影响已发布的程序**，仅可能影响历史版本的开发环境。
 
-dependabot/50 https://github.com/advisories/GHSA-9jgg-88mc-972h
-
-These two vulnerabilities only affects the `webpack-dev-server` used during development via `npm start`. If a developer’s machine visits a malicious website by browser, the attacker may be able to exfiltrate source code through the local dev server.
-
-At present, there is no suitable upgrade path while retaining the existing `react-scripts`. The production environment serves pre-built static files via Flask and is not affected by this vulnerability.
-
-At worst, only in-development source code could be exposed, which is not expected to contain sensitive or valuable data.
-
-这两个漏洞仅影响开发阶段 `npm start` 使用的 `webpack-dev-server`：当开发设备在浏览器中访问恶意网站时，对方可能通过本地 dev server 窃取源码。
-
-当前在保留现有 `react-scripts` 的前提下暂无合适的升级方案。生产环境使用 Flask 提供已构建的静态文件，不受该漏洞影响。
-
-不论如何，恶意攻击最严重的后果也只是调试中的源码被获取，这不应该包含有价值内容。
