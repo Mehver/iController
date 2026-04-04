@@ -5,8 +5,10 @@ updates:
     directory: "/frontend"
     schedule:
       interval: "daily"
+    open-pull-requests-limit: 0
 
   - package-ecosystem: "pip"
     directory: "/backend/requirements"
     schedule:
       interval: "daily"
+    open-pull-requests-limit: 0
