@@ -1,7 +1,7 @@
 Quart>=0.20.0
 pyautogui==0.9.54
 pyinstaller==6.19.0
-pycaw==20240210
+pycaw==20251023
 comtypes==1.4.16
 psutil==5.9.8
 pyperclip~=1.8.2
