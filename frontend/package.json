@@ -4,9 +4,7 @@
   "engines": { "node": ">=20" },
   "scripts": {
     "start": "vite",
-    "build": "vite build",
-    "start-win": "set NODE_OPTIONS=--max_old_space_size=4096 && npx vite",
-    "build-win": "set NODE_OPTIONS=--max_old_space_size=4096 && npx vite build"
+    "build": "vite build"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
