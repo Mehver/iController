@@ -1,6 +1,6 @@
 import queue
 
-from PySide6.QtCore import QObject, QThread, Signal, Slot
+from PySide6.QtCore import QObject, QThread, Signal, Slot, QEvent, Qt
 from PySide6.QtGui import QFont, QTextCursor, QIcon
 from PySide6.QtWidgets import (
     QWidget,
@@ -79,6 +79,9 @@ class ShellWindow(QWidget):
         font = QFont("Courier New")
         font.setStyleHint(QFont.Monospace)
         self.terminal.setFont(font)
+        self.terminal.setTextInteractionFlags(Qt.NoTextInteraction)
+        self.terminal.setFocusPolicy(Qt.NoFocus)
+        self.terminal.installEventFilter(self)
 
         # --- 输入行 ---
         self.input = QLineEdit()
@@ -139,6 +142,22 @@ class ShellWindow(QWidget):
         self.start_requested.emit()
 
     # ---------- UI 辅助 ----------
+
+    def eventFilter(self, watched, event):
+        if watched is self.terminal and event.type() in (
+            QEvent.MouseButtonPress,
+            QEvent.MouseButtonRelease,
+            QEvent.MouseButtonDblClick,
+            QEvent.Wheel,
+            QEvent.ContextMenu,
+        ):
+            self.input.setFocus(Qt.MouseFocusReason)
+            return True
+        return super().eventFilter(watched, event)
+
+    def mousePressEvent(self, event):
+        self.input.setFocus(Qt.MouseFocusReason)
+        super().mousePressEvent(event)
 
     @Slot(str)
     def append_text(self, s: str):
