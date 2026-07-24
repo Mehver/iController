@@ -134,6 +134,6 @@ source venv/bin/activate
 
 This project is released under the BSD 3-Clause License. Code may be reused with proper attribution.
 
-Copyright (c) 2024-Present, Mehver (https://github.com/Mehver). All rights reserved.
+Copyright (c) 2024 Mehver (https://github.com/Mehver). All rights reserved.
 
 All dependencies are open-source and licensed under permissive licenses. No copyleft (e.g., GPL, AGPL) components are included.

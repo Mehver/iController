@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2024 Mehver (https://github.com/Mehver)
+// SPDX-License-Identifier: BSD-3-Clause
+
 import {Component} from 'react';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';

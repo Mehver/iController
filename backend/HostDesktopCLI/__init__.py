@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2024 Mehver (https://github.com/Mehver)
+# SPDX-License-Identifier: BSD-3-Clause
+
 import asyncio
 from hypercorn.config import Config as HypercornConfig
 from hypercorn.asyncio import serve

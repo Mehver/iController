@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2024 Mehver (https://github.com/Mehver)
+// SPDX-License-Identifier: BSD-3-Clause
+
 export const api_touchpad = (xPercent, yPercent) => {
     // 创建一个足够存储两个float32值的缓冲区
     const buffer = new ArrayBuffer(8); // 每个float32占用4字节

@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2024 Mehver (https://github.com/Mehver)
+# SPDX-License-Identifier: BSD-3-Clause
+
 from quart import request, jsonify
 from HostCore.volume_controller import get_volume_controller
 from HostCore.infra.files.log_manager import LogManager

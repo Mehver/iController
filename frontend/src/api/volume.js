@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2024 Mehver (https://github.com/Mehver)
+// SPDX-License-Identifier: BSD-3-Clause
+
 export const api_volume_get = () => {
     // 返回 fetch 调用的 Promise
     return fetch('/api/volume/get', {

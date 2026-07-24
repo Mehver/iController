@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2024 Mehver (https://github.com/Mehver)
+// SPDX-License-Identifier: BSD-3-Clause
+
 export const api_mousewheel = (wheel) => {
     // wheel 为-4到4的整数，表示滚轮向滚动的格数
     fetch('/api/mousewheel', {

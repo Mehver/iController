@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2024 Mehver (https://github.com/Mehver)
+# SPDX-License-Identifier: BSD-3-Clause
+
 from quart import Quart, send_from_directory
 from HostCore.http_server.route.dpad import dpad
 from HostCore.http_server.route.keyboard import keyboard_buttons

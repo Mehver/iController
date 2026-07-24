@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2024 Mehver (https://github.com/Mehver)
+// SPDX-License-Identifier: BSD-3-Clause
+
 import React, {Component} from 'react';
 import debounce from 'lodash/debounce';
 import {Slider, List, ListItem, Divider} from "@mui/material";

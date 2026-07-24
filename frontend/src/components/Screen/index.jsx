@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2024 Mehver (https://github.com/Mehver)
+// SPDX-License-Identifier: BSD-3-Clause
+
 import {Component} from 'react';
 import {Context} from '../../utils/Context';
 import DPad from "./DPad";
