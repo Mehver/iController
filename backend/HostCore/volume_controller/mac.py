@@ -11,4 +11,7 @@ class MacVolumeController(BaseVolumeController):
         return int(volume_info)
 
     def set_volume(self, target_volume):
-        os.system(f"osascript -e 'set volume output volume {target_volume}'")
+        volume = int(target_volume)
+        if not 0 <= volume <= 100:
+            raise ValueError(f"Volume must be between 0 and 100, got {volume}")
+        os.system(f"osascript -e 'set volume output volume {volume}'")
