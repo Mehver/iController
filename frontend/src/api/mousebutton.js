@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2024 Mehver (https://github.com/Mehver)
+// SPDX-License-Identifier: BSD-3-Clause
+
 export const api_mousebutton = (signal) => {
     fetch('/api/mousebutton', {
         method: 'POST',

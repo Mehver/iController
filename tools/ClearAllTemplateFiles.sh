@@ -1,4 +1,6 @@
 #!/bin/sh
+# SPDX-FileCopyrightText: 2024 Mehver (https://github.com/Mehver)
+# SPDX-License-Identifier: BSD-3-Clause
 cd "$(dirname "$0")" || exit 1
 cd .. || exit 1
 find . -type d -name "__pycache__" -prune -exec rm -rf {} +

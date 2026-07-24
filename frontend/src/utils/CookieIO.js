@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2024 Mehver (https://github.com/Mehver)
+// SPDX-License-Identifier: BSD-3-Clause
+
 export function setCookie(name, value, days = 7) {
     let expires = "";
     if (days) {

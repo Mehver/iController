@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2024 Mehver (https://github.com/Mehver)
+// SPDX-License-Identifier: BSD-3-Clause
+
 export const api_keyboard_buttons = (signal) => {
     fetch('/api/keyboard/buttons', {
         method: 'POST',

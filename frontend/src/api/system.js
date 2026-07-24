@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2024 Mehver (https://github.com/Mehver)
+// SPDX-License-Identifier: BSD-3-Clause
+
 export const api_get_system_info = () => {
     // 返回 fetch 调用的 Promise
     return fetch('/api/system/info', {

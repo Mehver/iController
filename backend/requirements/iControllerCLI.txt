@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2024 Mehver (https://github.com/Mehver)
+# SPDX-License-Identifier: BSD-3-Clause
 Quart>=0.20.0
 pyautogui==0.9.54
 pyinstaller==6.19.0

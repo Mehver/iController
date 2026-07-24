@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2024 Mehver (https://github.com/Mehver)
+# SPDX-License-Identifier: BSD-3-Clause
+
 def cli_logo(version='dev'):
     return (f"""
  _   ___            _             _ _           

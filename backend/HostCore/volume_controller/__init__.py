@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2024 Mehver (https://github.com/Mehver)
+# SPDX-License-Identifier: BSD-3-Clause
+
 from HostCore.volume_controller.base import BaseVolumeController
 from HostCore.utils.check_platform import get_platform
 

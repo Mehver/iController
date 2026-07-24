@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2024 Mehver (https://github.com/Mehver)
+# SPDX-License-Identifier: BSD-3-Clause
+
 from pathlib import Path
 
 # 应用名称和版本（标题栏会用到）

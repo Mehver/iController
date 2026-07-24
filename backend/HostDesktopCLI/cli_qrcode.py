@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2024 Mehver (https://github.com/Mehver)
+# SPDX-License-Identifier: BSD-3-Clause
+
 import segno
 
 def url_to_qrcode_print(url: str) -> None:
