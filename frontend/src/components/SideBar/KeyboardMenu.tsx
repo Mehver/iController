@@ -46,10 +46,9 @@ class KeyboardMenu extends Component<object, KeyboardMenuState> {
     componentDidMount() {
         api_get_system_info()
             .then(data => {
-                this.setState({serverIsMac: data.os === 'Darwin'});
-            })
-            .then(() => {
-                if (this.state.serverIsMac) {
+                const isMac = data.os === 'Darwin';
+                this.setState({serverIsMac: isMac});
+                if (isMac) {
                     this.context.setKeyboardDataSendMod('b');
                 }
             });
@@ -105,7 +104,7 @@ class KeyboardMenu extends Component<object, KeyboardMenuState> {
         return (
             <ThemeProvider theme={customTheme}>
                 <List component="div" disablePadding>
-                    <ListItem display="flex" alignItems="center">
+                    <ListItem sx={{ display: 'flex', alignItems: 'center' }}>
                         <div style={{
                             margin: '10px',
                             height: '40px',
@@ -142,7 +141,7 @@ class KeyboardMenu extends Component<object, KeyboardMenuState> {
                                     backgroundColor: this.context.secondaryColor,
                                     color: this.context.primaryColor,
                                 },
-                                'focus': {
+                                '&:focus': {
                                     backgroundColor: this.context.secondaryColor,
                                     color: this.context.primaryColor,
                                 },
@@ -152,12 +151,12 @@ class KeyboardMenu extends Component<object, KeyboardMenuState> {
                             <KeyboardDoubleArrowUpOutlined sx={{color: this.context.primaryColor}}/>
                         </IconButton>
                     </ListItem>
-                    <ListItem display="flex" alignItems="center">
+                    <ListItem sx={{ display: 'flex', alignItems: 'center' }}>
                         {this.state.serverIsMac ? (
                             <Typography
                                 style={i18n.Sidebar.KeyboardMenu.MacOSOnlyMode.FontSize[this.context.i18n as keyof typeof i18n.Sidebar.KeyboardMenu.MacOSOnlyMode.FontSize] as React.CSSProperties}
                             >
-                                {i18n.Sidebar.KeyboardMenu.MacOSOnlyMode[this.context.i18n as keyof typeof i18n.Sidebar.KeyboardMenu.MacOSOnlyMode]}
+                                {i18n.Sidebar.KeyboardMenu.MacOSOnlyMode[this.context.i18n as 'en' | 'zh']}
                             </Typography>
                         ) : (
                             <>
@@ -168,12 +167,12 @@ class KeyboardMenu extends Component<object, KeyboardMenuState> {
                                         this.context.setKeyboardDataSendMod('a');
                                     }}
                                     value={this.context.keyboardDataSendMod}
-                                    inputProps={{'aria-label': 'a'}}
+                                    slotProps={{ input: { 'aria-label': 'a' } }}
                                 />
                                 <Typography
                                     style={i18n.Sidebar.KeyboardMenu.Paste.FontSize[this.context.i18n as keyof typeof i18n.Sidebar.KeyboardMenu.Paste.FontSize] as React.CSSProperties}
                                 >
-                                    {i18n.Sidebar.KeyboardMenu.Paste[this.context.i18n as keyof typeof i18n.Sidebar.KeyboardMenu.Paste]}
+                                    {i18n.Sidebar.KeyboardMenu.Paste[this.context.i18n as 'en' | 'zh']}
                                 </Typography>
                                 <Radio
                                     {...radioProps}
@@ -182,12 +181,12 @@ class KeyboardMenu extends Component<object, KeyboardMenuState> {
                                         this.context.setKeyboardDataSendMod('b');
                                     }}
                                     value={this.context.keyboardDataSendMod}
-                                    inputProps={{'aria-label': 'b'}}
+                                    slotProps={{ input: { 'aria-label': 'b' } }}
                                 />
                                 <Typography
                                     style={i18n.Sidebar.KeyboardMenu.Type.FontSize[this.context.i18n as keyof typeof i18n.Sidebar.KeyboardMenu.Type.FontSize] as React.CSSProperties}
                                 >
-                                    {i18n.Sidebar.KeyboardMenu.Type[this.context.i18n as keyof typeof i18n.Sidebar.KeyboardMenu.Type]}
+                                    {i18n.Sidebar.KeyboardMenu.Type[this.context.i18n as 'en' | 'zh']}
                                 </Typography>
                             </>
                         )}

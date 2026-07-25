@@ -111,7 +111,7 @@ class SettingMenu extends Component<object, SettingMenuState> {
             fullWidth: true as const,
             variant: "outlined" as const,
             type: "number" as const,
-            inputProps: {step: "0.01", min: "0"},
+            slotProps: { htmlInput: { step: '0.01', min: '0' } } as const,
         };
 
         const formControlLabelRadioSX = {
@@ -187,7 +187,7 @@ class SettingMenu extends Component<object, SettingMenuState> {
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.handleTextFieldChange(e, 'tPadSensitivity')}
                             onBlur={() => this.handleBlur('tPadSensitivity')}
                             type={parametersAdjustmentTypoProps.type}
-                            inputProps={parametersAdjustmentTypoProps.inputProps}
+                            slotProps={parametersAdjustmentTypoProps.slotProps}
                             size={parametersAdjustmentTypoProps.size}
                             fullWidth={parametersAdjustmentTypoProps.fullWidth}
                             color={secondaryColorTag}
@@ -206,7 +206,7 @@ class SettingMenu extends Component<object, SettingMenuState> {
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.handleTextFieldChange(e, 'mWheelSensitivity')}
                             onBlur={() => this.handleBlur('mWheelSensitivity')}
                             type={parametersAdjustmentTypoProps.type}
-                            inputProps={parametersAdjustmentTypoProps.inputProps}
+                            slotProps={parametersAdjustmentTypoProps.slotProps}
                             size={parametersAdjustmentTypoProps.size}
                             fullWidth={parametersAdjustmentTypoProps.fullWidth}
                             color={secondaryColorTag}

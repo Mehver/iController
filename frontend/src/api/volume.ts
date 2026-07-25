@@ -9,32 +9,37 @@ export const api_volume_get = (): Promise<{ volume: number }> => {
         },
     })
         .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
             return response.json();
         })
         .then(data => {
             console.log('Success:', data);
+            if (data.status === 'error') {
+                throw new Error(data.message);
+            }
             return data;
         })
         .catch((error) => {
             console.error('Error:', error);
             throw error;
         });
-}
+};
 
-export const api_volume_set = (volume: string): void => {
-    fetch('/api/volume/set', {
+export const api_volume_set = (volume: string): Promise<void> => {
+    return fetch('/api/volume/set', {
         method: 'POST',
         headers: {
             'Content-Type': 'text/plain',
         },
         body: volume,
     })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            return response.json();
+        })
         .then(data => console.log('Success:', data))
         .catch((error) => {
             console.error('Error:', error);
+            throw error;
         });
-}
+};

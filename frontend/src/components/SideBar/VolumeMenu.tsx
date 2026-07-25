@@ -20,7 +20,6 @@ class VolumeMenu extends Component<object, VolumeMenuState> {
     declare context: AppContextType;
 
     private _isMounted: boolean = false;
-    private debouncedHandleCommit: ReturnType<typeof debounce>;
 
     state: VolumeMenuState = {
         value: 0,
@@ -89,7 +88,7 @@ class VolumeMenu extends Component<object, VolumeMenuState> {
         return (
             <ThemeProvider theme={customTheme}>
                 <List component="div" disablePadding>
-                    <ListItem display="flex" alignItems="center">
+                    <ListItem sx={{ display: 'flex', alignItems: 'center' }}>
                         <VolumeDown/>
                         <Slider
                             value={this.state.value}

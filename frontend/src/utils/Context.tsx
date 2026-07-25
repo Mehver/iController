@@ -99,7 +99,7 @@ export class ContextProvider extends Component<ContextProviderProps, AppContextT
             const capitalizedKey = key.charAt(0).toUpperCase() + key.slice(1);
 
             state[`set${capitalizedKey}`] = (value: unknown) => {
-                this.setState({[key]: value} as unknown as Partial<AppContextType>, () => {
+                this.setState({[key]: value} as unknown as AppContextType, () => {
                     if (cookie) {
                         setCookie(cookie, value as string | boolean | number, 7);
                     }

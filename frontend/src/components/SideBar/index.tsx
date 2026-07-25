@@ -35,9 +35,9 @@ import {
     ListItem,
     ListItemButton,
     Collapse,
-    Box, Typography,
-    SxProps
+    Box, Typography
 } from "@mui/material";
+import type { SxProps } from "@mui/system";
 import {
     ChevronRightOutlined,
     ExpandMore,
@@ -81,11 +81,13 @@ class SideBar extends Component {
         };
 
         let drawerWidth = '280px';
-        let drawerPaperProps: { sx: Record<string, unknown> } = {
-            sx: {
-                backgroundColor: this.context.primaryColor,
-                color: this.context.secondaryColor,
-                width: drawerWidth,
+        let drawerSlotProps: { paper: { sx: Record<string, unknown> } } = {
+            paper: {
+                sx: {
+                    backgroundColor: this.context.primaryColor,
+                    color: this.context.secondaryColor,
+                    width: drawerWidth,
+                },
             },
         };
 
@@ -112,16 +114,18 @@ class SideBar extends Component {
                     transform: 'scale(0.8)',
                 },
             };
-            drawerPaperProps = {
-                sx: {
-                    backgroundColor: this.context.primaryColor,
-                    color: this.context.secondaryColor,
-                    width: drawerWidth,
-                    '& .MuiListItemIcon-root': {
-                        fontSize: `${fontSize}rem`,
-                    },
-                    '& .MuiListItemText-primary': {
-                        fontSize: `${fontSize}rem`,
+            drawerSlotProps = {
+                paper: {
+                    sx: {
+                        backgroundColor: this.context.primaryColor,
+                        color: this.context.secondaryColor,
+                        width: drawerWidth,
+                        '& .MuiListItemIcon-root': {
+                            fontSize: `${fontSize}rem`,
+                        },
+                        '& .MuiListItemText-primary': {
+                            fontSize: `${fontSize}rem`,
+                        },
                     },
                 },
             };
@@ -134,7 +138,7 @@ class SideBar extends Component {
                 anchor={this.context.drawerRL === 'r' ? 'right' : 'left'}
                 open={this.context.drawerOpen}
                 onClose={() => this.context.setDrawerOpen(false)}
-                PaperProps={drawerPaperProps}
+                slotProps={drawerSlotProps}
             >
                 <List sx={listSX}>
                     <ListItem>

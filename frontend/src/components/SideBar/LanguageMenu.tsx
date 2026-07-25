@@ -40,7 +40,7 @@ class LanguageMenu extends Component {
                         variant="outlined"
                         value={this.context.i18n}
                         onChange={this.handleLanguageChange}
-                        SelectProps={{native: true}}
+                        slotProps={{ select: { native: true } }}
                         size="small"
                         fullWidth={true}
                         color="secondary"
