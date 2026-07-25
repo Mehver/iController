@@ -3,5 +3,5 @@ docker run -it --rm ^
   -p 3000:3000 ^
   -v "%cd%\..\..:/docker" ^
   -w /docker/frontend ^
-  node:20-bullseye ^
+  node:22-bullseye ^
   bash -c "corepack enable && corepack prepare pnpm --activate && pnpm install && bash"

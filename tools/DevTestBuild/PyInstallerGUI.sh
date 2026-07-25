@@ -25,7 +25,7 @@ docker run -it --rm \
   -e COREPACK_ENABLE_DOWNLOAD_PROMPT=0 \
   -v "$PWD":/docker \
   -w /docker \
-  node:20-bullseye \
+  node:22-bullseye \
   bash -c "cd frontend; corepack enable && corepack prepare pnpm --activate; pnpm install; pnpm run build; exit"
 
 cd backend

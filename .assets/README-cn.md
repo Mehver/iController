@@ -64,7 +64,7 @@
 
 ### 3.1 开发环境
 
-- [Node.js](https://nodejs.org/en/) v20
+- [Node.js](https://nodejs.org/en/) v22
 - [Python](https://www.python.org/) v3.10.10
 
 ### 3.2 前端
