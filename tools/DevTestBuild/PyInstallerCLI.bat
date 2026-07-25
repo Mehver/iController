@@ -17,7 +17,7 @@ rd /s /q frontend\build
 rd /s /q frontend\node_modules
 rd /s /q frontend\.pnpm-store
 
-docker run -it --rm -e COREPACK_ENABLE_DOWNLOAD_PROMPT=0 -v %cd%:/docker -w /docker node:20-bullseye bash -c "cd frontend; corepack enable && corepack prepare pnpm --activate; pnpm install; pnpm run build; exit"
+docker run -it --rm -e COREPACK_ENABLE_DOWNLOAD_PROMPT=0 -v %cd%:/docker -w /docker node:22-bullseye bash -c "cd frontend; corepack enable && corepack prepare pnpm --activate; pnpm install; pnpm run build; exit"
 
 cd backend
 
