@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2024 Mehver (https://github.com/Mehver)
 // SPDX-License-Identifier: BSD-3-Clause
 
-export const api_dpad = (signal) => {
+export const api_dpad = (signal: string): void => {
     fetch('/api/dpad', {
         method: 'POST',
         headers: {

@@ -24,9 +24,18 @@ import {
 } from "../../api/keyboard";
 import {api_get_system_info} from "../../api/system";
 import i18n from '../../utils/i18n';
+import {AppContextType} from '../../types';
 
-class KeyboardMenu extends Component {
-    constructor(props) {
+interface KeyboardMenuState {
+    inputText: string;
+    serverIsMac: boolean;
+}
+
+class KeyboardMenu extends Component<object, KeyboardMenuState> {
+    static contextType = Context;
+    declare context: AppContextType;
+
+    constructor(props: object) {
         super(props);
         this.state = {
             inputText: '',
@@ -46,13 +55,11 @@ class KeyboardMenu extends Component {
             });
     }
 
-    // 输入框实时更新
-    handleInputChange = (event) => {
+    handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         this.setState({inputText: event.target.value});
     };
 
-    // 发送文本消息
-    handleSendText = (event) => {
+    handleSendText = (event: React.MouseEvent | React.TouchEvent) => {
         const {inputText} = this.state;
         if (inputText.trim()) {
             if (this.context.keyboardDataSendMod === 'a') {
@@ -64,11 +71,10 @@ class KeyboardMenu extends Component {
             }
             this.setState({inputText: ''});
         }
-        event.target.blur();
+        (event.target as HTMLElement).blur();
     };
 
-    // 发送按键消息
-    handleSendButton = (signal) => {
+    handleSendButton = (signal: string) => {
         api_keyboard_buttons(signal);
     };
 
@@ -92,7 +98,7 @@ class KeyboardMenu extends Component {
         };
         const radioProps = {
             sx: radioSX,
-            color: 'secondary',
+            color: 'secondary' as const,
         };
         const funcButton_iconSX = {color: this.context.secondaryColor};
 
@@ -100,7 +106,6 @@ class KeyboardMenu extends Component {
             <ThemeProvider theme={customTheme}>
                 <List component="div" disablePadding>
                     <ListItem display="flex" alignItems="center">
-                        {/* 使用TextField会有文字大小不匹配的bug */}
                         <div style={{
                             margin: '10px',
                             height: '40px',
@@ -115,10 +120,10 @@ class KeyboardMenu extends Component {
                                 value={this.state.inputText}
                                 onChange={this.handleInputChange}
                                 style={{
-                                    border: 'none', // 移除input的默认边框
-                                    outline: 'none', // 移除聚焦时的轮廓
-                                    caretColor: this.context.secondaryColor, // 修改光标颜色
-                                    color: this.context.secondaryColor, // 修改文字颜色
+                                    border: 'none',
+                                    outline: 'none',
+                                    caretColor: this.context.secondaryColor,
+                                    color: this.context.secondaryColor,
                                     backgroundColor: 'transparent',
                                     width: '100%',
                                     fontSize: '1rem',
@@ -149,11 +154,10 @@ class KeyboardMenu extends Component {
                     </ListItem>
                     <ListItem display="flex" alignItems="center">
                         {this.state.serverIsMac ? (
-                            // If it's MacOS, then it only supports ASCII
                             <Typography
-                                style={i18n.Sidebar.KeyboardMenu.MacOSOnlyMode.FontSize[this.context.i18n]}
+                                style={i18n.Sidebar.KeyboardMenu.MacOSOnlyMode.FontSize[this.context.i18n as keyof typeof i18n.Sidebar.KeyboardMenu.MacOSOnlyMode.FontSize] as React.CSSProperties}
                             >
-                                {i18n.Sidebar.KeyboardMenu.MacOSOnlyMode[this.context.i18n]}
+                                {i18n.Sidebar.KeyboardMenu.MacOSOnlyMode[this.context.i18n as keyof typeof i18n.Sidebar.KeyboardMenu.MacOSOnlyMode]}
                             </Typography>
                         ) : (
                             <>
@@ -167,9 +171,9 @@ class KeyboardMenu extends Component {
                                     inputProps={{'aria-label': 'a'}}
                                 />
                                 <Typography
-                                    style={i18n.Sidebar.KeyboardMenu.Paste.FontSize[this.context.i18n]}
+                                    style={i18n.Sidebar.KeyboardMenu.Paste.FontSize[this.context.i18n as keyof typeof i18n.Sidebar.KeyboardMenu.Paste.FontSize] as React.CSSProperties}
                                 >
-                                    {i18n.Sidebar.KeyboardMenu.Paste[this.context.i18n]}
+                                    {i18n.Sidebar.KeyboardMenu.Paste[this.context.i18n as keyof typeof i18n.Sidebar.KeyboardMenu.Paste]}
                                 </Typography>
                                 <Radio
                                     {...radioProps}
@@ -181,9 +185,9 @@ class KeyboardMenu extends Component {
                                     inputProps={{'aria-label': 'b'}}
                                 />
                                 <Typography
-                                    style={i18n.Sidebar.KeyboardMenu.Type.FontSize[this.context.i18n]}
+                                    style={i18n.Sidebar.KeyboardMenu.Type.FontSize[this.context.i18n as keyof typeof i18n.Sidebar.KeyboardMenu.Type.FontSize] as React.CSSProperties}
                                 >
-                                    {i18n.Sidebar.KeyboardMenu.Type[this.context.i18n]}
+                                    {i18n.Sidebar.KeyboardMenu.Type[this.context.i18n as keyof typeof i18n.Sidebar.KeyboardMenu.Type]}
                                 </Typography>
                             </>
                         )}
@@ -207,7 +211,5 @@ class KeyboardMenu extends Component {
         );
     }
 }
-
-KeyboardMenu.contextType = Context;
 
 export default KeyboardMenu;

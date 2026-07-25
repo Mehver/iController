@@ -8,16 +8,27 @@ import {VolumeDown, VolumeUp} from "@mui/icons-material";
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 import {api_volume_get, api_volume_set} from "../../api/volume";
 import {Context} from "../../utils/Context";
+import {AppContextType} from '../../types';
 
-class VolumeMenu extends Component {
-    state = {
+interface VolumeMenuState {
+    value: number;
+    lastSuccessfulValue: number;
+}
+
+class VolumeMenu extends Component<object, VolumeMenuState> {
+    static contextType = Context;
+    declare context: AppContextType;
+
+    private _isMounted: boolean = false;
+    private debouncedHandleCommit: ReturnType<typeof debounce>;
+
+    state: VolumeMenuState = {
         value: 0,
         lastSuccessfulValue: 0,
     };
 
     componentDidMount() {
         this._isMounted = true;
-        // 延迟获取音量，防止服务器报错
         for (let i = 100; i < 2000; i = (i + 200) * 2) {
             setTimeout(() => {
                 this.fetchVolume();
@@ -27,7 +38,7 @@ class VolumeMenu extends Component {
 
     componentWillUnmount() {
         this._isMounted = false;
-        this.debouncedHandleCommit.cancel(); // 取消防抖调用
+        this.debouncedHandleCommit.cancel();
     }
 
     fetchVolume = () => {
@@ -45,17 +56,15 @@ class VolumeMenu extends Component {
             });
     };
 
-    handleChange = (event, newValue) => {
-        // 立即更新UI
-        this.setState({value: newValue});
-        // 使用消抖函数调用API更新音量
-        this.debouncedHandleCommit(newValue);
+    handleChange = (_event: Event, newValue: number | number[]) => {
+        const val = Array.isArray(newValue) ? newValue[0] : newValue;
+        this.setState({value: val});
+        this.debouncedHandleCommit(val);
     };
 
-    debouncedHandleCommit = debounce((newValue) => {
-        // noinspection JSVoidFunctionReturnValueUsed, JSUnusedLocalSymbols
+    debouncedHandleCommit = debounce((newValue: number) => {
         api_volume_set(String(newValue))
-            .then(data => {
+            .then(_data => {
                 if (this._isMounted) {
                     this.setState({lastSuccessfulValue: newValue});
                 }
@@ -63,7 +72,7 @@ class VolumeMenu extends Component {
             .catch(error => {
                 console.error("Failed to set volume:", error);
             });
-    }, 300); // 300ms的防抖时间
+    }, 300);
 
     render() {
         let customTheme = createTheme({
@@ -95,7 +104,5 @@ class VolumeMenu extends Component {
         );
     }
 }
-
-VolumeMenu.contextType = Context;
 
 export default VolumeMenu;

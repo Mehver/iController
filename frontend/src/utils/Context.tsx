@@ -27,24 +27,27 @@
 // OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// Context.jsx
-import React, {createContext, Component} from 'react';
-import {setCookie, getCookie} from './CookieIO';
-import {defaultPrimaryColor, defaultSecondaryColor} from './Theme';
+import React, { createContext, Component, ReactNode } from 'react';
+import { setCookie, getCookie } from './CookieIO';
+import { defaultPrimaryColor, defaultSecondaryColor } from './Theme';
+import { AppContextType } from '../types';
 
-export const Context = createContext(undefined);
+export const Context = createContext<AppContextType>(undefined as unknown as AppContextType);
 
-// 定义所有状态项的配置：包括默认值、是否需要 cookie 同步、数据类型、以及是否提供 toggle 方法
-const settingsConfig = {
+interface SettingConfig {
+    default: boolean | number | string;
+    cookie: string | null;
+    type?: string;
+    toggle?: boolean;
+}
+
+const settingsConfig: Record<string, SettingConfig> = {
     drawerOpen: {default: false, cookie: null},
     drawerRL: {default: 'l', cookie: 'drawerRL'},
     tPadSensitivity: {default: 1.0, cookie: 'tPadSensitivity', type: 'float'},
     mWheelSensitivity: {default: 1.0, cookie: 'mWheelSensitivity', type: 'float'},
-    // Touchpad visibility
     buttonSW1: {default: true, cookie: 'buttonSW1', type: 'boolean', toggle: true},
-    // DPad visibility
     buttonSW4: {default: true, cookie: 'buttonSW4', type: 'boolean', toggle: true},
-    // Mouse buttons: 0 - hide, 1 - LMR, 2 - LR
     button23: {default: 0, cookie: 'button23', type: 'int'},
     autoCollapse: {default: false, cookie: 'autoCollapse', type: 'boolean', toggle: true},
     mouseWheelMenuType: {default: 0, cookie: 'mouseWheelMenuType', type: 'int'},
@@ -62,8 +65,7 @@ const settingsConfig = {
     i18n: {default: 'en', cookie: 'i18n'},
 };
 
-// 根据配置解析 cookie 值
-const parseValue = (value, type, defaultValue) => {
+const parseValue = (value: string | null | undefined, type: string | undefined, defaultValue: boolean | number | string): boolean | number | string => {
     if (value === null || value === undefined) return defaultValue;
     switch (type) {
         case 'int':
@@ -77,47 +79,48 @@ const parseValue = (value, type, defaultValue) => {
     }
 };
 
-export class ContextProvider extends Component {
-    constructor(props) {
-        super(props);
-        const state = {};
+interface ContextProviderProps {
+    children: ReactNode;
+}
 
-        // 遍历配置，为每个状态项初始化值（优先使用 cookie 值，否则使用默认值）
+export class ContextProvider extends Component<ContextProviderProps, AppContextType> {
+    constructor(props: ContextProviderProps) {
+        super(props);
+        const state: Record<string, boolean | number | string | (() => void) | ((value: unknown) => void)> = {};
+
         Object.keys(settingsConfig).forEach(key => {
             const {default: def, type, cookie} = settingsConfig[key];
             const cookieValue = cookie ? getCookie(cookie) : undefined;
             state[key] = parseValue(cookieValue, type, def);
         });
 
-        // 自动生成更新函数
         Object.keys(settingsConfig).forEach(key => {
             const {cookie, toggle} = settingsConfig[key];
             const capitalizedKey = key.charAt(0).toUpperCase() + key.slice(1);
 
-            // 生成 setter：更新状态并同步 cookie（如果配置了 cookie）
-            state[`set${capitalizedKey}`] = (value) => {
-                this.setState({[key]: value}, () => {
+            state[`set${capitalizedKey}`] = (value: unknown) => {
+                this.setState({[key]: value} as unknown as Partial<AppContextType>, () => {
                     if (cookie) {
-                        setCookie(cookie, value, 7);
+                        setCookie(cookie, value as string | boolean | number, 7);
                     }
                 });
             };
 
-            // 如果配置了 toggle，则生成 toggle 方法
             if (toggle) {
                 state[`toggle${capitalizedKey}`] = () => {
                     this.setState(prevState => {
-                        const newValue = !prevState[key];
+                        const prevValue = prevState[key as keyof AppContextType];
+                        const newValue = !prevValue;
                         if (cookie) {
                             setCookie(cookie, newValue, 7);
                         }
-                        return {[key]: newValue};
+                        return {[key]: newValue} as unknown as Pick<AppContextType, keyof AppContextType>;
                     });
                 };
             }
         });
 
-        this.state = state;
+        this.state = state as unknown as AppContextType;
     }
 
     render() {

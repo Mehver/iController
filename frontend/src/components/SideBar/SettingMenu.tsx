@@ -21,19 +21,28 @@ import {
 } from '@mui/icons-material';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 import i18n from '../../utils/i18n';
+import {AppContextType} from '../../types';
 
-class SettingMenu extends Component {
-    constructor(props) {
+interface SettingMenuState {
+    drawerSide: string;
+    tPadSensitivity: string;
+    mWheelSensitivity: string;
+}
+
+class SettingMenu extends Component<object, SettingMenuState> {
+    static contextType = Context;
+    declare context: AppContextType;
+
+    constructor(props: object) {
         super(props);
         this.state = {
-            drawerSide: 'l', // 初始边栏位置为右边
+            drawerSide: 'l',
             tPadSensitivity: '',
             mWheelSensitivity: '',
         };
     }
 
     componentDidMount() {
-        // 组件挂载时，使用context中的值初始化局部状态
         this.setState({
             drawerSide: this.context.drawerRL,
             tPadSensitivity: this.context.tPadSensitivity.toString(),
@@ -41,20 +50,17 @@ class SettingMenu extends Component {
         });
     }
 
-    handleRadioChange = (event) => {
+    handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         this.setState({drawerSide: event.target.value});
         this.context.setDrawerRL(event.target.value);
     };
 
-    // 处理输入值的变化，但不立即更新context
-    handleTextFieldChange = (event, type) => {
-        this.setState({[type]: event.target.value});
+    handleTextFieldChange = (event: React.ChangeEvent<HTMLInputElement>, type: string) => {
+        this.setState({[type]: event.target.value} as unknown as Pick<SettingMenuState, keyof SettingMenuState>);
     };
 
-
-    // 当输入框失去焦点时，根据类型更新context
-    handleBlur = (type) => {
-        const value = this.state[type];
+    handleBlur = (type: string) => {
+        const value = this.state[type as keyof SettingMenuState];
         const numValue = parseFloat(value);
         if (!isNaN(numValue) && numValue > 0) {
             if (type === 'tPadSensitivity') {
@@ -63,17 +69,17 @@ class SettingMenu extends Component {
                 this.context.setMWheelSensitivity(numValue);
             }
         } else {
-            // 如果输入非法，重置为context的当前值
+            const ctxValue = this.context[type as keyof AppContextType];
             this.setState({
-                [type]: this.context[type].toString(),
-            });
+                [type]: String(ctxValue),
+            } as unknown as Pick<SettingMenuState, keyof SettingMenuState>);
         }
     };
 
     render() {
         const {tPadSensitivity, mWheelSensitivity} = this.state;
-        let iconSizeSX = {};
-        let boxIconSX = {};
+        let iconSizeSX: Record<string, string> = {};
+        let boxIconSX: Record<string, string> = {};
         if (window.innerWidth < 280) {
             iconSizeSX.fontSize = `${window.innerWidth / 300.0}rem`;
             boxIconSX.marginRight = '-50px';
@@ -90,7 +96,7 @@ class SettingMenu extends Component {
             },
         });
 
-        const listItemTextTypoStyle = {fontSize: '1rem'};
+        const listItemTextTypoStyle: React.CSSProperties = {fontSize: '1rem'};
         const secondaryColorTag = "secondary";
 
         const parametersAdjustmentTypoSX = {
@@ -100,11 +106,11 @@ class SettingMenu extends Component {
             }
         };
         const parametersAdjustmentTypoProps = {
-            focused: "true",
-            size: "small",
-            fullWidth: "true",
-            variant: "outlined",
-            type: "number",
+            focused: true as const,
+            size: "small" as const,
+            fullWidth: true as const,
+            variant: "outlined" as const,
+            type: "number" as const,
             inputProps: {step: "0.01", min: "0"},
         };
 
@@ -120,7 +126,7 @@ class SettingMenu extends Component {
                 <List component="div" disablePadding>
                     <ListItem>
                         <Typography style={listItemTextTypoStyle}>
-                            {i18n.Sidebar.SettingMenu.AutoCollapseSubmenus[this.context.i18n]}
+                            {i18n.Sidebar.SettingMenu.AutoCollapseSubmenus[this.context.i18n as keyof typeof i18n.Sidebar.SettingMenu.AutoCollapseSubmenus]}
                         </Typography>
                         <div style={{flex: 1}}/>
                         <ListItemButton onClick={() => {
@@ -134,7 +140,7 @@ class SettingMenu extends Component {
                     </ListItem>
                     <ListItem>
                         <Typography style={listItemTextTypoStyle}>
-                            {i18n.Sidebar.SettingMenu.SidebarToggle[this.context.i18n]}
+                            {i18n.Sidebar.SettingMenu.SidebarToggle[this.context.i18n as keyof typeof i18n.Sidebar.SettingMenu.SidebarToggle]}
                         </Typography>
                         <div style={{flex: 1}}/>
                         <FormControl component="fieldset">
@@ -167,7 +173,7 @@ class SettingMenu extends Component {
                     </ListItem>
                     <ListItem>
                         <Typography style={listItemTextTypoStyle}>
-                            {i18n.Sidebar.SettingMenu.AdjustmentParameters[this.context.i18n]}
+                            {i18n.Sidebar.SettingMenu.AdjustmentParameters[this.context.i18n as keyof typeof i18n.Sidebar.SettingMenu.AdjustmentParameters]}
                         </Typography>
                         <div style={{flex: 1}}/>
                     </ListItem>
@@ -175,10 +181,10 @@ class SettingMenu extends Component {
                         <Typography style={listItemTextTypoStyle}>&nbsp;</Typography>
                         <div style={{flex: 1}}/>
                         <TextField
-                            label={i18n.Sidebar.SettingMenu.TPadSensitivity[this.context.i18n]}
+                            label={i18n.Sidebar.SettingMenu.TPadSensitivity[this.context.i18n as keyof typeof i18n.Sidebar.SettingMenu.TPadSensitivity]}
                             variant={parametersAdjustmentTypoProps.variant}
                             value={tPadSensitivity}
-                            onChange={(e) => this.handleTextFieldChange(e, 'tPadSensitivity')}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.handleTextFieldChange(e, 'tPadSensitivity')}
                             onBlur={() => this.handleBlur('tPadSensitivity')}
                             type={parametersAdjustmentTypoProps.type}
                             inputProps={parametersAdjustmentTypoProps.inputProps}
@@ -194,10 +200,10 @@ class SettingMenu extends Component {
                         <Typography style={listItemTextTypoStyle}>&nbsp;</Typography>
                         <div style={{flex: 1}}/>
                         <TextField
-                            label={i18n.Sidebar.SettingMenu.MWheelSensitivity[this.context.i18n]}
+                            label={i18n.Sidebar.SettingMenu.MWheelSensitivity[this.context.i18n as keyof typeof i18n.Sidebar.SettingMenu.MWheelSensitivity]}
                             variant={parametersAdjustmentTypoProps.variant}
                             value={mWheelSensitivity}
-                            onChange={(e) => this.handleTextFieldChange(e, 'mWheelSensitivity')}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.handleTextFieldChange(e, 'mWheelSensitivity')}
                             onBlur={() => this.handleBlur('mWheelSensitivity')}
                             type={parametersAdjustmentTypoProps.type}
                             inputProps={parametersAdjustmentTypoProps.inputProps}
@@ -214,7 +220,5 @@ class SettingMenu extends Component {
         );
     }
 }
-
-SettingMenu.contextType = Context;
 
 export default SettingMenu;

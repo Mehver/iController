@@ -2,22 +2,32 @@
 // SPDX-License-Identifier: BSD-3-Clause
 
 import React, {Component} from 'react';
-import {Knob} from 'primereact/knob';
+import {Knob, KnobChangeEvent} from 'primereact/knob';
 import {List, ListItem, Box, IconButton, Divider, Collapse} from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import {Context} from '../../utils/Context';
 import {convertHexToRGBA} from '../../utils/Theme';
 import {api_mousewheel} from "../../api/mousewheel";
+import {AppContextType} from '../../types';
 
-class MouseWheelMenu extends Component {
-    constructor(props) {
+interface MouseWheelMenuState {
+    value: number;
+}
+
+class MouseWheelMenu extends Component<object, MouseWheelMenuState> {
+    static contextType = Context;
+    declare context: AppContextType;
+
+    private timer: ReturnType<typeof setTimeout> | null = null;
+
+    constructor(props: object) {
         super(props);
         this.state = {value: 0};
     }
 
-    updateValue = (newValue) => {
-        this.setState({value: newValue}); // 更新状态
+    updateValue = (newValue: number) => {
+        this.setState({value: newValue});
         if (newValue !== 0) {
             api_mousewheel(newValue * this.context.mWheelSensitivity);
         }
@@ -27,20 +37,19 @@ class MouseWheelMenu extends Component {
         this.resetTimer();
     }
 
-    // noinspection JSCheckFunctionSignatures
-    componentDidUpdate(prevProps, prevState) {
+    componentDidUpdate(_prevProps: Readonly<object>, prevState: Readonly<MouseWheelMenuState>) {
         if (prevState.value !== this.state.value) {
             this.resetTimer();
         }
     }
 
     componentWillUnmount() {
-        clearTimeout(this.timer);
+        if (this.timer) clearTimeout(this.timer);
     }
 
     resetTimer = () => {
-        clearTimeout(this.timer);
-        this.timer = setTimeout(() => this.updateValue(0), 500); // 0.5秒后自动回中
+        if (this.timer) clearTimeout(this.timer);
+        this.timer = setTimeout(() => this.updateValue(0), 500);
     };
 
     render() {
@@ -60,10 +69,10 @@ class MouseWheelMenu extends Component {
                                     this.context.mouseWheelMenuType === 2 || this.context.mouseWheelMenuType === 0
                                 }>
                                 <Knob value={this.state.value} size={knobSize} min={-4} max={4} step={1}
-                                      onChange={(e) => this.updateValue(e.value)}
+                                      onChange={(e: KnobChangeEvent) => this.updateValue(e.value)}
                                       textColor={this.context.secondaryColor}
                                       valueColor={this.context.secondaryColor}
-                                      rangeColor={convertHexToRGBA(this.context.secondaryColor, 0.5)}
+                                      rangeColor={convertHexToRGBA(this.context.secondaryColor, 0.5) || undefined}
                                       strokeWidth={10}
                                       valueTemplate="{value}"
                                 />
@@ -95,7 +104,5 @@ class MouseWheelMenu extends Component {
         );
     }
 }
-
-MouseWheelMenu.contextType = Context;
 
 export default MouseWheelMenu;

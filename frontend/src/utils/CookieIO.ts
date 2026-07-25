@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2024 Mehver (https://github.com/Mehver)
 // SPDX-License-Identifier: BSD-3-Clause
 
-export function setCookie(name, value, days = 7) {
+export function setCookie(name: string, value: string | boolean | number, days: number = 7): void {
     let expires = "";
     if (days) {
         let date = new Date();
@@ -11,7 +11,7 @@ export function setCookie(name, value, days = 7) {
     document.cookie = name + "=" + (value || "") + expires + "; path=/";
 }
 
-export function getCookie(name) {
+export function getCookie(name: string): string | null {
     let nameEQ = name + "=";
     let ca = document.cookie.split(';');
     for (let i = 0; i < ca.length; i++) {
@@ -19,7 +19,6 @@ export function getCookie(name) {
         while (c.charAt(0) === ' ') c = c.substring(1, c.length);
         if (c.indexOf(nameEQ) === 0) {
             let value = c.substring(nameEQ.length, c.length);
-            // 在找到 cookie 后，重置它的过期时间为 7 天
             setCookie(name, value, 7);
             return value;
         }

@@ -63,7 +63,6 @@ body {
     sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    /*缺少下面这些会导致 iOS Safari 的屏幕键盘改变可是视窗尺寸*/
     position: fixed;
     top: 0;
     left: 0;
@@ -91,30 +90,26 @@ code {
     color: ${defaultPrimaryColor};
 }
 
-/* 关闭文本选择，避免触屏操作时长按触发文本复制 */
 * {
-    -webkit-user-select: none; /* Safari */
-    -moz-user-select: none; /* Firefox */
-    -ms-user-select: none; /* IE 10+ 和 Edge */
-    user-select: none; /* 标准语法 */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 `;
 document.head.appendChild(globalStyle);
 
-// 设置延时函数
-let resizeTimer;
+let resizeTimer: ReturnType<typeof setTimeout>;
 const handleResize = () => {
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(() => {
-        // 刷新页面
         window.location.reload();
-    }, 500); // 延迟500毫秒，避免线性调整尺寸时频繁刷新
+    }, 500);
 };
 
-// 监听屏幕大小改变或旋转事件
 window.addEventListener('resize', handleResize);
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
     <React.StrictMode>
         <div className="App">
