@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2024 Mehver (https://github.com/Mehver)
 // SPDX-License-Identifier: BSD-3-Clause
 
-export const api_keyboard_buttons = (signal) => {
+export const api_keyboard_buttons = (signal: string): void => {
     fetch('/api/keyboard/buttons', {
         method: 'POST',
         headers: {
@@ -16,7 +16,7 @@ export const api_keyboard_buttons = (signal) => {
         });
 };
 
-export const api_keyboard_typewriting = (text) => {
+export const api_keyboard_typewriting = (text: string): void => {
     fetch('/api/keyboard/typewriting', {
         method: 'POST',
         headers: {
@@ -31,7 +31,7 @@ export const api_keyboard_typewriting = (text) => {
         });
 };
 
-export const api_keyboard_pastetext = (text) => {
+export const api_keyboard_pastetext = (text: string): void => {
     fetch('/api/keyboard/pastetext', {
         method: 'POST',
         headers: {

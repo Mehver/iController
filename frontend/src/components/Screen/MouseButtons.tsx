@@ -9,27 +9,25 @@ import {convertHexToRGBA} from '../../utils/Theme';
 import {Context} from '../../utils/Context';
 import {api_mousebutton} from '../../api/mousebutton';
 import {Typography} from "@mui/material";
+import {AppContextType} from '../../types';
 
 class MouseButtons extends Component {
-    constructor(props) {
-        super(props);
-    }
+    static contextType = Context;
+    declare context: AppContextType;
 
     render() {
         const mouseLMRBoxSX = {
             display: 'flex',
-            justifyContent: 'space-between', // 使按钮间有等距间隙
-            p: 1, // 设置内边距
+            justifyContent: 'space-between',
+            p: 1,
             marginBottom: '50px',
             bottom: 0,
             position: 'fixed',
-            // 如果屏幕宽度小于 500px，则设置为 100%, 否则设置为 500px
             width: window.innerWidth < 500 ? '100%' : '500px',
             backgroundColor: 'transparent',
         };
         const buttonSX = {
             width: '100%',
-            // 使用 !important 否则按下时边框不会变粗
             borderWidth: '5px !important',
             borderColor: convertHexToRGBA(this.context.primaryColor) + ' !important',
         };
@@ -93,7 +91,5 @@ class MouseButtons extends Component {
     }
 
 }
-
-MouseButtons.contextType = Context;
 
 export default MouseButtons;

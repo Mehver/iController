@@ -35,7 +35,8 @@ import {
     ListItem,
     ListItemButton,
     Collapse,
-    Box, Typography
+    Box, Typography,
+    SxProps
 } from "@mui/material";
 import {
     ChevronRightOutlined,
@@ -56,11 +57,11 @@ import ThemeMenu from './ThemeMenu';
 import LanguageMenu from './LanguageMenu';
 import SettingMenu from './SettingMenu';
 import i18n from '../../utils/i18n';
+import {AppContextType} from '../../types';
 
 class SideBar extends Component {
-    constructor(props) {
-        super(props);
-    }
+    static contextType = Context;
+    declare context: AppContextType;
 
     render() {
         const MenuIndex = {
@@ -74,33 +75,33 @@ class SideBar extends Component {
             SettingMenu: 7,
         };
 
-        const textStyle = {
+        const textStyle: React.CSSProperties = {
             fontSize: '1rem',
             fontWeight: 'bold',
         };
 
         let drawerWidth = '280px';
-        let drawerPaperProps = {
+        let drawerPaperProps: { sx: Record<string, unknown> } = {
             sx: {
                 backgroundColor: this.context.primaryColor,
                 color: this.context.secondaryColor,
                 width: drawerWidth,
             },
         };
-        
-        let listSX = {
+
+        let listSX: SxProps = {
             width: drawerWidth,
             padding: 0,
-            overflow: 'auto',              // 确保能滚动，但隐藏滚动条
+            overflow: 'auto',
             '&::-webkit-scrollbar': {
-                display: 'none',           // Chrome/Safari/WebKit
+                display: 'none',
             },
-            scrollbarWidth: 'none',      // Firefox
-            msOverflowStyle: 'none',     // IE 10+
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none',
         };
 
-        let iconSizeSX = {};
-        let boxIconSX = {};
+        let iconSizeSX: Record<string, string> = {};
+        let boxIconSX: Record<string, string> = {};
 
         if (window.innerWidth < 280) {
             const fontSize = window.innerWidth / 300.0;
@@ -116,7 +117,6 @@ class SideBar extends Component {
                     backgroundColor: this.context.primaryColor,
                     color: this.context.secondaryColor,
                     width: drawerWidth,
-                    // 调整字体和图标大小
                     '& .MuiListItemIcon-root': {
                         fontSize: `${fontSize}rem`,
                     },
@@ -153,7 +153,7 @@ class SideBar extends Component {
                         }}>
                             <Tune sx={iconSizeSX}/>
                             <Typography style={textStyle}>
-                                &nbsp;&nbsp;&nbsp;{i18n.Sidebar.index.LayoutSettings[this.context.i18n]}
+                                &nbsp;&nbsp;&nbsp;{i18n.Sidebar.index.LayoutSettings[this.context.i18n as keyof typeof i18n.Sidebar.index.LayoutSettings]}
                             </Typography>
                             <Box sx={boxIconSX}>{this.context.autoCollapse ?
                                 this.context.openMenuSW === MenuIndex.LayoutSettingMenu ?
@@ -185,7 +185,7 @@ class SideBar extends Component {
                         }}>
                             <Keyboard sx={iconSizeSX}/>
                             <Typography style={textStyle}>
-                                &nbsp;&nbsp;&nbsp;{i18n.Sidebar.index.Keyboard[this.context.i18n]}
+                                &nbsp;&nbsp;&nbsp;{i18n.Sidebar.index.Keyboard[this.context.i18n as keyof typeof i18n.Sidebar.index.Keyboard]}
                             </Typography>
                             <Box sx={boxIconSX}>{this.context.autoCollapse ?
                                 this.context.openMenuSW === MenuIndex.KeyboardMenu ?
@@ -217,7 +217,7 @@ class SideBar extends Component {
                         }}>
                             <FilterTiltShift sx={iconSizeSX}/>
                             <Typography style={textStyle}>
-                                &nbsp;&nbsp;&nbsp;{i18n.Sidebar.index.MouseWheel[this.context.i18n]}
+                                &nbsp;&nbsp;&nbsp;{i18n.Sidebar.index.MouseWheel[this.context.i18n as keyof typeof i18n.Sidebar.index.MouseWheel]}
                             </Typography>
                             <Box sx={boxIconSX}>{this.context.autoCollapse ?
                                 this.context.openMenuSW === MenuIndex.MouseWheelMenu ?
@@ -249,7 +249,7 @@ class SideBar extends Component {
                         }}>
                             <Speaker sx={iconSizeSX}/>
                             <Typography style={textStyle}>
-                                &nbsp;&nbsp;&nbsp;{i18n.Sidebar.index.Volume[this.context.i18n]}
+                                &nbsp;&nbsp;&nbsp;{i18n.Sidebar.index.Volume[this.context.i18n as keyof typeof i18n.Sidebar.index.Volume]}
                             </Typography>
                             <Box sx={boxIconSX}>{this.context.autoCollapse ?
                                 this.context.openMenuSW === MenuIndex.VolumeMenu ?
@@ -281,7 +281,7 @@ class SideBar extends Component {
                         }}>
                             <ColorLensRounded sx={iconSizeSX}/>
                             <Typography style={textStyle}>
-                                &nbsp;&nbsp;&nbsp;{i18n.Sidebar.index.ColorScheme[this.context.i18n]}
+                                &nbsp;&nbsp;&nbsp;{i18n.Sidebar.index.ColorScheme[this.context.i18n as keyof typeof i18n.Sidebar.index.ColorScheme]}
                             </Typography>
                             <Box sx={boxIconSX}>{this.context.autoCollapse ?
                                 this.context.openMenuSW === MenuIndex.ThemeMenu ?
@@ -313,7 +313,7 @@ class SideBar extends Component {
                         }}>
                             <GTranslate sx={iconSizeSX}/>
                             <Typography style={textStyle}>
-                                &nbsp;&nbsp;&nbsp;{i18n.Sidebar.index.Language[this.context.i18n]}
+                                &nbsp;&nbsp;&nbsp;{i18n.Sidebar.index.Language[this.context.i18n as keyof typeof i18n.Sidebar.index.Language]}
                             </Typography>
                             <Box sx={boxIconSX}>{this.context.autoCollapse ?
                                 this.context.openMenuSW === MenuIndex.LanguageMenu ?
@@ -345,7 +345,7 @@ class SideBar extends Component {
                         }}>
                             <Settings sx={iconSizeSX}/>
                             <Typography style={textStyle}>
-                                &nbsp;&nbsp;&nbsp;{i18n.Sidebar.index.AdvancedSettings[this.context.i18n]}
+                                &nbsp;&nbsp;&nbsp;{i18n.Sidebar.index.AdvancedSettings[this.context.i18n as keyof typeof i18n.Sidebar.index.AdvancedSettings]}
                             </Typography>
                             <Box sx={boxIconSX}>{this.context.autoCollapse ?
                                 this.context.openMenuSW === MenuIndex.SettingMenu ?
@@ -366,7 +366,5 @@ class SideBar extends Component {
         );
     }
 }
-
-SideBar.contextType = Context;
 
 export default SideBar;

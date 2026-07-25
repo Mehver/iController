@@ -24,17 +24,17 @@ import {
 } from '@mui/icons-material';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 import i18n from '../../utils/i18n';
+import {AppContextType} from '../../types';
 
 class LayoutSettingMenu extends Component {
-    constructor(props) {
-        super(props);
-    }
+    static contextType = Context;
+    declare context: AppContextType;
 
     render() {
-        let iconSizeSX = {
+        let iconSizeSX: Record<string, string> = {
             marginRight: '20px',
         };
-        let boxIconSX = {};
+        let boxIconSX: Record<string, string> = {};
         if (window.innerWidth < 280) {
             const fontSize = window.innerWidth / 300.0;
             iconSizeSX.fontSize = `${fontSize}rem`;
@@ -62,7 +62,7 @@ class LayoutSettingMenu extends Component {
                         }}>
 
                             <Pinch sx={iconSizeSX}/>
-                            <ListItemText primary={i18n.Sidebar.LayoutSettingMenu.Touchpad[this.context.i18n]}/>
+                            <ListItemText primary={i18n.Sidebar.LayoutSettingMenu.Touchpad[this.context.i18n as keyof typeof i18n.Sidebar.LayoutSettingMenu.Touchpad]}/>
                             <Box sx={boxIconSX}>{this.context.buttonSW1 ?
                                 <VisibilityOutlined sx={iconSizeSX}/> :
                                 <VisibilityOffOutlined sx={iconSizeSX}/>
@@ -74,7 +74,7 @@ class LayoutSettingMenu extends Component {
                             this.context.toggleButtonSW4();
                         }}>
                             <OpenWith sx={iconSizeSX}/>
-                            <ListItemText primary={i18n.Sidebar.LayoutSettingMenu.DPad[this.context.i18n]}/>
+                            <ListItemText primary={i18n.Sidebar.LayoutSettingMenu.DPad[this.context.i18n as keyof typeof i18n.Sidebar.LayoutSettingMenu.DPad]}/>
                             <Box sx={boxIconSX}>{this.context.buttonSW4 ?
                                 <VisibilityOutlined sx={iconSizeSX}/> :
                                 <VisibilityOffOutlined sx={iconSizeSX}/>
@@ -86,7 +86,7 @@ class LayoutSettingMenu extends Component {
                             this.context.setButton23((this.context.button23 + 1) % 3);
                         }}>
                             <Mouse sx={iconSizeSX}/>
-                            <ListItemText primary={i18n.Sidebar.LayoutSettingMenu.MouseButtons[this.context.i18n]}/>
+                            <ListItemText primary={i18n.Sidebar.LayoutSettingMenu.MouseButtons[this.context.i18n as keyof typeof i18n.Sidebar.LayoutSettingMenu.MouseButtons]}/>
                             <Box sx={boxIconSX}>{this.context.button23 === 0 ?
                                 <LooksOneOutlined sx={iconSizeSX}/> :
                                 this.context.button23 === 1 ?
@@ -100,7 +100,7 @@ class LayoutSettingMenu extends Component {
                             this.context.setMouseWheelMenuType((this.context.mouseWheelMenuType + 1) % 3);
                         }}>
                             <SvgIcon sx={iconSizeSX} style={{color: 'transparent'}}/>
-                            <ListItemText primary={i18n.Sidebar.LayoutSettingMenu.MouseWheel[this.context.i18n]}/>
+                            <ListItemText primary={i18n.Sidebar.LayoutSettingMenu.MouseWheel[this.context.i18n as keyof typeof i18n.Sidebar.LayoutSettingMenu.MouseWheel]}/>
                             <Box sx={boxIconSX}>{this.context.mouseWheelMenuType === 0 ?
                                 <LooksOneOutlined sx={iconSizeSX}/> :
                                 this.context.mouseWheelMenuType === 1 ?
@@ -115,7 +115,5 @@ class LayoutSettingMenu extends Component {
         );
     }
 }
-
-LayoutSettingMenu.contextType = Context;
 
 export default LayoutSettingMenu;

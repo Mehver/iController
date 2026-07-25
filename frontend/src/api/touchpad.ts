@@ -1,17 +1,13 @@
 // SPDX-FileCopyrightText: 2024 Mehver (https://github.com/Mehver)
 // SPDX-License-Identifier: BSD-3-Clause
 
-export const api_touchpad = (xPercent, yPercent) => {
-    // 创建一个足够存储两个float32值的缓冲区
-    const buffer = new ArrayBuffer(8); // 每个float32占用4字节
+export const api_touchpad = (xPercent: string, yPercent: string): void => {
+    const buffer = new ArrayBuffer(8);
     const view = new DataView(buffer);
 
-    // 将x和y值写入缓冲区
-    // 第三个参数设置为true表示使用小端序
-    view.setFloat32(0, xPercent, true); // 从缓冲区的起始位置写入x
-    view.setFloat32(4, yPercent, true); // 从缓冲区的第4字节位置写入y
+    view.setFloat32(0, parseFloat(xPercent), true);
+    view.setFloat32(4, parseFloat(yPercent), true);
 
-    // 发送二进制数据
     fetch('/api/touchpad', {
         method: 'POST',
         headers: {
@@ -26,7 +22,7 @@ export const api_touchpad = (xPercent, yPercent) => {
         });
 }
 
-export const api_touchpad_reposition = () => {
+export const api_touchpad_reposition = (): void => {
     fetch('/api/touchpad/reposition', {
         method: 'POST',
     })

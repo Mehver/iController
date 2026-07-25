@@ -6,15 +6,15 @@ import {Context} from '../../utils/Context';
 import {ListItem, Typography, TextField} from "@mui/material";
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import i18n from '../../utils/i18n';
+import {AppContextType} from '../../types';
 
 class LanguageMenu extends Component {
     static contextType = Context;
+    declare context: AppContextType;
 
-    // 处理语言选择变化，更新 Context 后自动刷新页面
-    handleLanguageChange = (event) => {
+    handleLanguageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const newLang = event.target.value;
         this.context.setI18n(newLang);
-        // window.location.reload();
     };
 
     render() {
@@ -36,7 +36,7 @@ class LanguageMenu extends Component {
                     <div style={{flex: 1}}/>
                     <TextField
                         select
-                        label={i18n.Sidebar.LanguageMenu.Language[this.context.i18n]}
+                        label={i18n.Sidebar.LanguageMenu.Language[this.context.i18n as keyof typeof i18n.Sidebar.LanguageMenu.Language]}
                         variant="outlined"
                         value={this.context.i18n}
                         onChange={this.handleLanguageChange}
@@ -56,15 +56,13 @@ class LanguageMenu extends Component {
                                 color: this.context.secondaryColor,
                             },
                             '& option': {
-                                // On Chrome, use this color for the dropdown options, while the dropdown selector's background is white
-                                // On Safari, the dropdown selector use browser's UI, so this color doesn't matter
                                 color: '#000',
                             },
                         }}
                         focused={true}
                     >
-                        <option value="en">{i18n.Sidebar.LanguageMenu.EN[this.context.i18n]}</option>
-                        <option value="zh">{i18n.Sidebar.LanguageMenu.ZH[this.context.i18n]}</option>
+                        <option value="en">{i18n.Sidebar.LanguageMenu.EN[this.context.i18n as keyof typeof i18n.Sidebar.LanguageMenu.EN]}</option>
+                        <option value="zh">{i18n.Sidebar.LanguageMenu.ZH[this.context.i18n as keyof typeof i18n.Sidebar.LanguageMenu.ZH]}</option>
                     </TextField>
                 </ListItem>
             </ThemeProvider>

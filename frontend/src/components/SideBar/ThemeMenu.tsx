@@ -13,20 +13,20 @@ import {
     HuePicker,
     TwitterPicker
 } from 'react-color';
-import {defaultPrimaryColor,defaultSecondaryColor,updateColorCSS} from '../../utils/Theme';
+import {defaultPrimaryColor, defaultSecondaryColor, updateColorCSS} from '../../utils/Theme';
 import i18n from '../../utils/i18n';
+import {AppContextType} from '../../types';
 
 class ThemeMenu extends Component {
-    constructor(props) {
-        super(props);
-    }
+    static contextType = Context;
+    declare context: AppContextType;
 
-    handlePrimaryColorChange = (color) => {
+    handlePrimaryColorChange = (color: { hex: string }) => {
         this.context.setPrimaryColor(color.hex);
         updateColorCSS(color.hex, this.context.secondaryColor);
     }
 
-    handleSecondaryColorChange = (color) => {
+    handleSecondaryColorChange = (color: { hex: string }) => {
         this.context.setSecondaryColor(color.hex);
         updateColorCSS(this.context.primaryColor, color.hex);
     }
@@ -39,7 +39,7 @@ class ThemeMenu extends Component {
                     disablePadding
                 >
                     <ListItem>
-                        <Typography style={{fontSize: '1rem'}}>{i18n.Sidebar.ThemeMenu.PrimaryColor[this.context.i18n]}</Typography>
+                        <Typography style={{fontSize: '1rem'}}>{i18n.Sidebar.ThemeMenu.PrimaryColor[this.context.i18n as keyof typeof i18n.Sidebar.ThemeMenu.PrimaryColor]}</Typography>
                         <div style={{flex: 1}}/>
                     </ListItem>
                     <ListItem>
@@ -73,7 +73,7 @@ class ThemeMenu extends Component {
                         />
                     </ListItem>
                     <ListItem>
-                        <Typography style={{fontSize: '1rem'}}>{i18n.Sidebar.ThemeMenu.SecondaryColor[this.context.i18n]}</Typography>
+                        <Typography style={{fontSize: '1rem'}}>{i18n.Sidebar.ThemeMenu.SecondaryColor[this.context.i18n as keyof typeof i18n.Sidebar.ThemeMenu.SecondaryColor]}</Typography>
                         <div style={{flex: 1}}/>
                     </ListItem>
                     <ListItem>
@@ -112,7 +112,5 @@ class ThemeMenu extends Component {
         );
     }
 }
-
-ThemeMenu.contextType = Context;
 
 export default ThemeMenu;

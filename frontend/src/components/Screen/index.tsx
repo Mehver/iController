@@ -3,14 +3,14 @@
 
 import {Component} from 'react';
 import {Context} from '../../utils/Context';
+import {AppContextType} from '../../types';
 import DPad from "./DPad";
 import MouseButtons from "./MouseButtons";
 import Touchpad from "./Touchpad";
 
 class Screen extends Component {
-    constructor(props) {
-        super(props);
-    }
+    static contextType = Context;
+    declare context: AppContextType;
 
     render() {
         return (
@@ -22,7 +22,5 @@ class Screen extends Component {
         );
     }
 }
-
-Screen.contextType = Context;
 
 export default Screen;

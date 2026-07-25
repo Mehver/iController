@@ -32,22 +32,39 @@ import {Context} from '../../utils/Context';
 import {api_touchpad, api_touchpad_reposition} from '../../api/touchpad';
 import {Typography} from "@mui/material";
 import i18n from '../../utils/i18n';
+import {AppContextType} from '../../types';
 
-function throttle(func, limit) {
-    let inThrottle;
-    return function () {
-        const args = arguments;
-        const context = this;
+function throttle<T extends (...args: unknown[]) => void>(func: T, limit: number): (...args: Parameters<T>) => void {
+    let inThrottle = false;
+    return function (this: unknown, ...args: Parameters<T>) {
         if (!inThrottle) {
-            func.apply(context, args);
+            func.apply(this, args);
             inThrottle = true;
             setTimeout(() => inThrottle = false, limit);
         }
     };
 }
 
-class Touchpad extends Component {
-    constructor(props) {
+interface TouchpadState {
+    xPercent: number;
+    yPercent: number;
+    initialX: number;
+    initialY: number;
+    screenWidth: number;
+    screenHeight: number;
+    touchStartTime: number;
+    lastTouchTime: number;
+    touchCount: number;
+}
+
+class Touchpad extends Component<object, TouchpadState> {
+    static contextType = Context;
+    declare context: AppContextType;
+
+    private longPressTimer: ReturnType<typeof setTimeout> | null = null;
+    private doubleTapTimer: ReturnType<typeof setTimeout> | null = null;
+
+    constructor(props: object) {
         super(props);
         this.state = {
             xPercent: 0,
@@ -60,10 +77,7 @@ class Touchpad extends Component {
             lastTouchTime: 0,
             touchCount: 0,
         };
-        // 对 handleTouchMove 进行 throttle 限制
         this.handleTouchMove = throttle(this.handleTouchMove.bind(this), 50);
-        this.longPressTimer = null;
-        this.doubleTapTimer = null;
     }
 
     componentDidMount() {
@@ -80,18 +94,16 @@ class Touchpad extends Component {
     handleLongPress = () => {
         console.log('Long press detected');
         api_touchpad_reposition();
-        alert(i18n.Screen.Touchpad.LongPressDetect[this.context.i18n]);
+        alert(i18n.Screen.Touchpad.LongPressDetect[this.context.i18n as keyof typeof i18n.Screen.Touchpad.LongPressDetect]);
     }
 
     handleDoubleClick = () => {
-        // console.log('Double click detected');
     }
 
     handleTripleClick = () => {
-        // console.log('Triple click detected');
     }
 
-    handleTouchStart = (e) => {
+    handleTouchStart = (e: React.TouchEvent) => {
         e.preventDefault();
         const touch = e.touches[0];
         const now = Date.now();
@@ -106,10 +118,10 @@ class Touchpad extends Component {
         if (this.state.touchCount === 1) {
             this.longPressTimer = setTimeout(this.handleLongPress, 1000);
         } else if (this.state.touchCount === 2) {
-            clearTimeout(this.longPressTimer);
+            if (this.longPressTimer) clearTimeout(this.longPressTimer);
             this.doubleTapTimer = setTimeout(this.handleDoubleClick, 300);
         } else if (this.state.touchCount === 3) {
-            clearTimeout(this.doubleTapTimer);
+            if (this.doubleTapTimer) clearTimeout(this.doubleTapTimer);
             this.handleTripleClick();
             this.setState({touchCount: 0});
         }
@@ -121,7 +133,7 @@ class Touchpad extends Component {
         });
     }
 
-    handleTouchMove = (e) => {
+    handleTouchMove = (e: React.TouchEvent) => {
         e.preventDefault();
         const touch = e.touches[0];
         const {initialX, initialY, screenWidth, screenHeight} = this.state;
@@ -131,16 +143,14 @@ class Touchpad extends Component {
         const xPercent = (xRelative / (shorterSide / 2)) * 100 * this.context.tPadSensitivity;
         const yPercent = (yRelative / (shorterSide / 2)) * 100 * this.context.tPadSensitivity;
 
-        // 计算滑动的整体百分比幅度，采用欧几里得距离
         const movementDistance = Math.sqrt(xPercent * xPercent + yPercent * yPercent);
-        // 如果滑动幅度超过5%，则取消长按定时器
         if (movementDistance > 5) {
-            clearTimeout(this.longPressTimer);
+            if (this.longPressTimer) clearTimeout(this.longPressTimer);
         }
 
         this.setState({
-            xPercent: xPercent.toFixed(2),
-            yPercent: yPercent.toFixed(2),
+            xPercent: xPercent.toFixed(2) as unknown as number,
+            yPercent: yPercent.toFixed(2) as unknown as number,
         });
 
         api_touchpad(xPercent.toFixed(2), yPercent.toFixed(2));
@@ -151,13 +161,13 @@ class Touchpad extends Component {
             xPercent: 0,
             yPercent: 0,
         });
-        api_touchpad(0, 0);
-        clearTimeout(this.longPressTimer);
+        api_touchpad('0', '0');
+        if (this.longPressTimer) clearTimeout(this.longPressTimer);
     }
 
     render() {
         const {screenWidth, screenHeight} = this.state;
-        let touchPadStyle = {
+        let touchPadStyle: React.CSSProperties = {
             position: 'fixed',
             width: '100%',
             height: '100%',
@@ -181,11 +191,11 @@ class Touchpad extends Component {
                         id={'touchPad'}
                     >
                         <Typography style={{fontSize: '1.1rem'}}>
-                            {i18n.Screen.Touchpad.TouchpadCoordinates[this.context.i18n]} (
-                            {parseInt(this.state.xPercent)}%, {parseInt(this.state.yPercent)}%)
+                            {i18n.Screen.Touchpad.TouchpadCoordinates[this.context.i18n as keyof typeof i18n.Screen.Touchpad.TouchpadCoordinates]} (
+                            {parseInt(String(this.state.xPercent))}%, {parseInt(String(this.state.yPercent))}%)
                         </Typography>
                         <Typography style={{fontSize: '0.6rem'}}>
-                            *{i18n.Screen.Touchpad.LongPress[this.context.i18n]}
+                            *{i18n.Screen.Touchpad.LongPress[this.context.i18n as keyof typeof i18n.Screen.Touchpad.LongPress]}
                         </Typography>
                     </div>
                     : null
@@ -194,7 +204,5 @@ class Touchpad extends Component {
         );
     }
 }
-
-Touchpad.contextType = Context;
 
 export default Touchpad;

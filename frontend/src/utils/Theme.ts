@@ -27,17 +27,14 @@
 // OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-export let defaultPrimaryColor = '#6DF';
-export let defaultSecondaryColor = '#333';
+export let defaultPrimaryColor: string = '#6DF';
+export let defaultSecondaryColor: string = '#333';
 
-// 自动检测颜色格式并转换为半透明颜色值
-export const convertHexToRGBA = (hex, opacity) => {
+export const convertHexToRGBA = (hex: string, opacity?: number): string | null => {
     let tempHex = hex.replace('#', '');
-    // 检测并转换3位十六进制颜色为6位
     if (tempHex.length === 3) {
         tempHex = tempHex.split('').map((hex) => hex + hex).join('');
     } else if (tempHex.length !== 6) {
-        // 如果不是3位也不是6位，则返回null
         return null;
     }
     const r = parseInt(tempHex.substring(0, 2), 16);
@@ -47,8 +44,7 @@ export const convertHexToRGBA = (hex, opacity) => {
     return `rgba(${r}, ${g}, ${b}, ${opacity})`;
 };
 
-export const updateColorCSS = (primaryColor, secondaryColor) => {
-    // 修改 head 中的 <meta name="theme-color" content="primaryColor"/>
+export const updateColorCSS = (primaryColor: string, secondaryColor: string): void => {
     const metaThemeColor = document.querySelector("meta[name=theme-color]");
     if (metaThemeColor) {
         metaThemeColor.setAttribute("content", primaryColor);
@@ -64,11 +60,10 @@ export const updateColorCSS = (primaryColor, secondaryColor) => {
         body.style.backgroundColor = primaryColor;
     }
     if (fullScreenBackground) {
-        fullScreenBackground.style.backgroundColor = primaryColor;
+        (fullScreenBackground as HTMLElement).style.backgroundColor = primaryColor;
     }
     if (appHeader) {
-        appHeader.style.color = primaryColor;
-        appHeader.style.backgroundColor = secondaryColor;
+        (appHeader as HTMLElement).style.color = primaryColor;
+        (appHeader as HTMLElement).style.backgroundColor = secondaryColor;
     }
 }
-

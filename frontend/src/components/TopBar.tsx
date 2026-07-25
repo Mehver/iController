@@ -5,8 +5,12 @@ import React from 'react';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import {Context} from '../utils/Context';
+import {AppContextType} from '../types';
 
 class TopBar extends React.Component {
+    static contextType = Context;
+    declare context: AppContextType;
+
     render() {
         let nameFrontSize = '20px';
         let nameFrontTop = '-14px';
@@ -26,7 +30,6 @@ class TopBar extends React.Component {
             width: '20px',
             height: '20px',
             color: this.context.secondaryColor,
-            // 增加透明的伪元素以扩大触发区域
             '&:after': {
                 content: '""',
                 position: 'absolute',
@@ -71,7 +74,5 @@ class TopBar extends React.Component {
         )
     }
 }
-
-TopBar.contextType = Context;
 
 export default TopBar;

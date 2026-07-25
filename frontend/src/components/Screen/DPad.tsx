@@ -15,11 +15,11 @@ import {createTheme, ThemeProvider} from '@mui/material/styles';
 import {convertHexToRGBA} from '../../utils/Theme';
 import {Context} from '../../utils/Context';
 import {api_dpad} from '../../api/dpad';
+import {AppContextType} from '../../types';
 
 class DPad extends Component {
-    constructor(props) {
-        super(props);
-    }
+    static contextType = Context;
+    declare context: AppContextType;
 
     render() {
         let dPadButtonSize = Math.min((Math.min(window.innerWidth, window.innerHeight) / 3 * 0.8), 120);
@@ -27,7 +27,6 @@ class DPad extends Component {
             width: dPadButtonSize,
             height: dPadButtonSize,
             borderRadius: '18%',
-            // 使用 !important 否则按下时边框不会变粗
             borderWidth: '5px !important',
             borderColor: convertHexToRGBA(this.context.primaryColor) + ' !important',
         };
@@ -123,7 +122,5 @@ class DPad extends Component {
     }
 
 }
-
-DPad.contextType = Context;
 
 export default DPad;
