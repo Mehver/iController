@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: BSD-3-Clause
 
 import React from 'react';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
+import { IconButton } from '@mui/material';
+import { Menu as MenuIcon } from '@mui/icons-material';
 import {Context} from '../utils/Context';
 import {AppContextType} from '../types';
 

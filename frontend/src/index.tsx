@@ -115,10 +115,10 @@ root.render(
         <div className="App">
             <header className="App-header">
                 <ContextProvider>
-                    <GeneralDidMount/>
-                    <TopBar/>
-                    <Screen/>
-                    <SideBar/>
+                        <GeneralDidMount/>
+                        <TopBar/>
+                        <Screen/>
+                        <SideBar/>
                 </ContextProvider>
             </header>
         </div>
