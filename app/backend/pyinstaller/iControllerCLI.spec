@@ -8,7 +8,7 @@ a = Analysis(
     pathex=['..'],
     binaries=[],
     datas=[
-        ('../../frontend/build', 'frontend/build/'),
+        ('../../../app/frontend/build', 'app/frontend/build/'),
         ('../HostCore', 'HostCore/'),
         ('../HostDesktopCLI', 'HostDesktopCLI/')
     ],
@@ -40,5 +40,5 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon=['../assets/icon/256a.ico'],
+    icon=['../../docs/icon/256a.ico'],
 )

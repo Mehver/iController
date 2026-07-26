@@ -63,10 +63,10 @@ jobs:
         with:
           node-version: '22'
           cache: 'pnpm'
-          cache-dependency-path: frontend/pnpm-lock.yaml
+          cache-dependency-path: app/frontend/pnpm-lock.yaml
 
       - name: React Build Frontend
-        working-directory: frontend
+        working-directory: app/frontend
         run: |
           pnpm install --frozen-lockfile
           pnpm run build
@@ -76,7 +76,7 @@ jobs:
         with:
           python-version: '3.10.10'
           cache: 'pip'
-          cache-dependency-path: backend/requirements/iControllerCLI.txt
+          cache-dependency-path: app/backend/requirements/iControllerCLI.txt
 
       - name: Update Version Number
         run: |
@@ -88,15 +88,15 @@ jobs:
         shell: pwsh
 
       - name: Python Install Dependencies
-        working-directory: backend
+        working-directory: app/backend
         run: pip install -r ./requirements/iControllerCLI.txt
 
       - name: PyInstaller Build iController.exe
-        working-directory: backend
+        working-directory: app/backend
         run: pyinstaller ./pyinstaller/iControllerCLI.spec
 
       - name: Create Zip Package
-        working-directory: backend
+        working-directory: app/backend
         run: |
           $folderName = "icontroller-${{ github.event.release.tag_name }}-portable-win-x64-cli"
           $fileName = "iController-${{ github.event.release.tag_name }}-CLI.exe"
@@ -105,7 +105,7 @@ jobs:
           New-Item -ItemType Directory -Path $folderPath
           Move-Item -Path ".\dist\$fileName" -Destination $folderPath
           Compress-Archive -Path $folderPath -DestinationPath ".\dist\$folderName.zip"
-          $artifactPath = "$env:GITHUB_WORKSPACE/backend/dist/$folderName.zip"
+          $artifactPath = "$env:GITHUB_WORKSPACE/app/backend/dist/$folderName.zip"
           echo "ARTIFACT_PATH=$artifactPath" >> $env:GITHUB_ENV
         shell: pwsh
 
@@ -135,10 +135,10 @@ jobs:
         with:
           node-version: '22'
           cache: 'pnpm'
-          cache-dependency-path: frontend/pnpm-lock.yaml
+          cache-dependency-path: app/frontend/pnpm-lock.yaml
 
       - name: React Build Frontend
-        working-directory: frontend
+        working-directory: app/frontend
         run: |
           pnpm install --frozen-lockfile
           pnpm run build
@@ -149,8 +149,8 @@ jobs:
           python-version: '3.10.10'
           cache: 'pip'
           cache-dependency-path: |
-            backend/requirements/iControllerCLI.txt
-            backend/requirements/iControllerGUI.txt
+            app/backend/requirements/iControllerCLI.txt
+            app/backend/requirements/iControllerGUI.txt
 
       - name: Update Version Number
         run: |
@@ -162,15 +162,15 @@ jobs:
         shell: pwsh
 
       - name: Python Install Dependencies
-        working-directory: backend
+        working-directory: app/backend
         run: pip install -r ./requirements/iControllerGUI.txt
 
       - name: PyInstaller Build iController.exe
-        working-directory: backend
+        working-directory: app/backend
         run: pyinstaller ./pyinstaller/iControllerGUI.spec
 
       - name: Create Zip Package
-        working-directory: backend
+        working-directory: app/backend
         run: |
           $folderName = "icontroller-${{ github.event.release.tag_name }}-portable-win-x64-gui"
           $fileName = "iController-${{ github.event.release.tag_name }}-GUI.exe"
@@ -179,7 +179,7 @@ jobs:
           New-Item -ItemType Directory -Path $folderPath
           Move-Item -Path ".\dist\$fileName" -Destination $folderPath
           Compress-Archive -Path $folderPath -DestinationPath ".\dist\$folderName.zip"
-          $artifactPath = "$env:GITHUB_WORKSPACE/backend/dist/$folderName.zip"
+          $artifactPath = "$env:GITHUB_WORKSPACE/app/backend/dist/$folderName.zip"
           echo "ARTIFACT_PATH=$artifactPath" >> $env:GITHUB_ENV
         shell: pwsh
 
