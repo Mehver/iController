@@ -34,3 +34,6 @@ python3 -m venv venv
 source venv/bin/activate
 pip install -r ./requirements/iControllerCLI.txt
 pyinstaller ./pyinstaller/iControllerCLI.spec
+
+read -p "Press Enter to exit..."
+

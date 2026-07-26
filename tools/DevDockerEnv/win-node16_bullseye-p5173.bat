@@ -5,3 +5,5 @@ docker run -it --rm ^
   -w /docker/frontend ^
   node:22-bullseye ^
   bash -c "corepack enable && corepack prepare pnpm --activate && pnpm install && bash"
+
+pause
