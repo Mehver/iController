@@ -4,13 +4,13 @@ version: 2
 
 updates:
   - package-ecosystem: "npm"
-    directory: "/frontend"
+    directory: "/app/frontend"
     schedule:
       interval: "daily"
     open-pull-requests-limit: 0
 
   - package-ecosystem: "pip"
-    directory: "/backend/requirements"
+    directory: "/app/backend/requirements"
     schedule:
       interval: "daily"
     open-pull-requests-limit: 0

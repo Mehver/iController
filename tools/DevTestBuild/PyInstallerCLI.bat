@@ -6,20 +6,20 @@ for /r . %%i in (*.toc) do @del "%%i"
 del config.yaml
 rd /s /q dist
 rd /s /q build
-rd /s /q backend\build
-rd /s /q backend\dist
+rd /s /q app\backend\build
+rd /s /q app\backend\dist
 rd /s /q venv
-rd /s /q backend\venv
+rd /s /q app\backend\venv
 rd /s /q logs
 rd /s /q node_modules
 rd /s /q .pnpm-store
-rd /s /q frontend\build
-rd /s /q frontend\node_modules
-rd /s /q frontend\.pnpm-store
+rd /s /q app\frontend\build
+rd /s /q app\frontend\node_modules
+rd /s /q app\frontend\.pnpm-store
 
-docker run -it --rm -e COREPACK_ENABLE_DOWNLOAD_PROMPT=0 -v %cd%:/docker -w /docker node:22-bullseye bash -c "cd frontend; corepack enable && corepack prepare pnpm --activate; pnpm install; pnpm run build; exit"
+docker run -it --rm -e COREPACK_ENABLE_DOWNLOAD_PROMPT=0 -v %cd%:/docker -w /docker node:22-bullseye bash -c "cd app/frontend; corepack enable && corepack prepare pnpm --activate; pnpm install; pnpm run build; exit"
 
-cd backend
+cd app/backend
 
 python -m venv venv
 call venv\Scripts\activate

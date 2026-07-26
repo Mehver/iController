@@ -10,13 +10,13 @@ find . -type f -name "*.toc" -exec rm -f {} +
 rm -f config.yaml
 rm -rf dist
 rm -rf build
-rm -rf "backend/build"
-rm -rf "backend/dist"
+rm -rf "app/backend/build"
+rm -rf "app/backend/dist"
 rm -rf venv
-rm -rf "backend/venv"
+rm -rf "app/backend/venv"
 rm -rf logs
 
-cd backend || exit 1
+cd app/backend || exit 1
 
 python3 -m venv venv
 source venv/bin/activate
