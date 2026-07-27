@@ -1,0 +1,41 @@
+# SPDX-FileCopyrightText: 2024 Mehver (https://github.com/Mehver)
+# SPDX-License-Identifier: BSD-3-Clause
+name: Disposable Run
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        type: choice
+        description: Which disposable task to run
+        options:
+          - docker-retroactive-upload
+      dry_run:
+        type: boolean
+        default: true
+      confirm:
+        type: string
+        description: 'Type YES to really modify releases'
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  run:
+    if: ${{ github.event.inputs.dry_run == 'true' || github.event.inputs.confirm == 'YES' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      - run: npm install @octokit/rest
+
+      - run: node .github/disposable/2026-07-27-docker-retroactive-upload/fix.js
+        if: ${{ github.event.inputs.target == 'docker-retroactive-upload' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DRY_RUN: ${{ github.event.inputs.dry_run }}
