@@ -30,6 +30,12 @@
     </tr>
 </table>
 
+<table>
+<thead>
+<tr><th><img src="https://github.com/Mehver/iController/raw/main/docs/E.png" alt=""/></th><th><img src="https://github.com/Mehver/iController/raw/main/docs/F.png" alt=""/></th></tr></thead>
+<tbody></tbody>
+</table>
+
 ### 1.1 功能
 
 - [x] 触摸板
@@ -41,13 +47,9 @@
 
 ## 2 使用方法
 
-### 2.1 下载
+### 2.1 Windows
 
 从 [Release](https://github.com/Mehver/iController/releases) 页面下载免安装程序。
-
-目前程序是CLI交互的，启动时，你可以手动提供端口号，程序会自动检测确保端口可用且无冲突，启动后使用手机浏览器通过电脑的局域网IP地址和端口访问。
-
-<img src="https://github.com/Mehver/iController/raw/main/docs/0.png" width="50%" alt="">
 
 ### 2.2 macOS
 

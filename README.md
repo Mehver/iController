@@ -30,6 +30,12 @@ A host LAN controller software running on `Windows` and `macOS` (read descriptio
     </tr>
 </table>
 
+<table>
+<thead>
+<tr><th><img src="https://github.com/Mehver/iController/raw/main/docs/E.png" alt=""/></th><th><img src="https://github.com/Mehver/iController/raw/main/docs/F.png" alt=""/></th></tr></thead>
+<tbody></tbody>
+</table>
+
 ### 1.1 Features
 
 - [x] Touchpad
@@ -45,10 +51,6 @@ A host LAN controller software running on `Windows` and `macOS` (read descriptio
 
 Download portable application from the [Release](https://github.com/Mehver/iController/releases) page.
 
-Currently, the program is CLI interactive. When starting, you can manually provide the port number, and the program will automatically detect to ensure that the port is available and conflict-free. After starting, use the mobile browser to access the LAN IP address and port of the computer.
-
-<img src="https://github.com/Mehver/iController/raw/main/docs/0.png" width="50%" alt="">
-
 ### 2.2 macOS
 
 > [!IMPORTANT]
@@ -56,9 +58,7 @@ Currently, the program is CLI interactive. When starting, you can manually provi
 
 For `v0.5.1`, you can download from the [Release v0.5.1](https://github.com/Mehver/iController/releases/tag/v0.5.1) page.
 
-Note: For macOS, due to permission issues, the
-directly downloaded iController cannot be trusted by the system, the only solution at present is to open the switch
-of `Settings > Privacy & Security > Developer Tools > Terminal`.
+Note: For macOS, due to permission issues, the directly downloaded iController cannot be trusted by the system, the only solution at present is to open the switch of `Settings > Privacy & Security > Developer Tools > Terminal`.
 
 <img src="https://github.com/Mehver/iController/raw/main/docs/1.jpg" width="50%" alt="">
 
