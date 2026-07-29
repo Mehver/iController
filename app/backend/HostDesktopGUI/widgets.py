@@ -63,12 +63,17 @@ class LogView(QPlainTextEdit):
         font.setStyleHint(QFont.Monospace)
         self.setFont(font)
 
+        self.apply_theme()
+
+    def apply_theme(self):
+        """按主题刷新配色（亮色主题白底黑字，暗色主题深灰底浅字）。"""
+        p = palette()
         self.setStyleSheet(
-            "QPlainTextEdit {"
-            "  background: #0b0f14; color: #d6dde6; border: none;"
-            "  border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"
-            "  padding: 6px;"
-            "}"
+            f"QPlainTextEdit {{"
+            f"  background: {p['log_bg']}; color: {p['log_fg']}; border: none;"
+            f"  border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;"
+            f"  padding: 6px;"
+            f"}}"
         )
 
     def append_text(self, s: str):
@@ -205,7 +210,7 @@ class PowerButton(QAbstractButton):
         if not self.isEnabled():
             fg = QColor(p["power_disabled_fg"])
         elif self._running:
-            fg = QColor("#ffffff")
+            fg = QColor(p["running_fg"])
         else:
             fg = QColor(p["power_off_fg"])
 
