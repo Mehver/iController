@@ -168,14 +168,9 @@ jobs:
         working-directory: app/backend
         run: |
           $folderName = "icontroller-${{ github.event.release.tag_name }}-portable-win-x64-gui"
-          $fileName = "iController-${{ github.event.release.tag_name }}-GUI.exe"
-          Rename-Item .\dist\iController.exe $fileName
           $folderPath = ".\dist\$folderName"
-          New-Item -ItemType Directory -Path $folderPath
-          Move-Item -Path ".\dist\$fileName" -Destination $folderPath
+          Rename-Item .\dist\iController $folderPath
           Compress-Archive -Path $folderPath -DestinationPath ".\dist\$folderName.zip"
-          $artifactPath = "$env:GITHUB_WORKSPACE/app/backend/dist/$folderName.zip"
-          echo "ARTIFACT_PATH=$artifactPath" >> $env:GITHUB_ENV
         shell: pwsh
 
       - name: Upload to Release
