@@ -237,6 +237,7 @@ class MainWindow(QWidget):
         app = QApplication.instance()
         if app is not None:
             app.setStyleSheet(gui_config.build_stylesheet())
+        self.zoom.apply_theme()
         self.main_page.apply_theme()
 
     def retranslate(self):
