@@ -31,7 +31,7 @@
 
 import ipaddress
 
-from PySide6.QtCore import Signal, Slot
+from PySide6.QtCore import Qt, Signal, Slot
 from PySide6.QtWidgets import (
     QCheckBox,
     QComboBox,
@@ -81,6 +81,8 @@ class SettingsPage(QWidget):
 
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.setObjectName("pageRoot")
+        self.setAttribute(Qt.WA_StyledBackground, True)  # 普通 QWidget 需此属性才绘制样式表背景
         self._tr_widgets = []  # (setter, zh, en) 注册表，供 retranslate 使用
         self._build_ui()
         self.load_from_config()

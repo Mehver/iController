@@ -232,7 +232,7 @@ class ZoomView(QGraphicsView):
     内容始终按不小于基准尺寸的“逻辑尺寸”布局，不小于基准时缩放比为 1（正常显示）。
     """
 
-    BASE_W = 700   # 基准宽（内容逻辑尺寸下限；小于此宽度才触发等比缩放）
+    BASE_W = 760   # 基准宽（内容逻辑尺寸下限，需容纳左格“标签+输入框”的下限宽度；小于此宽度才触发等比缩放）
     BASE_H = 400   # 基准高（大于此高度的窗口先用自适应布局压缩日志）
 
     def __init__(self, content: QWidget, parent=None):
@@ -247,6 +247,12 @@ class ZoomView(QGraphicsView):
         self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.setStyleSheet("background: transparent;")
         self._scale = 1.0
+        # 场景背景与全局窗口色保持一致（内容缩放/尺寸过渡时露出的缝隙不串色）
+        self.apply_theme()
+
+    def apply_theme(self):
+        """主题切换后同步场景背景色。"""
+        self.setBackgroundBrush(QColor(palette()["window"]))
 
     def scale_factor(self) -> float:
         return self._scale

@@ -126,6 +126,11 @@ QWidget {{
 QWidget#appRoot {{
     background: {p['window']};
 }}
+/* 两个页面根控件：不透明填充窗口色，避免下层 QGraphicsView 的
+   调色板默认背景透出（亮暗主题下与 appRoot 不一致） */
+QWidget#pageRoot {{
+    background: {p['window']};
+}}
 QDialog, QMessageBox {{
     background: {p['window']};
 }}

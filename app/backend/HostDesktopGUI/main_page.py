@@ -140,6 +140,8 @@ class MainPage(QWidget):
 
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.setObjectName("pageRoot")
+        self.setAttribute(Qt.WA_StyledBackground, True)  # 普通 QWidget 需此属性才绘制样式表背景
         self._state = ServerState()
         self._busy = False  # 启动/停止过渡状态
         self._busy_kind = ""  # "starting" / "stopping"
@@ -204,18 +206,23 @@ class MainPage(QWidget):
         bind_form.setSpacing(10)
 
         self.host_mode = QComboBox()
+        # 尺寸下限：布局被压缩时保证输入框与标签文字始终可见（更小窗口走整体缩放）
+        self.host_mode.setMinimumWidth(120)
         self.host_mode.addItem("", MODE_CONFIG)
         self.host_mode.addItem("", MODE_DETECTED)
         self.host_mode.addItem("", MODE_BROADCAST)
         self.host_mode.addItem("", MODE_CUSTOM)
         self.host_mode.currentIndexChanged.connect(self._on_host_mode_changed)
         self.host_mode_label = QLabel()
+        self.host_mode_label.setMinimumWidth(64)
         self._tr_reg(self.host_mode_label.setText, "地址来源", "Source")
         bind_form.addRow(self.host_mode_label, self.host_mode)
 
         self.custom_ip_label = QLabel()
+        self.custom_ip_label.setMinimumWidth(64)
         self._tr_reg(self.custom_ip_label.setText, "自定义 IP", "Custom IP")
         self.custom_ip = QLineEdit()
+        self.custom_ip.setMinimumWidth(108)
         self._tr_reg(self.custom_ip.setPlaceholderText, "例如 192.168.1.50", "e.g. 192.168.1.50")
         self.custom_ip.textChanged.connect(self._validate_all)
         bind_form.addRow(self.custom_ip_label, self.custom_ip)
@@ -234,9 +241,11 @@ class MainPage(QWidget):
         port_form.setSpacing(10)
 
         self.port_spin = QSpinBox()
+        self.port_spin.setMinimumWidth(92)
         self.port_spin.setRange(1, 65534)
         self.port_spin.valueChanged.connect(self._validate_all)
         self.port_label = QLabel()
+        self.port_label.setMinimumWidth(64)
         self._tr_reg(self.port_label.setText, "监听端口", "Listen port")
         port_form.addRow(self.port_label, self.port_spin)
 
