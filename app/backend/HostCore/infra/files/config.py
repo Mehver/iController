@@ -51,6 +51,13 @@ class Config:
         SERVER_CONNECTION_LOG = False
         KEYBOARD_TEXT_LOG = False
 
+    class Gui:
+        # GUI 面板专用配置（CLI 模式忽略）
+        LANGUAGE_FOLLOW_SYSTEM = True
+        LANGUAGE = "zh"  # zh / en（不跟随系统时生效）
+        THEME_FOLLOW_SYSTEM = True
+        THEME = "light"  # light / dark（不跟随系统时生效）
+
     @staticmethod
     def try_get_value(config_path, config_class, config_value):
         try:
@@ -82,7 +89,11 @@ class Config:
                 Config.try_get_value(config_path, Config.Log, 'SERVER_ACTION_LOG'),
                 Config.try_get_value(config_path, Config.Log, 'SERVER_IPS_LOG'),
                 Config.try_get_value(config_path, Config.Log, 'SERVER_CONNECTION_LOG'),
-                Config.try_get_value(config_path, Config.Log, 'KEYBOARD_TEXT_LOG')
+                Config.try_get_value(config_path, Config.Log, 'KEYBOARD_TEXT_LOG'),
+                Config.try_get_value(config_path, Config.Gui, 'LANGUAGE_FOLLOW_SYSTEM'),
+                Config.try_get_value(config_path, Config.Gui, 'LANGUAGE'),
+                Config.try_get_value(config_path, Config.Gui, 'THEME_FOLLOW_SYSTEM'),
+                Config.try_get_value(config_path, Config.Gui, 'THEME')
             ]
             # 检查results列表中是否有任何一个False，如果有，就执行更新
             if not all(results):
@@ -114,6 +125,12 @@ class Config:
                 'SERVER_IPS_LOG': Config.Log.SERVER_IPS_LOG,
                 'SERVER_CONNECTION_LOG': Config.Log.SERVER_CONNECTION_LOG,
                 'KEYBOARD_TEXT_LOG': Config.Log.KEYBOARD_TEXT_LOG
+            },
+            'Gui': {
+                'LANGUAGE_FOLLOW_SYSTEM': Config.Gui.LANGUAGE_FOLLOW_SYSTEM,
+                'LANGUAGE': Config.Gui.LANGUAGE,
+                'THEME_FOLLOW_SYSTEM': Config.Gui.THEME_FOLLOW_SYSTEM,
+                'THEME': Config.Gui.THEME
             }
         }
         with open(config_path, 'w') as file:
