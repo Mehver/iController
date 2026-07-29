@@ -165,7 +165,7 @@ jobs:
         run: |
           $folderName = "icontroller-${{ github.event.release.tag_name }}-portable-win-x64-gui"
           $folderPath = ".\dist\$folderName"
-          Rename-Item .\dist\iController $folderPath
+          Move-Item .\dist\iController $folderPath
           Compress-Archive -Path $folderPath -DestinationPath ".\dist\$folderName.zip"
         shell: pwsh
 
