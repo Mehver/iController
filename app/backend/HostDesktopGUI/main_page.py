@@ -175,9 +175,10 @@ class MainPage(QWidget):
         self.qr_view.apply_theme()  # 占位提示文案
 
     def apply_theme(self):
-        """主题切换后刷新自绘组件。"""
+        """主题切换后刷新自绘/独立配色组件。"""
         self.power_button.update()
         self.qr_view.apply_theme()
+        self.log_view.apply_theme()
 
     def _busy_text(self) -> str:
         if self._busy_kind == "stopping":
@@ -273,12 +274,6 @@ class MainPage(QWidget):
         self.status_label.setProperty("running", False)
         center_layout.addWidget(self.status_label)
         self.status_label.setText(tr("已停止", "Stopped"))
-
-        self.url_label = QLabel("")
-        self.url_label.setObjectName("urlLabel")
-        self.url_label.setAlignment(Qt.AlignCenter)
-        self.url_label.setTextInteractionFlags(Qt.TextSelectableByMouse)
-        center_layout.addWidget(self.url_label)
 
         self.dirty_label = QLabel()
         self._tr_reg(self.dirty_label.setText, "参数已修改，重启后生效", "Params changed, restart to apply")
@@ -520,12 +515,10 @@ class MainPage(QWidget):
         if st.running:
             self.status_label.setText(tr("运行中", "Running"))
             url = self._display_url(st.bind)
-            self.url_label.setText(url)
             self.qr_view.set_url(url)
             self.qr_url_label.setText(url)
         else:
             self.status_label.setText(tr("已停止", "Stopped"))
-            self.url_label.setText("")
             self.qr_view.clear()
             self.qr_url_label.setText("")
 
