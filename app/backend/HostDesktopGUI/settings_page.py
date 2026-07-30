@@ -53,7 +53,7 @@ from PySide6.QtWidgets import (
 from HostCore.infra.files.config import Config
 from HostDesktopGUI import gui_config, i18n
 from HostDesktopGUI.i18n import tr
-from HostDesktopGUI.main_page import is_valid_ipv4
+from HostDesktopGUI.main_page import _make_click_clear_focus, is_valid_ipv4
 
 
 def parse_ip_list(text: str):
@@ -258,6 +258,11 @@ class SettingsPage(QWidget):
 
         scroll.setWidget(container)
         root.addWidget(scroll, 1)
+
+        # 点击空白区域时释放输入控件的焦点
+        _make_click_clear_focus(self)
+        for c in (self.gui_group, self.control_group, self.http_group, self.log_group, container):
+            _make_click_clear_focus(c)
 
         # ---- 底部按钮 ----
         buttons = QHBoxLayout()
