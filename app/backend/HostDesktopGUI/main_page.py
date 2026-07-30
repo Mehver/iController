@@ -32,6 +32,7 @@
 import errno
 import ipaddress
 import socket
+from types import MethodType as method
 
 from PySide6.QtCore import Qt, Signal, Slot
 from PySide6.QtWidgets import (
@@ -106,7 +107,7 @@ def check_bind(host: str, port: int):
 
 
 class _TopRow(QWidget):
-    """上半部分容器：手动布置左/中/右三个正方形区域（间隙均分，中间区域精确居中）。
+    """上半部分容器：手动布置左/中/右三个正方形区域（左右贴边、间隙均分，中间区域精确居中）。
 
     不使用 QLayout + setFixedWidth 的组合：固定尺寸会写入最小尺寸并“滞留”，
     导致窗口/缩放容器无法再把内容缩小。手动 setGeometry 不受尺寸提示影响。
@@ -124,12 +125,25 @@ class _TopRow(QWidget):
     def resizeEvent(self, event):
         side = self.height()
         total = 3 * side
-        gap = max(0, (self.width() - total) // 4)
-        x = gap
+        gap = max(0, (self.width() - total) // 2)
+        x = 0
         for w in (self.left, self.center, self.right):
             w.setGeometry(x, 0, side, side)
             x += side + gap
         super().resizeEvent(event)
+
+
+def _make_click_clear_focus(widget: QWidget):
+    """让点击 widget 空白区域时释放其子孙控件的键盘焦点。"""
+    widget.setFocusPolicy(Qt.ClickFocus)
+
+    def handler(self, event):
+        QWidget.mousePressEvent(self, event)
+        focused = self.focusWidget()
+        if focused is not None and focused is not self:
+            focused.clearFocus()
+
+    widget.mousePressEvent = method(handler, widget)
 
 
 class MainPage(QWidget):
@@ -314,6 +328,12 @@ class MainPage(QWidget):
         log_layout.addWidget(self.log_view)
 
         root.addWidget(self.log_group, 1)
+
+        # 点击空白区域时释放输入控件的焦点
+        _make_click_clear_focus(self)
+        for c in (self.left_panel, self.center_panel,
+                  self.bind_group, self.port_group, self.qr_group, self.log_group):
+            _make_click_clear_focus(c)
 
     # ------------------------------------------------------------ 自适应布局
 
