@@ -4,7 +4,10 @@
 # NOTE: This script is called by CI — .github/workflows/build-for-release.yml
 #       Do not add interactive prompts that would hang in automated pipelines.
 
+import os
 import sys
+
+REPO_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 
 if len(sys.argv) == 3:
     OLD_VERSION = sys.argv[1]
@@ -14,7 +17,7 @@ else:
     NEW_VERSION = input('Give the new version number > ')
 
 def UpdateVersionNumber(filename, encoder, lines_list, old_version, new_version):
-    filename = "./../" + filename
+    filename = os.path.join(REPO_ROOT, filename)
     with open(filename, 'r', encoding=encoder) as file:
         lines = file.readlines()
 
@@ -27,4 +30,3 @@ def UpdateVersionNumber(filename, encoder, lines_list, old_version, new_version)
 UpdateVersionNumber('README.md', "utf-8", [3, 6], OLD_VERSION, NEW_VERSION)
 UpdateVersionNumber('docs/README-cn.md', "utf-8", [3, 6], OLD_VERSION, NEW_VERSION)
 UpdateVersionNumber('app/backend/iController.py', "utf-8", [4], OLD_VERSION, NEW_VERSION)
-UpdateVersionNumber('.github/metadata/PreviousVersion.txt', "utf-8", [1], OLD_VERSION, NEW_VERSION)

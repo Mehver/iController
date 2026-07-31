@@ -21,17 +21,30 @@ jobs:
         with:
           python-version: '3.10.10'
 
-      - name: Update Version Number
+      - name: Find previous release tag
+        id: prev_tag
         run: |
-          $oldVersion = Get-Content .\.github\metadata\PreviousVersion.txt
-          echo "OLD_VERSION=$oldVersion" >> $env:GITHUB_ENV
-          cd tools
-          python UpdateVersionNumber.py $oldVersion ${{ github.event.release.tag_name }}
-          cd ..
+          $currentTag = "${{ github.event.release.tag_name }}"
+          $previous = ""
+          gh release list --limit 100 --json tagName --jq '.[].tagName' | ForEach-Object {
+              if (-not $previous -and $_ -ne $currentTag) {
+                  $previous = $_
+              }
+          }
+          echo "value=$previous" >> $env:GITHUB_OUTPUT
+        shell: pwsh
+
+      - name: Update Version Number
+        if: ${{ steps.prev_tag.outputs.value != '' }}
+        run: |
+          $previousTag = "${{ steps.prev_tag.outputs.value }}"
+          $currentTag = "${{ github.event.release.tag_name }}"
+          echo "OLD_VERSION=$previousTag" >> $env:GITHUB_ENV
+          python .github/scripts/UpdateVersionNumber.py $previousTag $currentTag
         shell: pwsh
 
       - name: Commit Version Number Update to main
-        if: ${{ success() }}
+        if: ${{ steps.prev_tag.outputs.value != '' && success() }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -76,13 +89,26 @@ jobs:
           cache: 'pip'
           cache-dependency-path: app/backend/requirements/iControllerCLI.txt
 
-      - name: Update Version Number
+      - name: Find previous release tag
+        id: prev_tag
         run: |
-          $oldVersion = Get-Content .\.github\metadata\PreviousVersion.txt
-          echo "OLD_VERSION=$oldVersion" >> $env:GITHUB_ENV
-          cd tools
-          python UpdateVersionNumber.py $oldVersion ${{ github.event.release.tag_name }}
-          cd ..
+          $currentTag = "${{ github.event.release.tag_name }}"
+          $previous = ""
+          gh release list --limit 100 --json tagName --jq '.[].tagName' | ForEach-Object {
+              if (-not $previous -and $_ -ne $currentTag) {
+                  $previous = $_
+              }
+          }
+          echo "value=$previous" >> $env:GITHUB_OUTPUT
+        shell: pwsh
+
+      - name: Update Version Number
+        if: ${{ steps.prev_tag.outputs.value != '' }}
+        run: |
+          $previousTag = "${{ steps.prev_tag.outputs.value }}"
+          $currentTag = "${{ github.event.release.tag_name }}"
+          echo "OLD_VERSION=$previousTag" >> $env:GITHUB_ENV
+          python .github/scripts/UpdateVersionNumber.py $previousTag $currentTag
         shell: pwsh
 
       - name: Python Install Dependencies
@@ -143,13 +169,26 @@ jobs:
             app/backend/requirements/iControllerCLI.txt
             app/backend/requirements/iControllerGUI.txt
 
-      - name: Update Version Number
+      - name: Find previous release tag
+        id: prev_tag
         run: |
-          $oldVersion = Get-Content .\.github\metadata\PreviousVersion.txt
-          echo "OLD_VERSION=$oldVersion" >> $env:GITHUB_ENV
-          cd tools
-          python UpdateVersionNumber.py $oldVersion ${{ github.event.release.tag_name }}
-          cd ..
+          $currentTag = "${{ github.event.release.tag_name }}"
+          $previous = ""
+          gh release list --limit 100 --json tagName --jq '.[].tagName' | ForEach-Object {
+              if (-not $previous -and $_ -ne $currentTag) {
+                  $previous = $_
+              }
+          }
+          echo "value=$previous" >> $env:GITHUB_OUTPUT
+        shell: pwsh
+
+      - name: Update Version Number
+        if: ${{ steps.prev_tag.outputs.value != '' }}
+        run: |
+          $previousTag = "${{ steps.prev_tag.outputs.value }}"
+          $currentTag = "${{ github.event.release.tag_name }}"
+          echo "OLD_VERSION=$previousTag" >> $env:GITHUB_ENV
+          python .github/scripts/UpdateVersionNumber.py $previousTag $currentTag
         shell: pwsh
 
       - name: Python Install Dependencies
