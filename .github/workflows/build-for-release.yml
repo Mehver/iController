@@ -60,6 +60,57 @@ jobs:
           git push origin main
         shell: pwsh
 
+      - name: Copy Previous Release Note if Current is Empty
+        if: ${{ steps.prev_tag.outputs.value != '' && success() }}
+        run: |
+          $currentTag = "${{ github.event.release.tag_name }}"
+          $previousTag = "${{ steps.prev_tag.outputs.value }}"
+
+          $currentBody = gh release view $currentTag --json body --jq '.body'
+          if ($LASTEXITCODE -ne 0) {
+            Write-Error "Failed to fetch current release body"
+            exit 1
+          }
+
+          if (-not $currentBody -or $currentBody.Trim() -eq '' -or $currentBody -eq 'null') {
+            Write-Host "Current release note is empty. Copying from $previousTag ..."
+
+            $previousBody = gh release view $previousTag --json body --jq '.body'
+            if ($LASTEXITCODE -ne 0) {
+              Write-Error "Failed to fetch previous release body"
+              exit 1
+            }
+
+            if ($previousBody -and $previousBody.Trim() -ne '' -and $previousBody -ne 'null') {
+              $tempFile = New-TemporaryFile
+              Set-Content -Path $tempFile.FullName -Value $previousBody -Encoding UTF8 -NoNewline
+
+              python .github/scripts/CopyReleaseNote.py $previousTag $currentTag $tempFile.FullName
+              if ($LASTEXITCODE -ne 0) {
+                Remove-Item $tempFile.FullName -ErrorAction SilentlyContinue
+                Write-Error "CopyReleaseNote.py failed"
+                exit 1
+              }
+
+              gh release edit $currentTag --notes-file $tempFile.FullName
+              Remove-Item $tempFile.FullName -ErrorAction SilentlyContinue
+
+              if ($LASTEXITCODE -eq 0) {
+                Write-Host "Release note copied and version numbers updated successfully."
+              } else {
+                Write-Error "Failed to update release notes"
+                exit 1
+              }
+            } else {
+              Write-Host "Previous release note is also empty. Nothing to copy."
+            }
+          } else {
+            Write-Host "Current release note is not empty. Skipping copy."
+          }
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: pwsh
+
   build-windows-x64-cli:
     runs-on: windows-2022
     steps:
