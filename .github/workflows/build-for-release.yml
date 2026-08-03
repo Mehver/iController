@@ -68,7 +68,7 @@ jobs:
           $currentTag = "${{ github.event.release.tag_name }}"
           $previousTag = "${{ steps.prev_tag.outputs.value }}"
 
-          $currentBody = gh release view $currentTag --json body --jq '.body'
+          $currentBody = (gh release view $currentTag --json body --jq '.body') -join "`n"
           if ($LASTEXITCODE -ne 0) {
             Write-Error "Failed to fetch current release body"
             exit 1
@@ -77,7 +77,7 @@ jobs:
           if (-not $currentBody -or $currentBody.Trim() -eq '' -or $currentBody -eq 'null') {
             Write-Host "Current release note is empty. Copying from $previousTag ..."
 
-            $previousBody = gh release view $previousTag --json body --jq '.body'
+            $previousBody = (gh release view $previousTag --json body --jq '.body') -join "`n"
             if ($LASTEXITCODE -ne 0) {
               Write-Error "Failed to fetch previous release body"
               exit 1
@@ -85,7 +85,7 @@ jobs:
 
             if ($previousBody -and $previousBody.Trim() -ne '' -and $previousBody -ne 'null') {
               $tempFile = New-TemporaryFile
-              Set-Content -Path $tempFile.FullName -Value $previousBody -Encoding UTF8 -NoNewline
+              [System.IO.File]::WriteAllText($tempFile.FullName, $previousBody, [System.Text.UTF8Encoding]::new($false))
 
               python .github/scripts/CopyReleaseNote.py $previousTag $currentTag $tempFile.FullName
               if ($LASTEXITCODE -ne 0) {
