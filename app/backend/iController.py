@@ -1,7 +1,7 @@
 # SPDX-FileCopyrightText: 2024 Mehver (https://github.com/Mehver)
 # SPDX-License-Identifier: BSD-3-Clause
 
-VERSION = "v0.8.1"
+VERSION = "v0.8.2"
 
 from HostCore.utils.pyinstaller_context import PyInstallerContext
 
