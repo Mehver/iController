@@ -32,6 +32,8 @@ jobs:
               }
           }
           echo "value=$previous" >> $env:GITHUB_OUTPUT
+        env:
+          GH_TOKEN: ${{ github.token }}
         shell: pwsh
 
       - name: Update Version Number
@@ -151,6 +153,8 @@ jobs:
               }
           }
           echo "value=$previous" >> $env:GITHUB_OUTPUT
+        env:
+          GH_TOKEN: ${{ github.token }}
         shell: pwsh
 
       - name: Update Version Number
@@ -231,6 +235,8 @@ jobs:
               }
           }
           echo "value=$previous" >> $env:GITHUB_OUTPUT
+        env:
+          GH_TOKEN: ${{ github.token }}
         shell: pwsh
 
       - name: Update Version Number
