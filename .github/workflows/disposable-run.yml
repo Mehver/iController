@@ -12,6 +12,7 @@ on:
           - fix-windows-logo
           - update-subheading
           - shields-to-download-list
+          - promote-h3-headings
       dry_run:
         type: boolean
         default: true
@@ -50,6 +51,12 @@ jobs:
 
       - run: node .github/disposable/2026-07-27-release-notes-shields-to-download-list/fix.js
         if: ${{ github.event.inputs.target == 'shields-to-download-list' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DRY_RUN: ${{ github.event.inputs.dry_run }}
+
+      - run: node .github/disposable/2026-08-24-release-notes-promote-h3-headings/fix.js
+        if: ${{ github.event.inputs.target == 'promote-h3-headings' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DRY_RUN: ${{ github.event.inputs.dry_run }}
