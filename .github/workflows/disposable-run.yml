@@ -9,10 +9,7 @@ on:
         type: choice
         description: Which disposable task to run
         options:
-          - fix-windows-logo
-          - update-subheading
-          - shields-to-download-list
-          - promote-h3-headings
+          - 2026-09-01-example
       dry_run:
         type: boolean
         default: true
@@ -37,26 +34,8 @@ jobs:
 
       - run: npm install @octokit/rest
 
-      - run: node .github/disposable/2025-12-25-release-notes-fix-windows-logo/fix.js
-        if: ${{ github.event.inputs.target == 'fix-windows-logo' }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DRY_RUN: ${{ github.event.inputs.dry_run }}
-
-      - run: node .github/disposable/2026-01-03-release-notes-update-subheading/fix.js
-        if: ${{ github.event.inputs.target == 'update-subheading' }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DRY_RUN: ${{ github.event.inputs.dry_run }}
-
-      - run: node .github/disposable/2026-07-27-release-notes-shields-to-download-list/fix.js
-        if: ${{ github.event.inputs.target == 'shields-to-download-list' }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DRY_RUN: ${{ github.event.inputs.dry_run }}
-
-      - run: node .github/disposable/2026-08-24-release-notes-promote-h3-headings/fix.js
-        if: ${{ github.event.inputs.target == 'promote-h3-headings' }}
+      - run: node .github/disposable/2026-09-01-example/example.js
+        if: ${{ github.event.inputs.target == '2026-09-01-example' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DRY_RUN: ${{ github.event.inputs.dry_run }}
