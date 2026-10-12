@@ -2,10 +2,11 @@
 # SPDX-License-Identifier: BSD-3-Clause
 
 from HostCore.volume_controller.base import BaseVolumeController
+from HostCore.infra.files.log_manager import LogManager
 from HostCore.utils.check_platform import get_platform
 
 
-def get_volume_controller() -> BaseVolumeController:
+def get_volume_controller() -> BaseVolumeController | None:
     os_name = get_platform()
     if os_name == 'Windows':
         from HostCore.volume_controller.windows import WindowsVolumeController
@@ -14,5 +15,8 @@ def get_volume_controller() -> BaseVolumeController:
         from HostCore.volume_controller.mac import MacVolumeController
         return MacVolumeController()
     else:
-        raise NotImplementedError(f"This OS ({os_name}) is not supported.")
-
+        # TODO: Add volume control support for other operating systems.
+        LogManager.log_console(
+            f"Volume control ignored: {os_name} is not currently supported."
+        )
+        return None

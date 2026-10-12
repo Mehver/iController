@@ -30,6 +30,7 @@
 import socket
 import ipaddress
 import psutil
+from HostCore.infra.files.log_manager import LogManager
 from HostCore.utils.check_platform import get_platform
 
 def check_ip() -> str | None:
@@ -39,7 +40,11 @@ def check_ip() -> str | None:
     elif os_name == 'Darwin':
         return physical_ip()
     else:
-        raise NotImplementedError(f"This OS ({os_name}) is not supported.")
+        # TODO: Add IP detection support for other operating systems.
+        LogManager.log_console(
+            f"IP check ignored: {os_name} is not currently supported."
+        )
+        return None
 
 
 def outbound_ip(target=("8.8.8.8", 80)):
