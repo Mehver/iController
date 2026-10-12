@@ -90,3 +90,9 @@ async def keyboard_pastetext():
         except Exception as e:
             LogManager.log_console(f"Keyboard paste text error after input {text_payload}: {e}.")
             return jsonify({"status": "error", "message": "An error occurred while sending text."}), 500
+    else:
+        # TODO: Add paste text support for other operating systems.
+        LogManager.log_console(
+            f"Keyboard paste text ignored: {os_name} is not currently supported."
+        )
+        return jsonify({"status": "success", "message": "Keyboard paste text ignored."})

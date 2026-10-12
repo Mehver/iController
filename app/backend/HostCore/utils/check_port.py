@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 
 import socket
+from HostCore.infra.files.log_manager import LogManager
 from HostCore.utils.check_platform import get_platform
 
 def check_port(port):
@@ -34,4 +35,8 @@ def check_port(port):
         else:
             return False  # 端口号不合法
     else:
-        raise NotImplementedError(f"This OS ({os_name}) is not supported.")
+        # TODO: Add port checking support for other operating systems.
+        LogManager.log_console(
+            f"Port check ignored: {os_name} is not currently supported."
+        )
+        return False
