@@ -111,3 +111,21 @@ def test_unsupported_volume_routes_are_no_ops_after_validation(monkeypatch, os_n
     assert status == 200
     assert payload["status"] == "error"
     assert log_console.call_count == 4
+
+
+def test_volume_set_hardware_error_is_not_reported_as_invalid(monkeypatch):
+    volume = load_route(monkeypatch, "volume")
+    controller = Mock()
+    controller.set_volume.side_effect = RuntimeError("COM endpoint unavailable")
+    monkeypatch.setattr(volume, "get_volume_controller", lambda: controller)
+
+    status, payload = request_to_route(volume, volume.volume_set, "POST", "42")
+
+    assert status == 200
+    assert payload == {
+        "status": "error",
+        "message": "An error (COM endpoint unavailable) occurred while setting volume.",
+    }
+    assert "Volume control error: COM endpoint unavailable." in (
+        volume.LogManager.log_console.call_args.args[0]
+    )
