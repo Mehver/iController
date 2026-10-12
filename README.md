@@ -38,12 +38,13 @@ A host LAN controller software running on `Windows` and `macOS` (read descriptio
 
 ### 1.1 Features
 
-- [x] Touchpad
-- [x] Mouse Buttons (Left, Right, Middle)
-- [x] Mouse Wheel
-- [x] D-Pad
-- [x] Keyboard
-- [x] Volume Slider
+- [x] Touchpad control
+- [x] Three mouse buttons (left, right, middle)
+- [x] Mouse wheel scrolling
+- [x] Directional pad
+- [x] Keyboard input and text paste
+- [x] System volume control
+- [x] Display brightness control (Windows only; requires supported system backlight control or DDC/CI)
 
 ## 2 Usage
 

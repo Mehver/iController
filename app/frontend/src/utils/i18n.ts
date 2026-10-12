@@ -36,6 +36,10 @@ const i18n = {
                 en: "Volume",
                 zh: "音量调整",
             },
+            Brightness: {
+                en: "Brightness",
+                zh: "亮度调整",
+            },
             ColorScheme: {
                 en: "Color Scheme",
                 zh: "主题配色调整",

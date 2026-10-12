@@ -55,6 +55,7 @@ const settingsConfig: Record<string, SettingConfig> = {
     sidebarMouseWheelMenu: {default: false, cookie: 'sidebarMouseWheelMenu', type: 'boolean', toggle: true},
     sidebarKeyboardMenu: {default: false, cookie: 'sidebarKeyboardMenu', type: 'boolean', toggle: true},
     sidebarVolumeMenu: {default: false, cookie: 'sidebarVolumeMenu', type: 'boolean', toggle: true},
+    sidebarBrightnessMenu: {default: false, cookie: 'sidebarBrightnessMenu', type: 'boolean', toggle: true},
     sidebarSettingMenu: {default: false, cookie: 'sidebarSettingMenu', type: 'boolean', toggle: true},
     sidebarThemeMenu: {default: false, cookie: 'sidebarThemeMenu', type: 'boolean', toggle: true},
     sidebarLanguageMenu: {default: false, cookie: 'sidebarLanguageMenu', type: 'boolean', toggle: true},

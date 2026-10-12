@@ -13,6 +13,8 @@ from HostCore.http_server.route.touchpad import touchpad
 from HostCore.http_server.route.touchpad import touchpad_reposition
 from HostCore.http_server.route.volume import volume_get
 from HostCore.http_server.route.volume import volume_set
+from HostCore.http_server.route.brightness import brightness_get
+from HostCore.http_server.route.brightness import brightness_set
 from HostCore.http_server.hook.ip_checker import ip_checker
 from HostCore.http_server.hook.ip_log import ip_log
 
@@ -43,5 +45,7 @@ def HttpServer(static_folder) -> Quart:
     app.route('/api/touchpad/reposition', methods=['POST'])(touchpad_reposition)
     app.route('/api/volume/get', methods=['GET'])(volume_get)
     app.route('/api/volume/set', methods=['POST'])(volume_set)
+    app.route('/api/brightness/get', methods=['GET'])(brightness_get)
+    app.route('/api/brightness/set', methods=['POST'])(brightness_set)
 
     return app
