@@ -47,12 +47,14 @@ import {
     Tune,
     ColorLensRounded,
     GTranslate,
-    Settings
+    Settings,
+    Brightness6
 } from '@mui/icons-material';
 import LayoutSettingMenu from './LayoutSettingMenu';
 import MouseWheelMenu from './MouseWheelMenu';
 import KeyboardMenu from './KeyboardMenu';
 import VolumeMenu from './VolumeMenu';
+import BrightnessMenu from './BrightnessMenu';
 import ThemeMenu from './ThemeMenu';
 import LanguageMenu from './LanguageMenu';
 import SettingMenu from './SettingMenu';
@@ -73,6 +75,7 @@ class SideBar extends Component {
             ThemeMenu: 5,
             LanguageMenu: 6,
             SettingMenu: 7,
+            BrightnessMenu: 8,
         };
 
         const textStyle: React.CSSProperties = {
@@ -268,6 +271,36 @@ class SideBar extends Component {
                     <Collapse
                         in={this.context.autoCollapse ? this.context.openMenuSW === MenuIndex.VolumeMenu : this.context.sidebarVolumeMenu}>
                         <VolumeMenu/>
+                    </Collapse>
+                    <ListItem>
+                        <ListItemButton onClick={() => {
+                            if (this.context.autoCollapse) {
+                                if (this.context.openMenuSW === MenuIndex.BrightnessMenu) {
+                                    this.context.setOpenMenuSW(MenuIndex.AllClose);
+                                } else {
+                                    this.context.setOpenMenuSW(MenuIndex.BrightnessMenu);
+                                }
+                            } else {
+                                this.context.toggleSidebarBrightnessMenu();
+                            }
+                        }}>
+                            <Brightness6 sx={iconSizeSX}/>
+                            <Typography style={textStyle}>
+                                &nbsp;&nbsp;&nbsp;{i18n.Sidebar.index.Brightness[this.context.i18n as keyof typeof i18n.Sidebar.index.Brightness]}
+                            </Typography>
+                            <Box sx={boxIconSX}>{this.context.autoCollapse ?
+                                this.context.openMenuSW === MenuIndex.BrightnessMenu ?
+                                    <ExpandMore sx={iconSizeSX}/> :
+                                    <ChevronRightOutlined sx={iconSizeSX}/> :
+                                this.context.sidebarBrightnessMenu ?
+                                    <ExpandMore sx={iconSizeSX}/> :
+                                    <ChevronRightOutlined sx={iconSizeSX}/>
+                            }</Box>
+                        </ListItemButton>
+                    </ListItem>
+                    <Collapse
+                        in={this.context.autoCollapse ? this.context.openMenuSW === MenuIndex.BrightnessMenu : this.context.sidebarBrightnessMenu}>
+                        <BrightnessMenu/>
                     </Collapse>
                     <ListItem>
                         <ListItemButton onClick={() => {

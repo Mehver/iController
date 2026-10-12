@@ -12,6 +12,7 @@ export interface AppContextType {
   sidebarMouseWheelMenu: boolean;
   sidebarKeyboardMenu: boolean;
   sidebarVolumeMenu: boolean;
+  sidebarBrightnessMenu: boolean;
   sidebarSettingMenu: boolean;
   sidebarThemeMenu: boolean;
   sidebarLanguageMenu: boolean;
@@ -33,6 +34,7 @@ export interface AppContextType {
   setSidebarMouseWheelMenu: (value: boolean) => void;
   setSidebarKeyboardMenu: (value: boolean) => void;
   setSidebarVolumeMenu: (value: boolean) => void;
+  setSidebarBrightnessMenu: (value: boolean) => void;
   setSidebarSettingMenu: (value: boolean) => void;
   setSidebarThemeMenu: (value: boolean) => void;
   setSidebarLanguageMenu: (value: boolean) => void;
@@ -48,6 +50,7 @@ export interface AppContextType {
   toggleSidebarMouseWheelMenu: () => void;
   toggleSidebarKeyboardMenu: () => void;
   toggleSidebarVolumeMenu: () => void;
+  toggleSidebarBrightnessMenu: () => void;
   toggleSidebarSettingMenu: () => void;
   toggleSidebarThemeMenu: () => void;
   toggleSidebarLanguageMenu: () => void;
