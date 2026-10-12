@@ -58,7 +58,7 @@ def test_fractional_sensitivity_sends_rounded_python_int(
 
     assert status_code == 200
     assert payload == {"status": "success", "steps": 122}
-    mousewheel_module.pyautogui.scroll.assert_called_once_with(122)
+    mousewheel_module.pyautogui.scroll.assert_called_once_with(122, _pause=False)
     steps = mousewheel_module.pyautogui.scroll.call_args.args[0]
     assert type(steps) is int
 

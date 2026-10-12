@@ -30,35 +30,36 @@
 from HostCore.volume_controller.base import BaseVolumeController
 from pycaw.pycaw import AudioUtilities
 from comtypes import CoInitializeEx, COINIT_MULTITHREADED, CoUninitialize
-import threading
-import atexit
 
 
 class WindowsVolumeController(BaseVolumeController):
-    def __init__(self):
-        self.volume = None
-        self.init_thread = threading.Thread(target=self.init_volume_control)
-        self.init_thread.start()
-        self.init_thread.join()
-
-    def init_volume_control(self):
-        CoInitializeEx(COINIT_MULTITHREADED)
-        devices = AudioUtilities.GetSpeakers()
-        self.volume = devices.EndpointVolume
-        atexit.register(self.cleanup_com)
-
-    def cleanup_com(self):
-        if self.volume:
-            self.volume.Release()
-        CoUninitialize()
-
     def get_current_volume(self):
-        return self.volume.GetMasterVolumeLevelScalar() * 100
+        return self._with_endpoint(
+            lambda volume: volume.GetMasterVolumeLevelScalar() * 100
+        )
 
     def set_volume(self, target_volume):
-        def set_vol():
-            self.volume.SetMute(0, None)
-            self.volume.SetMasterVolumeLevelScalar(target_volume / 100, None)
-        thread = threading.Thread(target=set_vol)
-        thread.start()
-        thread.join()
+        def set_endpoint_volume(volume):
+            volume.SetMute(0, None)
+            volume.SetMasterVolumeLevelScalar(target_volume / 100, None)
+
+        self._with_endpoint(set_endpoint_volume)
+
+    @staticmethod
+    def _with_endpoint(operation):
+        initialized = False
+        volume = None
+        try:
+            CoInitializeEx(COINIT_MULTITHREADED)
+            initialized = True
+            volume = AudioUtilities.GetSpeakers().EndpointVolume
+            return operation(volume)
+        finally:
+            try:
+                if volume is not None:
+                    release = getattr(volume, "Release", None)
+                    if callable(release):
+                        release()
+            finally:
+                if initialized:
+                    CoUninitialize()

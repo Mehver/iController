@@ -17,7 +17,7 @@ async def mousewheel():
             wheel_amount * Config.Control.MWheel_SENSITIVITY
             + Config.Control.MWheel_CONSTANT
         ))
-        pyautogui.scroll(wheel_amount)
+        pyautogui.scroll(wheel_amount, _pause=False)
         LogManager.log_console(f"Mouse wheel scrolled {wheel_amount} steps.")
         return jsonify({"status": "success", "steps": wheel_amount})
     except ValueError as e:

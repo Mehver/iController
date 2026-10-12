@@ -6,6 +6,7 @@ pyinstaller==6.19.0
 pycaw==20251023
 comtypes==1.4.16
 screen-brightness-control==0.27.2
+monitorcontrol==4.2.0
 psutil==7.2.2
 pyperclip~=1.8.2
 Hypercorn~=0.16.0

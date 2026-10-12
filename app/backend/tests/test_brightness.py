@@ -25,36 +25,100 @@ def brightness_module(monkeypatch):
     fake_sbc = types.ModuleType("screen_brightness_control")
     fake_sbc.get_brightness = Mock()
     fake_sbc.set_brightness = Mock()
+    fake_monitorcontrol = types.ModuleType("monitorcontrol")
+    fake_monitorcontrol.get_monitors = Mock(return_value=[])
     monkeypatch.setitem(sys.modules, "screen_brightness_control", fake_sbc)
+    monkeypatch.setitem(sys.modules, "monitorcontrol", fake_monitorcontrol)
     sys.modules.pop("HostCore.brightness_controller.windows", None)
     try:
         module = importlib.import_module("HostCore.brightness_controller.windows")
-        yield module, fake_sbc
+        yield module, fake_sbc, fake_monitorcontrol
     finally:
         sys.modules.pop("HostCore.brightness_controller.windows", None)
 
 
 def test_windows_brightness_get_returns_first_controllable_display(brightness_module):
-    module, fake_sbc = brightness_module
+    module, fake_sbc, _ = brightness_module
     fake_sbc.get_brightness.return_value = [None, 42.8, 70]
 
     assert module.WindowsBrightnessController().get_current_brightness() == 42
 
 
 def test_windows_brightness_get_raises_without_controllable_display(brightness_module):
-    module, fake_sbc = brightness_module
+    module, fake_sbc, _ = brightness_module
     fake_sbc.get_brightness.return_value = [None, None]
 
-    with pytest.raises(RuntimeError, match="No controllable display found"):
+    with pytest.raises(RuntimeError, match="SBC: no usable brightness value"):
         module.WindowsBrightnessController().get_current_brightness()
 
 
 def test_windows_brightness_set_updates_all_displays(brightness_module):
-    module, fake_sbc = brightness_module
+    module, fake_sbc, _ = brightness_module
 
     module.WindowsBrightnessController().set_brightness(55)
 
     fake_sbc.set_brightness.assert_called_once_with(55, no_return=False)
+
+
+class FakeMonitor:
+    def __init__(self, luminance=None, error=None):
+        self.luminance = luminance
+        self.error = error
+        self.get_luminance = Mock(side_effect=self._get_luminance)
+        self.set_luminance = Mock(side_effect=self._set_luminance)
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc, traceback):
+        return False
+
+    def _get_luminance(self):
+        if self.error:
+            raise self.error
+        return self.luminance
+
+    def _set_luminance(self, value):
+        if self.error:
+            raise self.error
+        self.luminance = value
+
+
+def test_windows_brightness_get_falls_back_to_monitorcontrol(brightness_module):
+    module, fake_sbc, fake_monitorcontrol = brightness_module
+    first = FakeMonitor(error=RuntimeError("first unavailable"))
+    second = FakeMonitor(luminance=63)
+    fake_sbc.get_brightness.side_effect = IndexError("display device index")
+    fake_monitorcontrol.get_monitors.return_value = [first, second]
+
+    assert module.WindowsBrightnessController().get_current_brightness() == 63
+    first.get_luminance.assert_called_once_with()
+    second.get_luminance.assert_called_once_with()
+
+
+def test_windows_brightness_set_fallback_updates_each_available_monitor(brightness_module):
+    module, fake_sbc, fake_monitorcontrol = brightness_module
+    failed = FakeMonitor(error=RuntimeError("unsupported"))
+    updated = FakeMonitor(luminance=10)
+    fake_sbc.set_brightness.side_effect = IndexError("display device index")
+    fake_monitorcontrol.get_monitors.return_value = [failed, updated]
+
+    module.WindowsBrightnessController().set_brightness(55)
+
+    failed.set_luminance.assert_called_once_with(55)
+    updated.set_luminance.assert_called_once_with(55)
+    assert updated.luminance == 55
+
+
+def test_windows_brightness_set_raises_when_all_fallbacks_fail(brightness_module):
+    module, fake_sbc, fake_monitorcontrol = brightness_module
+    fake_sbc.set_brightness.side_effect = IndexError("display device index")
+    fake_monitorcontrol.get_monitors.return_value = [
+        FakeMonitor(error=RuntimeError("unsupported"))
+    ]
+
+    with pytest.raises(RuntimeError, match="SBC: display device index.*fallback: unsupported"):
+        module.WindowsBrightnessController().set_brightness(55)
 
 
 @pytest.mark.parametrize("os_name", ["Linux", "UnknownOS"])

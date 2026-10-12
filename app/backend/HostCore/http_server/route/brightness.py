@@ -1,6 +1,8 @@
 # SPDX-FileCopyrightText: 2024 Mehver (https://github.com/Mehver)
 # SPDX-License-Identifier: BSD-3-Clause
 
+import asyncio
+
 from quart import request, jsonify
 
 from HostCore.brightness_controller import get_brightness_controller
@@ -16,11 +18,13 @@ async def brightness_get():
                 "status": "success", "brightness": 0,
                 "message": "Brightness control ignored."
             })
-        brightness = brightness_controller.get_current_brightness()
+        brightness = await asyncio.to_thread(
+            brightness_controller.get_current_brightness
+        )
         LogManager.log_console(f"Brightness obtain: {brightness}.")
         return jsonify({"status": "success", "brightness": brightness})
     except Exception as error:
-        LogManager.log_console(f"Error: {error}.")
+        LogManager.log_console(f"Brightness control error: {error}.")
         return jsonify({
             "status": "error",
             "message": f"An error ({error}) occurred while reading brightness."
@@ -35,18 +39,25 @@ async def brightness_set():
         brightness_value = int(brightness)
         if not 0 <= brightness_value <= 100:
             raise ValueError("Brightness must be between 0 and 100.")
+    except (UnicodeDecodeError, ValueError) as error:
+        LogManager.log_console(f"Invalid brightness value received: {brightness}.")
+        LogManager.log_console(f"Exception: {error}.")
+        return jsonify({"status": "error", "message": "Invalid brightness value."})
 
+    try:
         brightness_controller = get_brightness_controller()
         if brightness_controller is None:
             return jsonify({
                 "status": "success", "message": "Brightness control ignored."
             })
-        brightness_controller.set_brightness(brightness_value)
+        await asyncio.to_thread(brightness_controller.set_brightness, brightness_value)
         LogManager.log_console(f"Brightness set to: {brightness_value}.")
         return jsonify({
             "status": "success", "message": "Brightness has been set successfully."
         })
     except Exception as error:
-        LogManager.log_console(f"Invalid brightness value received: {brightness}.")
-        LogManager.log_console(f"Exception: {error}.")
-        return jsonify({"status": "error", "message": "Invalid brightness value."})
+        LogManager.log_console(f"Brightness control error: {error}.")
+        return jsonify({
+            "status": "error",
+            "message": f"An error ({error}) occurred while setting brightness."
+        })
