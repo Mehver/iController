@@ -6,51 +6,77 @@ import threading
 import screen_brightness_control as sbc
 from monitorcontrol import get_monitors
 
-from HostCore.brightness_controller.base import BaseBrightnessController
+from HostCore.brightness_controller.base import (
+    BaseBrightnessController,
+    BrightnessUnsupportedError,
+)
+from HostCore.brightness_controller.windows_gamma import WindowsGammaBrightness
+from HostCore.infra.files.log_manager import LogManager
 
 
 class WindowsBrightnessController(BaseBrightnessController):
     _hardware_lock = threading.Lock()
+    _software_fallback_active = False
+    _software_fallback_logged = False
+
+    @classmethod
+    def _log_software_fallback_once(cls):
+        if not cls._software_fallback_logged:
+            LogManager.log_console(
+                "Hardware brightness unavailable; using software dimming."
+            )
+            cls._software_fallback_logged = True
 
     def get_current_brightness(self):
         with self._hardware_lock:
+            if self._software_fallback_active:
+                try:
+                    return WindowsGammaBrightness.get_brightness()
+                except Exception:
+                    raise BrightnessUnsupportedError() from None
+
             try:
                 brightness_values = sbc.get_brightness()
                 for brightness in brightness_values:
                     if brightness is not None:
                         return int(brightness)
-                sbc_error = "no usable brightness value"
-            except Exception as error:
-                sbc_error = str(error)
+            except Exception:
+                pass
 
-            fallback_errors = []
             try:
                 monitors = get_monitors()
                 for monitor in monitors:
                     try:
                         with monitor:
                             return int(monitor.get_luminance())
-                    except Exception as error:
-                        fallback_errors.append(str(error))
-                if not monitors:
-                    fallback_errors.append("no monitors found")
-            except Exception as error:
-                fallback_errors.append(str(error))
+                    except Exception:
+                        continue
+            except Exception:
+                pass
 
-            fallback_error = "; ".join(filter(None, fallback_errors)) or "no usable monitor"
-            raise RuntimeError(
-                f"Brightness control failed (SBC: {sbc_error}; fallback: {fallback_error})."
-            )
+            try:
+                brightness = WindowsGammaBrightness.get_brightness()
+            except Exception:
+                raise BrightnessUnsupportedError() from None
+            self.__class__._software_fallback_active = True
+            self._log_software_fallback_once()
+            return brightness
 
     def set_brightness(self, target_brightness):
         with self._hardware_lock:
+            if self._software_fallback_active:
+                try:
+                    WindowsGammaBrightness.set_brightness(target_brightness)
+                    return
+                except Exception:
+                    raise BrightnessUnsupportedError() from None
+
             try:
                 sbc.set_brightness(target_brightness, no_return=False)
                 return
-            except Exception as error:
-                sbc_error = str(error)
+            except Exception:
+                pass
 
-            fallback_errors = []
             success = False
             try:
                 monitors = get_monitors()
@@ -59,17 +85,17 @@ class WindowsBrightnessController(BaseBrightnessController):
                         with monitor:
                             monitor.set_luminance(target_brightness)
                         success = True
-                    except Exception as error:
-                        fallback_errors.append(str(error))
-                if not monitors:
-                    fallback_errors.append("no monitors found")
-            except Exception as error:
-                fallback_errors.append(str(error))
+                    except Exception:
+                        continue
+            except Exception:
+                pass
 
             if success:
                 return
 
-            fallback_error = "; ".join(filter(None, fallback_errors)) or "no usable monitor"
-            raise RuntimeError(
-                f"Brightness control failed (SBC: {sbc_error}; fallback: {fallback_error})."
-            )
+            try:
+                WindowsGammaBrightness.set_brightness(target_brightness)
+            except Exception:
+                raise BrightnessUnsupportedError() from None
+            self.__class__._software_fallback_active = True
+            self._log_software_fallback_once()

@@ -6,6 +6,7 @@ import asyncio
 from quart import request, jsonify
 
 from HostCore.brightness_controller import get_brightness_controller
+from HostCore.brightness_controller.base import BrightnessUnsupportedError
 from HostCore.infra.files.log_manager import LogManager
 
 
@@ -23,6 +24,12 @@ async def brightness_get():
         )
         LogManager.log_console(f"Brightness obtain: {brightness}.")
         return jsonify({"status": "success", "brightness": brightness})
+    except BrightnessUnsupportedError:
+        LogManager.log_console("Brightness control is not supported on this device.")
+        return jsonify({
+            "status": "error",
+            "message": "Brightness control is not supported on this device."
+        })
     except Exception as error:
         LogManager.log_console(f"Brightness control error: {error}.")
         return jsonify({
@@ -54,6 +61,12 @@ async def brightness_set():
         LogManager.log_console(f"Brightness set to: {brightness_value}.")
         return jsonify({
             "status": "success", "message": "Brightness has been set successfully."
+        })
+    except BrightnessUnsupportedError:
+        LogManager.log_console("Brightness control is not supported on this device.")
+        return jsonify({
+            "status": "error",
+            "message": "Brightness control is not supported on this device."
         })
     except Exception as error:
         LogManager.log_console(f"Brightness control error: {error}.")
