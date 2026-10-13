@@ -7,7 +7,7 @@ import importlib.util
 import os
 import sys
 import types
-from unittest.mock import Mock
+from unittest.mock import Mock, call
 
 import pytest
 
@@ -32,6 +32,9 @@ def brightness_module(monkeypatch):
     sys.modules.pop("HostCore.brightness_controller.windows", None)
     try:
         module = importlib.import_module("HostCore.brightness_controller.windows")
+        module.WindowsGammaBrightness = Mock()
+        module.WindowsBrightnessController._software_fallback_active = False
+        module.WindowsBrightnessController._software_fallback_logged = False
         yield module, fake_sbc, fake_monitorcontrol
     finally:
         sys.modules.pop("HostCore.brightness_controller.windows", None)
@@ -44,12 +47,13 @@ def test_windows_brightness_get_returns_first_controllable_display(brightness_mo
     assert module.WindowsBrightnessController().get_current_brightness() == 42
 
 
-def test_windows_brightness_get_raises_without_controllable_display(brightness_module):
+def test_windows_brightness_get_falls_back_to_software(brightness_module):
     module, fake_sbc, _ = brightness_module
     fake_sbc.get_brightness.return_value = [None, None]
+    module.WindowsGammaBrightness.get_brightness.return_value = 73
 
-    with pytest.raises(RuntimeError, match="SBC: no usable brightness value"):
-        module.WindowsBrightnessController().get_current_brightness()
+    assert module.WindowsBrightnessController().get_current_brightness() == 73
+    module.WindowsGammaBrightness.get_brightness.assert_called_once_with()
 
 
 def test_windows_brightness_set_updates_all_displays(brightness_module):
@@ -58,6 +62,7 @@ def test_windows_brightness_set_updates_all_displays(brightness_module):
     module.WindowsBrightnessController().set_brightness(55)
 
     fake_sbc.set_brightness.assert_called_once_with(55, no_return=False)
+    module.WindowsGammaBrightness.set_brightness.assert_not_called()
 
 
 class FakeMonitor:
@@ -110,15 +115,96 @@ def test_windows_brightness_set_fallback_updates_each_available_monitor(brightne
     assert updated.luminance == 55
 
 
-def test_windows_brightness_set_raises_when_all_fallbacks_fail(brightness_module):
+def test_windows_brightness_set_falls_back_to_software(brightness_module):
     module, fake_sbc, fake_monitorcontrol = brightness_module
     fake_sbc.set_brightness.side_effect = IndexError("display device index")
     fake_monitorcontrol.get_monitors.return_value = [
         FakeMonitor(error=RuntimeError("unsupported"))
     ]
 
-    with pytest.raises(RuntimeError, match="SBC: display device index.*fallback: unsupported"):
+    module.WindowsBrightnessController().set_brightness(55)
+
+    module.WindowsGammaBrightness.set_brightness.assert_called_once_with(55)
+    assert module.WindowsBrightnessController._software_fallback_active is True
+
+
+def test_windows_brightness_software_takeover_skips_hardware_on_later_sets(
+    brightness_module,
+):
+    module, fake_sbc, fake_monitorcontrol = brightness_module
+    fake_sbc.set_brightness.side_effect = IndexError("display device index")
+    monitor = FakeMonitor(error=RuntimeError("unsupported"))
+    fake_monitorcontrol.get_monitors.return_value = [monitor]
+    controller = module.WindowsBrightnessController()
+
+    controller.set_brightness(55)
+    controller.set_brightness(45)
+
+    fake_sbc.set_brightness.assert_called_once_with(55, no_return=False)
+    fake_monitorcontrol.get_monitors.assert_called_once_with()
+    monitor.set_luminance.assert_called_once_with(55)
+    assert module.WindowsGammaBrightness.set_brightness.call_args_list == [
+        call(55),
+        call(45),
+    ]
+
+
+def test_windows_brightness_raises_unsupported_when_all_backends_fail(brightness_module):
+    module, fake_sbc, fake_monitorcontrol = brightness_module
+    fake_sbc.set_brightness.side_effect = RuntimeError("large SBC failure")
+    fake_monitorcontrol.get_monitors.side_effect = RuntimeError("large DDC failure")
+    module.WindowsGammaBrightness.set_brightness.side_effect = RuntimeError("GDI failure")
+
+    with pytest.raises(
+        module.BrightnessUnsupportedError,
+        match="This device does not support brightness control",
+    ):
         module.WindowsBrightnessController().set_brightness(55)
+    assert module.WindowsBrightnessController._software_fallback_active is False
+
+
+def test_windows_brightness_get_raises_unsupported_when_all_backends_fail(
+    brightness_module,
+):
+    module, fake_sbc, fake_monitorcontrol = brightness_module
+    fake_sbc.get_brightness.side_effect = RuntimeError("large SBC failure")
+    fake_monitorcontrol.get_monitors.side_effect = RuntimeError("large DDC failure")
+    module.WindowsGammaBrightness.get_brightness.side_effect = RuntimeError("GDI failure")
+
+    with pytest.raises(module.BrightnessUnsupportedError):
+        module.WindowsBrightnessController().get_current_brightness()
+
+
+def test_windows_brightness_hardware_priority_skips_software(brightness_module):
+    module, fake_sbc, fake_monitorcontrol = brightness_module
+    fake_sbc.get_brightness.side_effect = RuntimeError("SBC unavailable")
+    monitor = FakeMonitor(luminance=61)
+    fake_monitorcontrol.get_monitors.return_value = [monitor]
+
+    assert module.WindowsBrightnessController().get_current_brightness() == 61
+    module.WindowsGammaBrightness.get_brightness.assert_not_called()
+
+
+def test_windows_brightness_logs_software_fallback_only_once(
+    brightness_module, monkeypatch
+):
+    module, fake_sbc, fake_monitorcontrol = brightness_module
+    fake_sbc.get_brightness.side_effect = RuntimeError("unavailable")
+    fake_monitorcontrol.get_monitors.return_value = []
+    module.WindowsGammaBrightness.get_brightness.return_value = 100
+    log_console = Mock()
+    monkeypatch.setattr(module.LogManager, "log_console", log_console)
+
+    controller = module.WindowsBrightnessController()
+    controller.get_current_brightness()
+    controller.get_current_brightness()
+
+    fake_sbc.get_brightness.assert_called_once_with()
+    fake_monitorcontrol.get_monitors.assert_called_once_with()
+    assert module.WindowsGammaBrightness.get_brightness.call_count == 2
+    log_console.assert_called_once_with(
+        "Hardware brightness unavailable; using software dimming."
+    )
 
 
 @pytest.mark.parametrize("os_name", ["Linux", "UnknownOS"])
@@ -195,3 +281,33 @@ def test_unsupported_brightness_routes_are_no_ops(brightness_route, monkeypatch)
     status, payload = request_to_route(brightness_route, brightness_route.brightness_set, "POST", "42")
     assert status == 200
     assert payload == {"status": "success", "message": "Brightness control ignored."}
+
+
+@pytest.mark.parametrize(
+    ("handler_name", "method", "data"),
+    (("brightness_get", "GET", None), ("brightness_set", "POST", "42")),
+)
+def test_brightness_routes_report_unsupported_cleanly(
+    brightness_route, monkeypatch, handler_name, method, data
+):
+    from HostCore.brightness_controller.base import BrightnessUnsupportedError
+
+    controller = Mock()
+    controller.get_current_brightness.side_effect = BrightnessUnsupportedError()
+    controller.set_brightness.side_effect = BrightnessUnsupportedError()
+    log_console = Mock()
+    monkeypatch.setattr(brightness_route, "get_brightness_controller", lambda: controller)
+    monkeypatch.setattr(brightness_route.LogManager, "log_console", log_console)
+
+    status, payload = request_to_route(
+        brightness_route, getattr(brightness_route, handler_name), method, data
+    )
+
+    assert status == 200
+    assert payload == {
+        "status": "error",
+        "message": "Brightness control is not supported on this device.",
+    }
+    log_console.assert_called_once_with(
+        "Brightness control is not supported on this device."
+    )
