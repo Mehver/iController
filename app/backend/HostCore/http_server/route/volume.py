@@ -8,16 +8,33 @@ from HostCore.volume_controller import get_volume_controller
 from HostCore.infra.files.log_manager import LogManager
 
 
+_CONTROL_UNSUPPORTED = object()
+
+
+def _get_volume():
+    controller = get_volume_controller()
+    if controller is None:
+        return _CONTROL_UNSUPPORTED
+    return controller.get_current_volume()
+
+
+def _set_volume(value):
+    controller = get_volume_controller()
+    if controller is None:
+        return False
+    controller.set_volume(value)
+    return True
+
+
 async def volume_get():
     """app.route('/api/volume/get', methods=['GET'])(volume_get)"""
     try:
-        vc = get_volume_controller()
-        if vc is None:
+        volume = await asyncio.to_thread(_get_volume)
+        if volume is _CONTROL_UNSUPPORTED:
             return jsonify({
                 "status": "success", "volume": 0,
                 "message": "Volume control ignored."
             })
-        volume = await asyncio.to_thread(vc.get_current_volume)
         LogManager.log_console(f"Volume obtain: {int(volume)}.")
         return jsonify({"status": "success", "volume": volume})
     except Exception as e:
@@ -37,12 +54,11 @@ async def volume_set():
         return jsonify({"status": "error", "message": "Invalid volume value."})
 
     try:
-        vc = get_volume_controller()
-        if vc is None:
+        supported = await asyncio.to_thread(_set_volume, volume_value)
+        if not supported:
             return jsonify({
                 "status": "success", "message": "Volume control ignored."
             })
-        await asyncio.to_thread(vc.set_volume, volume_value)
         LogManager.log_console(f"Volume set to: {volume}.")
         return jsonify({"status": "success", "message": "Volume has been set successfully."})
     except Exception as e:

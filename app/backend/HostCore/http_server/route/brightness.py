@@ -10,18 +10,33 @@ from HostCore.brightness_controller.base import BrightnessUnsupportedError
 from HostCore.infra.files.log_manager import LogManager
 
 
+_CONTROL_UNSUPPORTED = object()
+
+
+def _get_brightness():
+    controller = get_brightness_controller()
+    if controller is None:
+        return _CONTROL_UNSUPPORTED
+    return controller.get_current_brightness()
+
+
+def _set_brightness(value):
+    controller = get_brightness_controller()
+    if controller is None:
+        return False
+    controller.set_brightness(value)
+    return True
+
+
 async def brightness_get():
     """app.route('/api/brightness/get', methods=['GET'])(brightness_get)"""
     try:
-        brightness_controller = get_brightness_controller()
-        if brightness_controller is None:
+        brightness = await asyncio.to_thread(_get_brightness)
+        if brightness is _CONTROL_UNSUPPORTED:
             return jsonify({
                 "status": "success", "brightness": 0,
                 "message": "Brightness control ignored."
             })
-        brightness = await asyncio.to_thread(
-            brightness_controller.get_current_brightness
-        )
         LogManager.log_console(f"Brightness obtain: {brightness}.")
         return jsonify({"status": "success", "brightness": brightness})
     except BrightnessUnsupportedError:
@@ -52,12 +67,11 @@ async def brightness_set():
         return jsonify({"status": "error", "message": "Invalid brightness value."})
 
     try:
-        brightness_controller = get_brightness_controller()
-        if brightness_controller is None:
+        supported = await asyncio.to_thread(_set_brightness, brightness_value)
+        if not supported:
             return jsonify({
                 "status": "success", "message": "Brightness control ignored."
             })
-        await asyncio.to_thread(brightness_controller.set_brightness, brightness_value)
         LogManager.log_console(f"Brightness set to: {brightness_value}.")
         return jsonify({
             "status": "success", "message": "Brightness has been set successfully."

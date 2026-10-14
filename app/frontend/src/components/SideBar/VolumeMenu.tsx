@@ -28,11 +28,7 @@ class VolumeMenu extends Component<object, VolumeMenuState> {
 
     componentDidMount() {
         this._isMounted = true;
-        for (let i = 100; i < 2000; i = (i + 200) * 2) {
-            setTimeout(() => {
-                this.fetchVolume();
-            }, i);
-        }
+        this.fetchVolume();
     }
 
     componentWillUnmount() {

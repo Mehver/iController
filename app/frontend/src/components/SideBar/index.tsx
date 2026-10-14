@@ -141,6 +141,7 @@ class SideBar extends Component {
                 anchor={this.context.drawerRL === 'r' ? 'right' : 'left'}
                 open={this.context.drawerOpen}
                 onClose={() => this.context.setDrawerOpen(false)}
+                ModalProps={{keepMounted: true}}
                 slotProps={drawerSlotProps}
             >
                 <List sx={listSX}>
