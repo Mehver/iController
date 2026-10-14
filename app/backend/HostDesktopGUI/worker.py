@@ -59,10 +59,10 @@ class ServerWorker(QObject):
 
     @Slot()
     def print_banner(self):
-        """在 worker 线程中打印启动横幅。
+        """在 worker 线程中打印启动横幅并预热亮度、音量控制。
 
-        HostDesktopCLI 包的 __init__ 会引入整个服务栈（quart/hypercorn/pyautogui），
-        放到后台线程导入：既不拖慢主窗口显示，又能为首次启动服务预热模块缓存。
+        此 slot 在主窗口构建后、HTTP 服务启动前执行，因此控制后端的首次导入和
+        探测不会阻塞 Qt 主线程。
         """
         try:
             from HostDesktopCLI.cli_logo import cli_logo
@@ -70,6 +70,13 @@ class ServerWorker(QObject):
             print(cli_logo(self.version))
         except Exception as exc:
             self.log.emit(f"[warn] failed to print banner: {exc}\n")
+
+        try:
+            from HostCore.control_warmup import warmup_controls
+
+            warmup_controls()
+        except Exception as exc:
+            self.log.emit(f"[warn] control warmup skipped: {exc}\n")
 
     @Slot(str, int)
     def start_server(self, host: str, port: int):
@@ -80,8 +87,8 @@ class ServerWorker(QObject):
 
         bind = f"{host}:{port}"
         try:
-            # ⚠️ 重要：所有 HostCore 相关的 import（间接会引 pyautogui 的）
-            # 都放到这里延迟导入，确保 Qt 先初始化。
+            # HTTP 服务栈相关的 import（间接会引 pyautogui）仍延迟到这里，
+            # 确保 Qt 先初始化；控制后端已在 print_banner 中单独预热。
             from hypercorn.config import Config as HypercornConfig
             from hypercorn.asyncio import serve
 
