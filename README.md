@@ -13,6 +13,20 @@
 
 A host LAN controller software running on `Windows` and `macOS` (read description below) PC, enabling mobile phones to access a web page panel for PC control.
 
+```mermaid
+flowchart LR
+    subgraph Phone["Mobile Phone"]
+        Browser["Web Browser"]
+    end
+    subgraph Host["Host PC"]
+        Controller(["iController Host App"]):::controller
+        Functions["Mouse · Keyboard ·<br/>Volume · Brightness"]
+        Controller -->|Native control| Functions
+    end
+    Browser <-->|LAN / HTTP| Controller
+    classDef controller fill:#dff4ff,stroke:#168aad,stroke-width:2px,color:#0b3c49
+```
+
 <table>
     <tr>
         <td>

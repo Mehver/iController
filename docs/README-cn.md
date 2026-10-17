@@ -13,6 +13,20 @@
 
 一个在 `Windows` 或 `macOS` (见下方注释) 主机上运行的简易服务器，同一局域网下的手机连接后可以通过网页实现触摸板和键盘的操作。
 
+```mermaid
+flowchart LR
+    subgraph Phone["手机"]
+        Browser["Web 浏览器"]
+    end
+    subgraph Host["主机"]
+        Controller(["iController 主机端应用"]):::controller
+        Functions["鼠标 · 键盘 ·<br/>音量 · 亮度"]
+        Controller -->|本机控制| Functions
+    end
+    Browser <-->|局域网 / HTTP| Controller
+    classDef controller fill:#dff4ff,stroke:#168aad,stroke-width:2px,color:#0b3c49
+```
+
 <table>
     <tr>
         <td>
