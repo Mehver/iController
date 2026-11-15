@@ -51,6 +51,7 @@ from HostDesktopGUI.main_page import MainPage
 from HostDesktopGUI.settings_page import SettingsPage
 from HostDesktopGUI.widgets import ZoomView
 from HostDesktopGUI.worker import ServerState, ServerWorker
+from HostDesktopGUI.brightness_overlay import create_brightness_overlay, _log as _brightness_log
 
 from HostCore.utils.check_platform import is_mac
 
@@ -93,6 +94,11 @@ class MainWindow(QWidget):
 
         # 加载配置文件（供主/设置界面预填）
         Config.init()
+        try:
+            self._brightness_overlay = create_brightness_overlay(self)
+        except Exception as error:
+            self._brightness_overlay = None
+            _brightness_log(f'Overlay initialization failed; overlay unavailable: {error}')
 
         # --- 两个可切换的界面（设置页懒加载，加快首屏显示） ---
         self.main_page = MainPage()
@@ -197,6 +203,8 @@ class MainWindow(QWidget):
             # 设置保存后：刷新主界面默认启动参数 + 实时应用语言/主题
             self._settings_page.saved.connect(self.main_page.reload_from_config)
             self._settings_page.saved.connect(self.apply_gui_prefs)
+            if self._brightness_overlay is not None:
+                self._settings_page.brightness_mode_changed.connect(self._brightness_overlay.apply_mode)
             self.stack.addWidget(self._settings_page)
         return self._settings_page
 
@@ -319,6 +327,8 @@ class MainWindow(QWidget):
             )
         else:
             # 真正退出：停掉 worker / 线程 / 托盘
+            if self._brightness_overlay is not None:
+                self._brightness_overlay.shutdown()
             try:
                 self.worker.stop_server()
             except Exception:

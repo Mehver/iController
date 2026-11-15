@@ -29,7 +29,7 @@
 
 from HostCore.volume_controller.base import BaseVolumeController
 from pycaw.pycaw import AudioUtilities
-from comtypes import CoInitializeEx, COINIT_MULTITHREADED, CoUninitialize
+from comtypes import COMError, CoInitializeEx, COINIT_MULTITHREADED, CoUninitialize
 
 
 class WindowsVolumeController(BaseVolumeController):
@@ -50,8 +50,19 @@ class WindowsVolumeController(BaseVolumeController):
         initialized = False
         volume = None
         try:
-            CoInitializeEx(COINIT_MULTITHREADED)
-            initialized = True
+            try:
+                CoInitializeEx(COINIT_MULTITHREADED)
+                initialized = True  # Both S_OK and S_FALSE own one balanced init.
+            except (OSError, COMError) as error:
+                code = getattr(error, "hresult", None)
+                if code is None:
+                    code = getattr(error, "winerror", None)
+                if code is None and error.args:
+                    code = error.args[0]
+                if not isinstance(code, int) or code not in (-2147417850, 0x80010106):
+                    raise
+                # First-import comtypes may already have initialized STA here.
+                # Borrow that apartment; do not uninitialize somebody else's init.
             volume = AudioUtilities.GetSpeakers().EndpointVolume
             return operation(volume)
         finally:

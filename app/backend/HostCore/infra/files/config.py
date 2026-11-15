@@ -30,9 +30,37 @@
 import yaml
 import os
 
+_MODE_UNSET = object()
+
+
+class _BrightnessMode(type):
+    @property
+    def MODE(cls):
+        return cls._committed[1]
+
+    @MODE.setter
+    def MODE(cls, mode):
+        mode = cls.validate_mode(mode)
+        generation, previous = cls._committed
+        if mode != previous:
+            cls._committed = (generation + 1, mode)
+
 
 class Config:
     # 默认配置 default values
+    class Brightness(metaclass=_BrightnessMode):
+        _committed = (0, 0)  # One publication: change generation, MODE integer.
+
+        @classmethod
+        def committed(cls):
+            return cls._committed
+
+        @staticmethod
+        def validate_mode(mode):
+            if type(mode) is not int or mode not in (0, 1, 2):
+                raise ValueError('Brightness.MODE must be an integer: 0, 1 or 2.')
+            return mode
+
     class Control:
         TPad_SENSITIVITY = 1
         MWheel_SENSITIVITY = 1
@@ -72,12 +100,22 @@ class Config:
     @staticmethod
     def init():
         config_path = "./config.yaml"
+        candidate_mode = 0
         # 检查配置文件是否存在
         # check if the configuration file exists
         if os.path.exists(config_path):
+            with open(config_path, 'r') as file:
+                loaded = yaml.safe_load(file)
+            if not isinstance(loaded, dict):
+                raise ValueError('Configuration must be a mapping.')
+            brightness = loaded.get('Brightness', {})
+            if not isinstance(brightness, dict):
+                raise ValueError('Brightness must be a mapping.')
+            candidate_mode = Config.Brightness.validate_mode(brightness.get('MODE', 0))
             # 读取配置文件，如果有新增的配置项，就触发更新
             # read the configuration file, if there are new configuration items, trigger an update
             results = [
+                'MODE' in brightness,
                 Config.try_get_value(config_path, Config.Control, 'TPad_SENSITIVITY'),
                 Config.try_get_value(config_path, Config.Control, 'MWheel_SENSITIVITY'),
                 Config.try_get_value(config_path, Config.Control, 'MWheel_CONSTANT'),
@@ -97,17 +135,21 @@ class Config:
             ]
             # 检查results列表中是否有任何一个False，如果有，就执行更新
             if not all(results):
-                Config.save()
+                Config.save(brightness_mode=candidate_mode)
+            else:
+                Config.Brightness.MODE = candidate_mode
 
         else:
             # 文件不存在，则用默认值初始化，并保存这些默认值
             # if the file does not exist, initialize with default values and save these default values
-            Config.save()
+            Config.save(brightness_mode=candidate_mode)
 
     @staticmethod
-    def save():
+    def save(*, brightness_mode=_MODE_UNSET):
         config_path = "./config.yaml"
+        mode = Config.Brightness.validate_mode(Config.Brightness.MODE if brightness_mode is _MODE_UNSET else brightness_mode)
         data = {
+            'Brightness': {'MODE': mode},
             'Control': {
                 'TPad_SENSITIVITY': Config.Control.TPad_SENSITIVITY,
                 'MWheel_SENSITIVITY': Config.Control.MWheel_SENSITIVITY,
@@ -135,3 +177,4 @@ class Config:
         }
         with open(config_path, 'w') as file:
             yaml.safe_dump(data, file, sort_keys=False)
+        Config.Brightness.MODE = mode  # Publish only after successful write/close.

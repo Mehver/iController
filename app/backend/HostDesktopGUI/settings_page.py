@@ -78,6 +78,7 @@ class SettingsPage(QWidget):
     """
 
     saved = Signal()
+    brightness_mode_changed = Signal(int)
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -100,6 +101,7 @@ class SettingsPage(QWidget):
         self.theme_combo.setItemText(0, tr("亮色", "Light"))
         self.theme_combo.setItemText(1, tr("暗色", "Dark"))
         self.hint_label.setText("")
+        self._brightness_texts()
 
     # ------------------------------------------------------------------ UI
 
@@ -153,6 +155,29 @@ class SettingsPage(QWidget):
         gui_form.addRow(self.theme_label, theme_row)
 
         scroll_layout.addWidget(self.gui_group)
+
+        self.brightness_group = QGroupBox()
+        self._tr_reg(self.brightness_group.setTitle, '亮度', 'Brightness')
+        brightness_form = QFormLayout(self.brightness_group)
+        brightness_form.setContentsMargins(12, 24, 12, 12)
+        brightness_form.setSpacing(10)
+        self.brightness_mode = QComboBox()
+        self.brightness_mode.setSizeAdjustPolicy(QComboBox.AdjustToMinimumContentsLengthWithIcon)
+        self.brightness_mode.setMinimumContentsLength(18)
+        self.brightness_mode.setToolTip('Brightness.MODE: 0 / 1 / 2')
+        for mode in (0, 1, 2):
+            self.brightness_mode.addItem('', mode)
+        mode_label = QLabel()
+        self._tr_reg(mode_label.setText, '模式', 'Mode')
+        self._tr_reg(self.brightness_mode.setAccessibleName, '亮度模式', 'Brightness mode')
+        brightness_form.addRow(mode_label, self.brightness_mode)
+        self.brightness_description = QLabel()
+        self.brightness_description.setObjectName('hintLabel')
+        self.brightness_description.setWordWrap(True)
+        brightness_form.addRow(self.brightness_description)
+        self.brightness_mode.currentIndexChanged.connect(self._brightness_texts)
+        self._brightness_texts()
+        scroll_layout.addWidget(self.brightness_group)
 
         # ---- 控制 Control ----
         self.control_group = QGroupBox()
@@ -261,7 +286,7 @@ class SettingsPage(QWidget):
 
         # 点击空白区域时释放输入控件的焦点
         _make_click_clear_focus(self)
-        for c in (self.gui_group, self.control_group, self.http_group, self.log_group, container):
+        for c in (self.gui_group, self.brightness_group, self.control_group, self.http_group, self.log_group, container):
             _make_click_clear_focus(c)
 
         # ---- 底部按钮 ----
@@ -314,8 +339,27 @@ class SettingsPage(QWidget):
 
     # ------------------------------------------------------------ 加载/保存
 
+    def _brightness_texts(self, index=None):
+        items = (tr('0 · 硬件 SBC/DDC', '0 · Hardware SBC/DDC'),
+                 tr('1 · 遮罩（只调暗）', '1 · Overlay (dim only)'),
+                 tr('2 · Gamma（实验性）', '2 · Gamma (experimental)'))
+        for index, text in enumerate(items):
+            self.brightness_mode.setItemText(index, text)
+        descriptions = (
+            tr('仅硬件控制；需要硬件与驱动支持 SBC/DDC/CI。',
+               'Hardware only; requires hardware and driver support for SBC/DDC/CI.'),
+            tr('仅 GUI 调暗，刻度非物理亮度；0 为最暗档而非保证全黑（遮罩最高 90%）。不保证安全桌面、独占全屏、录屏或 HDR 覆盖。',
+               'GUI dimming steps, not measured luminance; 0 is the darkest step, not guaranteed black (90% maximum opacity). Secure desktop, exclusive fullscreen, capture and HDR coverage are not guaranteed.'),
+            tr('实验性；异常退出可能偏色，需要手动校准。',
+               'Experimental; abnormal exits may tint colors and require manual calibration.'),
+        )
+        description = descriptions[max(0, self.brightness_mode.currentIndex())]
+        self.brightness_description.setText(description)
+        self.brightness_mode.setAccessibleDescription(description)
+
     def load_from_config(self):
         """把 Config 当前值填入表单。"""
+        self.brightness_mode.setCurrentIndex(Config.Brightness.MODE)
         # GUI 偏好
         self.lang_follow.setChecked(bool(Config.Gui.LANGUAGE_FOLLOW_SYSTEM))
         self._on_lang_follow_toggled(self.lang_follow.isChecked())
@@ -353,7 +397,14 @@ class SettingsPage(QWidget):
     @Slot()
     def reload_from_file(self):
         """放弃未保存的修改，从 config.yaml 重新加载。"""
-        Config.init()
+        previous_generation = Config.Brightness.committed()[0]
+        try:
+            Config.init()
+        except Exception as error:
+            QMessageBox.critical(self, tr('重新加载失败', 'Reload Failed'), str(error))
+            return
+        if previous_generation != Config.Brightness.committed()[0]:
+            self.brightness_mode_changed.emit(Config.Brightness.MODE)
         self.load_from_config()
         self.hint_label.setText(tr("已从配置文件重新加载。", "Reloaded from config file."))
         print("[ok] configuration reloaded from config.yaml.")
@@ -371,6 +422,8 @@ class SettingsPage(QWidget):
             return
 
         # GUI 偏好（跟随系统时保留手动备选值不变）
+        previous_generation = Config.Brightness.committed()[0]
+        candidate_mode = self.brightness_mode.currentData()
         Config.Gui.LANGUAGE_FOLLOW_SYSTEM = self.lang_follow.isChecked()
         if not self.lang_follow.isChecked():
             Config.Gui.LANGUAGE = self.lang_combo.currentData()
@@ -394,8 +447,8 @@ class SettingsPage(QWidget):
         Config.Log.KEYBOARD_TEXT_LOG = self.log_keyboard.isChecked()
 
         try:
-            Config.save()
-        except OSError as e:
+            Config.save(brightness_mode=candidate_mode)
+        except (OSError, ValueError) as e:
             QMessageBox.critical(self, tr("保存失败", "Save Failed"),
                                  tr("无法写入配置文件：", "Failed to write config file:") + f"\n{e}")
             return
@@ -404,6 +457,8 @@ class SettingsPage(QWidget):
                                    "Saved to config.yaml (applied live to the running service)."))
         print("[ok] configuration saved to config.yaml.")
         self.saved.emit()
+        if previous_generation != Config.Brightness.committed()[0]:
+            self.brightness_mode_changed.emit(Config.Brightness.MODE)
 
     # ------------------------------------------------------------ 校验
 

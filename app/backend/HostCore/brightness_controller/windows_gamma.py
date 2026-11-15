@@ -185,6 +185,7 @@ class WindowsGammaBrightness:
 
     @classmethod
     def restore(cls):
+        """Restore only this process's modified sources; return failures for retry."""
         with cls._lock:
             restored = False
             for source in tuple(cls._modified_sources):
@@ -196,6 +197,14 @@ class WindowsGammaBrightness:
                     continue
             if restored and not cls._modified_sources:
                 cls._current_percent = 100
+            failed = tuple(sorted(cls._modified_sources))
+            if failed:
+                try:
+                    from HostCore.infra.files.log_manager import LogManager
+                    LogManager.log_console(f'Gamma restore incomplete: {failed}; manual calibration may be required.')
+                except Exception:
+                    pass
+            return failed
 
     @classmethod
     def _restore_at_exit(cls):
