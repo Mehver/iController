@@ -43,7 +43,7 @@ def handle_touchpad(data):
         x_move = (x_percentage / 100.0) * screen_width * Config.Control.TPad_SENSITIVITY * 0.06
         y_move = (y_percentage / 100.0) * screen_height * Config.Control.TPad_SENSITIVITY * 0.06
         pyautogui.FAILSAFE = False
-        pyautogui.moveRel(x_move, y_move, duration=0.05)
+        pyautogui.moveRel(x_move, y_move, duration=0, _pause=False)
         LogManager.log_console(f"Touchpad received coordinates: x={x_percentage:07.2f}%, y={y_percentage:07.2f}%.")
 
 

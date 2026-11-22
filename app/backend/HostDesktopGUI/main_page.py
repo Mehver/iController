@@ -74,6 +74,10 @@ def is_valid_ipv4(text: str) -> bool:
         return False
 
 
+def is_valid_bind_host(text: str) -> bool:
+    return text.strip().lower() == 'localhost' or is_valid_ipv4(text)
+
+
 def detect_local_ip() -> str | None:
     """检测本机局域网 IP（失败时返回 None）。"""
     try:
@@ -159,6 +163,7 @@ class MainPage(QWidget):
         self._state = ServerState()
         self._busy = False  # 启动/停止过渡状态
         self._busy_kind = ""  # "starting" / "stopping"
+        self._auto_stop_cancellable = False
         self._local_ip = detect_local_ip()
         self._tr_widgets = []  # (setter, zh, en) 注册表，供 retranslate 使用
 
@@ -290,7 +295,7 @@ class MainPage(QWidget):
         self.status_label.setText(tr("已停止", "Stopped"))
 
         self.dirty_label = QLabel()
-        self._tr_reg(self.dirty_label.setText, "参数已修改，重启后生效", "Params changed, restart to apply")
+        self._tr_reg(self.dirty_label.setText, '参数与当前监听不同', 'Panel parameters differ from listener')
         self.dirty_label.setObjectName("warningLabel")
         self.dirty_label.setAlignment(Qt.AlignCenter)
         self.dirty_label.hide()
@@ -373,6 +378,17 @@ class MainPage(QWidget):
         self.port_spin.setValue(int(Config.HttpServer.PORT))
         self._validate_all()
 
+    def sync_config_bind(self, previous, current):
+        """Preserve detected/custom host and a manually edited panel port.
+
+        Config-mode host follows Config naturally; only a panel port still
+        matching the previous Config port is updated to the new default.
+        """
+        self._refresh_host_mode_texts()
+        if previous != current and self.port_spin.value() == previous[1]:
+            self.port_spin.setValue(current[1])
+        self._validate_all()
+
     def _refresh_host_mode_texts(self):
         """地址来源下拉项文案（含配置文件 HOST / 本机 IP 的动态值）。"""
         host = str(Config.HttpServer.HOST)
@@ -393,7 +409,7 @@ class MainPage(QWidget):
         mode = self.host_mode.currentData()
         if mode == MODE_CONFIG:
             host = str(Config.HttpServer.HOST).strip()
-            return host if is_valid_ipv4(host) else None
+            return host if is_valid_bind_host(host) else None
         if mode == MODE_DETECTED:
             return self._local_ip
         if mode == MODE_BROADCAST:
@@ -465,8 +481,11 @@ class MainPage(QWidget):
             label.style().polish(label)
 
     def _update_power_enabled(self):
+        if self._state.phase == 'failed':
+            self.power_button.setEnabled(False)
+            return
         if self._busy or self._state.running:
-            self.power_button.setEnabled(not self._busy)
+            self.power_button.setEnabled(not self._busy or self._busy_kind == 'starting' or self._auto_stop_cancellable)
         else:
             self.power_button.setEnabled(self.current_params() is not None)
 
@@ -484,6 +503,12 @@ class MainPage(QWidget):
     @Slot()
     def _on_power_clicked(self):
         if self._busy:
+            if self._busy_kind == 'starting':
+                self._set_busy(True, 'stopping')
+                self.stop_requested.emit()
+            elif self._busy_kind == 'stopping' and self._auto_stop_cancellable:
+                self._set_busy(True, 'stopping')  # Disable before emitting: repeated clicks are harmless.
+                self.stop_requested.emit()
             return
         if self._state.running:
             self._set_busy(True, "stopping")
@@ -515,9 +540,10 @@ class MainPage(QWidget):
         self._set_busy(True, "starting")
         self.start_requested.emit(host, port)
 
-    def _set_busy(self, busy: bool, kind: str = ""):
+    def _set_busy(self, busy: bool, kind: str = "", *, auto_cancel=False):
         self._busy = busy
         self._busy_kind = kind
+        self._auto_stop_cancellable = bool(busy and kind == 'stopping' and auto_cancel)
         if busy:
             self.status_label.setText(self._busy_text())
         self._update_power_enabled()
@@ -525,8 +551,12 @@ class MainPage(QWidget):
     @Slot(object)
     def on_state_changed(self, st: ServerState):
         self._state = st
+        if st.phase == 'starting':
+            self._set_busy(True, 'starting')
+            return
         self._busy = False
         self._busy_kind = ""
+        self._auto_stop_cancellable = False
         self.power_button.set_running(st.running)
         self.status_label.setProperty("running", st.running)
         self.status_label.style().unpolish(self.status_label)
@@ -542,8 +572,7 @@ class MainPage(QWidget):
             self.qr_view.clear()
             self.qr_url_label.setText("")
 
-        self._update_power_enabled()
-        self._check_dirty()
+        self._validate_all()
 
     def _display_url(self, bind: str) -> str:
         """实际访问地址：绑定 0.0.0.0 时用本机局域网 IP 展示（手机扫码不可访问 0.0.0.0）。"""

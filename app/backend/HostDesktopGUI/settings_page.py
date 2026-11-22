@@ -53,7 +53,7 @@ from PySide6.QtWidgets import (
 from HostCore.infra.files.config import Config
 from HostDesktopGUI import gui_config, i18n
 from HostDesktopGUI.i18n import tr
-from HostDesktopGUI.main_page import _make_click_clear_focus, is_valid_ipv4
+from HostDesktopGUI.main_page import _make_click_clear_focus, is_valid_bind_host
 
 
 def parse_ip_list(text: str):
@@ -74,19 +74,26 @@ def parse_ip_list(text: str):
 class SettingsPage(QWidget):
     """config.yaml 配置编辑页。
 
-    保存时同时更新内存中的 Config（运行中的服务实时生效，无需重启）并写回配置文件。
+    持久化后协调界面、亮度与监听应用，并在现有 hint 中报告本次操作结果。
     """
 
     saved = Signal()
     brightness_mode_changed = Signal(int)
+    apply_requested = Signal(object)
 
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setObjectName("pageRoot")
         self.setAttribute(Qt.WA_StyledBackground, True)  # 普通 QWidget 需此属性才绘制样式表背景
         self._tr_widgets = []  # (setter, zh, en) 注册表，供 retranslate 使用
+        self._operation_id = self._dirty_revision = 0
+        self._operation = None
+        self._form_loading = False
+        self._pending_brightness_generation = None
+        self._failed_brightness_generation = None
         self._build_ui()
         self.load_from_config()
+        self._connect_form_edits()
 
     # ---------------------------------------------------------- 文案注册
 
@@ -100,8 +107,8 @@ class SettingsPage(QWidget):
             setter(tr(zh, en))
         self.theme_combo.setItemText(0, tr("亮色", "Light"))
         self.theme_combo.setItemText(1, tr("暗色", "Dark"))
-        self.hint_label.setText("")
         self._brightness_texts()
+        self._render_feedback()
 
     # ------------------------------------------------------------------ UI
 
@@ -339,15 +346,151 @@ class SettingsPage(QWidget):
 
     # ------------------------------------------------------------ 加载/保存
 
+    def _form_signature(self):
+        return (self.lang_follow.isChecked(), self.lang_combo.currentData(),
+                self.theme_follow.isChecked(), self.theme_combo.currentData(),
+                self.brightness_mode.currentData(), self.tpad_sensitivity.value(),
+                self.mwheel_sensitivity.value(), self.mwheel_constant.value(),
+                self.host_edit.text(), self.port_spin.value(), self.ip_mode.currentData(),
+                self.blacklist_edit.toPlainText(), self.whitelist_edit.toPlainText(),
+                *(box.isChecked() for box in (self.log_action, self.log_ips, self.log_connection, self.log_keyboard)))
+
+    def _connect_form_edits(self):
+        for combo in (self.lang_combo, self.theme_combo, self.brightness_mode, self.ip_mode):
+            combo.activated.connect(self._on_form_edited)
+        for box in (self.lang_follow, self.theme_follow, self.log_action, self.log_ips, self.log_connection, self.log_keyboard):
+            box.clicked.connect(self._on_form_edited)
+        for spin in (self.tpad_sensitivity, self.mwheel_sensitivity, self.mwheel_constant, self.port_spin):
+            spin.valueChanged.connect(self._on_form_edited)
+        self.host_edit.textEdited.connect(self._on_form_edited)
+        self.blacklist_edit.textChanged.connect(self._on_form_edited)
+        self.whitelist_edit.textChanged.connect(self._on_form_edited)
+
+    def _on_form_edited(self, *args):
+        if self._form_loading:
+            return
+        values = self._form_signature()
+        if values == self._form_values:
+            return
+        self._form_values = values
+        self._dirty_revision += 1
+        self._render_feedback()
+
+    def _begin_operation(self, action):
+        self._operation_id += 1
+        self._operation = dict(id=self._operation_id, revision=self._dirty_revision, action=action,
+                               persisted=False, failure='', server=False, brightness=False,
+                               generation=None, errors={}, needs_restart=False)
+        self._render_feedback()
+
+    def _current_operation(self, operation_id=None):
+        op = self._operation
+        return op if (op is not None and op['revision'] == self._dirty_revision
+                      and (operation_id is None or op['id'] == operation_id)) else None
+
+    def _render_feedback(self):
+        op = self._current_operation()
+        text = detail = ''
+        if op is not None:
+            save = op['action'] == 'save'
+            if not op['persisted']:
+                if op['failure']:
+                    text = tr('配置保存失败', 'Configuration save failed') if save else tr('配置重新加载失败', 'Configuration reload failed')
+                    detail = op['failure']
+            elif op['server'] or op['brightness']:
+                text = tr('配置保存成功，正在应用…', 'Configuration saved; applying…') if save else tr('配置重新加载成功，正在应用…', 'Configuration reloaded; applying…')
+            elif op['errors']:
+                if 'server' in op['errors']:
+                    text = tr('配置保存成功，但服务应用失败', 'Configuration saved, but service application failed') if save else tr('配置重新加载成功，但服务应用失败', 'Configuration reloaded, but service application failed')
+                else:
+                    text = tr('配置保存成功，但运行应用失败', 'Configuration saved, but live application failed') if save else tr('配置重新加载成功，但运行应用失败', 'Configuration reloaded, but live application failed')
+                if op['needs_restart']:
+                    text += tr('，需要重启应用', '; application restart required')
+            else:
+                text = tr('配置保存成功，无需重启应用', 'Configuration saved; no application restart required') if save else tr('配置重新加载成功，无需重启应用', 'Configuration reloaded; no application restart required')
+            if op['errors']:
+                if 'server' in op['errors']:
+                    prefix = (tr('配置已保存，但服务应用失败：', 'Configuration saved, but service application failed: ') if save else
+                              tr('配置已重新加载，但服务应用失败：', 'Configuration reloaded, but service application failed: '))
+                else:
+                    prefix = tr('运行应用失败：', 'Live application failed: ')
+                detail = prefix + '\n'.join(f'{kind}: {message}' for kind, message in op['errors'].items())
+                if op['needs_restart']:
+                    detail += tr('\n其中有运行组件明确需要重启应用；重启不保证解决端口、地址或驱动问题。',
+                                 '\nA runtime component requires an application restart; this does not guarantee fixing port, address or driver errors.')
+        self.hint_label.setText(text)
+        self.hint_label.setToolTip(detail)
+
+    def _operation_failed(self, error):
+        self._operation['failure'] = str(error) or type(error).__name__
+        try:
+            from HostCore.infra.files.log_manager import LogManager
+            LogManager.log_console(f"Configuration {self._operation['action']} failed: {self._operation['failure']}")
+        except Exception:
+            pass
+        self._render_feedback()
+
+    def _log_application_errors(self, op):
+        try:
+            from HostCore.infra.files.log_manager import LogManager
+            details = '; '.join(f'{kind}: {message}' for kind, message in op['errors'].items())
+            LogManager.log_console(f"Configuration {op['action']} retained; application errors: {details}; restart required={op['needs_restart']}")
+        except Exception:
+            pass
+
+    def _config_bind(self):
+        port = Config.HttpServer.PORT
+        try:
+            port = int(port)
+        except (TypeError, ValueError):
+            pass  # Preserve an invalid previous value for comparison; never listen on it.
+        return str(Config.HttpServer.HOST).strip(), port
+
+    def _request_application(self, previous_bind, previous_generation):
+        op = self._operation
+        generation = Config.Brightness.committed()[0]
+        changed = previous_generation != generation or self._failed_brightness_generation == generation
+        if changed:
+            self._pending_brightness_generation = generation
+        op.update(persisted=True, server=True,
+                  brightness=self._pending_brightness_generation == generation, generation=generation)
+        self._render_feedback()
+        self.saved.emit()  # Save and file reload both notify observers.
+        self.apply_requested.emit(dict(operation=op['id'], previous=previous_bind,
+                                       target=self._config_bind()))
+        if changed:
+            self.brightness_mode_changed.emit(Config.Brightness.MODE)
+
+    def resolve_service(self, operation_id, error=None):
+        op = self._current_operation(operation_id)
+        if op is None:
+            return
+        op['server'] = False
+        if error is not None:
+            op['errors']['server'] = str(error.get('message')) if isinstance(error, dict) else str(error)
+            op['needs_restart'] |= error.get('restart', False) if isinstance(error, dict) else False
+            self._log_application_errors(op)
+        else:
+            op['errors'].pop('server', None)
+        self._render_feedback()
+
+    def application_error(self, operation_id, error):
+        op = self._current_operation(operation_id)
+        if op is not None:
+            op['errors']['runtime'] = str(error)
+            op['needs_restart'] = True
+            self._log_application_errors(op)
+            self._render_feedback()
+
     def _brightness_texts(self, index=None):
-        items = (tr('0 · 硬件 SBC/DDC', '0 · Hardware SBC/DDC'),
+        items = (tr('0 · 硬件优先，不可用时遮罩', '0 · Hardware first, overlay fallback'),
                  tr('1 · 遮罩（只调暗）', '1 · Overlay (dim only)'),
                  tr('2 · Gamma（实验性）', '2 · Gamma (experimental)'))
         for index, text in enumerate(items):
             self.brightness_mode.setItemText(index, text)
         descriptions = (
-            tr('仅硬件控制；需要硬件与驱动支持 SBC/DDC/CI。',
-               'Hardware only; requires hardware and driver support for SBC/DDC/CI.'),
+            tr('硬件优先，需要硬件与驱动支持 SBC/DDC/CI；全部不可用时回退遮罩（仅 GUI）。',
+               'Hardware first; SBC/DDC/CI requires hardware and driver support. If all fail, use overlay (GUI only).'),
             tr('仅 GUI 调暗，刻度非物理亮度；0 为最暗档而非保证全黑（遮罩最高 90%）。不保证安全桌面、独占全屏、录屏或 HDR 覆盖。',
                'GUI dimming steps, not measured luminance; 0 is the darkest step, not guaranteed black (90% maximum opacity). Secure desktop, exclusive fullscreen, capture and HDR coverage are not guaranteed.'),
             tr('实验性；异常退出可能偏色，需要手动校准。',
@@ -358,6 +501,15 @@ class SettingsPage(QWidget):
         self.brightness_mode.setAccessibleDescription(description)
 
     def load_from_config(self):
+        previous = self._form_loading
+        self._form_loading = True
+        try:
+            self._fill_from_config()
+        finally:
+            self._form_loading = previous
+            self._form_values = self._form_signature()
+
+    def _fill_from_config(self):
         """把 Config 当前值填入表单。"""
         self.brightness_mode.setCurrentIndex(Config.Brightness.MODE)
         # GUI 偏好
@@ -396,24 +548,37 @@ class SettingsPage(QWidget):
 
     @Slot()
     def reload_from_file(self):
-        """放弃未保存的修改，从 config.yaml 重新加载。"""
+        """先 core init 发布，再填表/GUI 校验；后续失败保留未确认代次供重试。"""
+        self._begin_operation('reload')
+        previous_bind = self._config_bind()
         previous_generation = Config.Brightness.committed()[0]
         try:
             Config.init()
+            self.load_from_config()
+            if type(Config.HttpServer.PORT) is not int or not 1 <= Config.HttpServer.PORT <= 65534:
+                raise ValueError('PORT must be an integer from 1 to 65534.')
+            errors = self._collect_errors()
+            if errors:
+                raise ValueError('\n'.join(errors))
         except Exception as error:
-            QMessageBox.critical(self, tr('重新加载失败', 'Reload Failed'), str(error))
+            # init may already have published MODE before later fill/validation
+            # failed. Retain that unconfirmed intent for a same-mode save retry.
+            generation = Config.Brightness.committed()[0]
+            if generation != previous_generation:
+                self._failed_brightness_generation = generation
+            self._operation_failed(error)
+            QMessageBox.critical(self, tr('重新加载失败', 'Reload Failed'), self._operation['failure'])
             return
-        if previous_generation != Config.Brightness.committed()[0]:
-            self.brightness_mode_changed.emit(Config.Brightness.MODE)
-        self.load_from_config()
-        self.hint_label.setText(tr("已从配置文件重新加载。", "Reloaded from config file."))
         print("[ok] configuration reloaded from config.yaml.")
+        self._request_application(previous_bind, previous_generation)
 
     @Slot()
     def save(self):
         """校验并保存：更新内存 Config（运行中服务实时生效）+ 写回 config.yaml。"""
+        self._begin_operation('save')
         errors = self._collect_errors()
         if errors:
+            self._operation_failed('\n'.join(errors))
             QMessageBox.warning(
                 self,
                 tr("配置不合法", "Invalid Configuration"),
@@ -422,6 +587,7 @@ class SettingsPage(QWidget):
             return
 
         # GUI 偏好（跟随系统时保留手动备选值不变）
+        previous_bind = self._config_bind()
         previous_generation = Config.Brightness.committed()[0]
         candidate_mode = self.brightness_mode.currentData()
         Config.Gui.LANGUAGE_FOLLOW_SYSTEM = self.lang_follow.isChecked()
@@ -448,24 +614,38 @@ class SettingsPage(QWidget):
 
         try:
             Config.save(brightness_mode=candidate_mode)
-        except (OSError, ValueError) as e:
+        except Exception as e:
+            self._operation_failed(e)
             QMessageBox.critical(self, tr("保存失败", "Save Failed"),
                                  tr("无法写入配置文件：", "Failed to write config file:") + f"\n{e}")
             return
 
-        self.hint_label.setText(tr("已保存到 config.yaml（运行中的服务实时生效）。",
-                                   "Saved to config.yaml (applied live to the running service)."))
         print("[ok] configuration saved to config.yaml.")
-        self.saved.emit()
-        if previous_generation != Config.Brightness.committed()[0]:
-            self.brightness_mode_changed.emit(Config.Brightness.MODE)
+        self._request_application(previous_bind, previous_generation)
+
+    @Slot(int, object)
+    def on_brightness_mode_applied(self, generation, error):
+        if generation != Config.Brightness.committed()[0]:
+            return  # An older save must not overwrite the newest mode's feedback.
+        if self._pending_brightness_generation == generation:
+            self._pending_brightness_generation = None
+        self._failed_brightness_generation = generation if error is not None else None
+        op = self._current_operation()
+        if op is None or not op['brightness'] or op['generation'] != generation:
+            return
+        op['brightness'] = False
+        if error is not None:
+            op['errors']['brightness'] = str(error.get('message')) if isinstance(error, dict) else str(error)
+            op['needs_restart'] |= error.get('restart', True) if isinstance(error, dict) else True
+            self._log_application_errors(op)
+        self._render_feedback()
 
     # ------------------------------------------------------------ 校验
 
     def _collect_errors(self) -> list:
         errors = []
-        if not is_valid_ipv4(self.host_edit.text()):
-            errors.append(tr("HOST 不是合法的 IPv4 地址", "HOST is not a valid IPv4 address"))
+        if not is_valid_bind_host(self.host_edit.text()):
+            errors.append(tr('HOST 必须为 localhost 或合法 IPv4 地址', 'HOST must be localhost or a valid IPv4 address'))
         for name, edit in (
             ("IP_BLACKLIST", self.blacklist_edit),
             ("IP_WHITELIST", self.whitelist_edit),
@@ -480,7 +660,7 @@ class SettingsPage(QWidget):
 
     @Slot()
     def _validate_host(self):
-        self._set_invalid(self.host_edit, not is_valid_ipv4(self.host_edit.text()))
+        self._set_invalid(self.host_edit, not is_valid_bind_host(self.host_edit.text()))
 
     @Slot()
     def _validate_ip_list(self, edit: QPlainTextEdit):

@@ -5,12 +5,13 @@ from concurrent.futures import ThreadPoolExecutor
 import threading
 import weakref
 
-from PySide6.QtCore import QObject, Qt, QThread, Signal, Slot
+from PySide6.QtCore import QObject, Qt, QThread, QTimer, Signal, Slot
 from PySide6.QtGui import QColor, QPainter
 from PySide6.QtWidgets import QApplication, QWidget
 
 from HostCore.brightness_controller import register_overlay_bridge, unregister_overlay_bridge
 from HostCore.utils.check_platform import get_platform
+from HostCore.infra.files.config import Config
 
 
 class _Request:
@@ -150,13 +151,24 @@ def _log(message):
 
 
 def _apply_mode():
+    generation = -1
     try:
+        generation = Config.Brightness.committed()[0]
         from HostCore.brightness_controller import get_brightness_controller
         controller = get_brightness_controller()
-        if controller is not None:
-            controller.apply_mode()
+        if controller is None:
+            raise RuntimeError('Brightness mode is unavailable on this platform.')
+        applied = controller.apply_mode()
+        if applied is None:
+            raise RuntimeError('Brightness control is shutting down.')
+        if type(applied) is not int:
+            raise RuntimeError('Brightness mode application did not confirm a generation.')
+        _log(f'Brightness mode applied (generation {applied}); HTTP restart is not required.')
+        return applied, None
     except Exception as error:
-        _log(f'Brightness mode could not be applied: {error}')
+        detail = str(error.__cause__ or error)
+        _log(f'Brightness mode could not be applied: {detail}')
+        return generation, detail
 
 
 def _shutdown_mode():
@@ -191,6 +203,7 @@ def _dispose_windows(windows):
 
 class BrightnessOverlayManager(QObject):
     requested = Signal(object)
+    mode_applied = Signal(int, object)
 
     def __init__(self, owner):
         super().__init__(owner)
@@ -198,12 +211,16 @@ class BrightnessOverlayManager(QObject):
         self._target, self._closed = 100, False
         self._windows, self._screen_slots = {}, {}
         self._executor = None
+        self._mode_timer = None
         self._jobs = []
         self._connections = []
         self._registration = [False]
         self.bridge = None
         try:
             self._executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix='brightness-mode')
+            self._mode_timer = QTimer(self)
+            self._mode_timer.setInterval(50)
+            self._connect(self._mode_timer.timeout, self._poll_mode_results)
             self.bridge = OverlayBridge(self.requested.emit,
                                         lambda: QThread.currentThread() == self._app.thread(), self._direct_call)
             self._connect(self.requested, self._dispatch, Qt.QueuedConnection)
@@ -227,6 +244,11 @@ class BrightnessOverlayManager(QObject):
 
     def _abort_initialization(self):
         self._closed = True
+        if self._mode_timer is not None:
+            try:
+                self._mode_timer.stop()
+            except RuntimeError:
+                pass
         if self.bridge is not None:
             self.bridge.close()
             unregister_overlay_bridge(self.bridge, cleared=_dispose_windows(self._windows))
@@ -389,8 +411,23 @@ class BrightnessOverlayManager(QObject):
         if not self._closed:
             # The signal is a notification; the worker consumes the committed
             # generation (including A -> B -> A), never this stale argument.
-            self._jobs = [job for job in self._jobs if not job.done()]
             self._jobs.append(self._executor.submit(_apply_mode))
+            self._mode_timer.start()
+
+    def _poll_mode_results(self):
+        if self._closed:
+            return
+        pending = []
+        for job in self._jobs:
+            if not job.done():
+                pending.append(job)
+            elif not job.cancelled():
+                generation, error = job.result()  # Worker catches errors; never wait on Qt.
+                if generation == Config.Brightness.committed()[0]:
+                    self.mode_applied.emit(generation, error)
+        self._jobs = pending
+        if not pending:
+            self._mode_timer.stop()
 
     @Slot()
     def shutdown(self):
@@ -398,6 +435,7 @@ class BrightnessOverlayManager(QObject):
             return
         self._assert_main()
         self._closed = True
+        self._mode_timer.stop()
         self.bridge.close()  # Release worker waiters before native cleanup takes its lock.
         cleared = _dispose_windows(self._windows)
         unregister_overlay_bridge(self.bridge, cleared=cleared, closing=True)

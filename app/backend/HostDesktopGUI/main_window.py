@@ -29,9 +29,10 @@
 
 """主窗口：顶部导航切换“面板 / 设置”两个界面，系统托盘，stdout 重定向到日志组件。"""
 
-from PySide6.QtCore import QObject, QThread, QTimer, Signal, Slot
+from PySide6.QtCore import QObject, Qt, QThread, QTimer, Signal, Slot
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import (
+    QApplication,
     QButtonGroup,
     QHBoxLayout,
     QMenu,
@@ -52,8 +53,9 @@ from HostDesktopGUI.settings_page import SettingsPage
 from HostDesktopGUI.widgets import ZoomView
 from HostDesktopGUI.worker import ServerState, ServerWorker
 from HostDesktopGUI.brightness_overlay import create_brightness_overlay, _log as _brightness_log
+from HostDesktopGUI.config_apply import ServiceApply
 
-from HostCore.utils.check_platform import is_mac
+from HostCore.utils.check_platform import is_mac, get_platform
 
 
 class EmittingStream(QObject):
@@ -74,6 +76,7 @@ class EmittingStream(QObject):
 
 class MainWindow(QWidget):
     """后端面板主窗口。"""
+    server_start_requested = Signal(str, int, int)
 
     def __init__(self, version: str = "dev"):
         super().__init__()
@@ -90,6 +93,7 @@ class MainWindow(QWidget):
             icon = self.windowIcon()
 
         self._really_quit = False  # 区分“关闭到托盘”和“真正退出”
+        self._quit_waiting = False
         self._last_state = ServerState()  # 最近一次服务状态（托盘提示文案用）
 
         # 加载配置文件（供主/设置界面预填）
@@ -147,13 +151,15 @@ class MainWindow(QWidget):
         self.worker = ServerWorker(version=version)
         self.thread = QThread(self)
         self.worker.moveToThread(self.thread)
+        self._service_apply = ServiceApply(self._queue_server_start, self._stop_for_apply,
+                                           self._resolve_service, self._application_log)
+        self.server_start_requested.connect(self.worker.start_server, Qt.QueuedConnection)
 
         self.worker.log.connect(self.main_page.append_log)
-        self.worker.state_changed.connect(self.main_page.on_state_changed)
         self.worker.state_changed.connect(self.on_state_changed)
         # 启动：排队到 worker 线程执行；停止：worker 线程阻塞于 asyncio loop，
         # 必须由 GUI 线程直接调用（内部 call_soon_threadsafe，线程安全）
-        self.main_page.start_requested.connect(self.worker.start_server)
+        self.main_page.start_requested.connect(self._on_start_requested)
         self.main_page.stop_requested.connect(self._on_stop_requested)
 
         self.thread.start()
@@ -192,6 +198,9 @@ class MainWindow(QWidget):
         self.tray_icon.setContextMenu(tray_menu)
         self.tray_icon.activated.connect(self.on_tray_activated)
         self.tray_icon.show()
+        app = QApplication.instance()
+        if app is not None:
+            app.aboutToQuit.connect(self._cancel_restart_on_quit)
 
     # ---------- 界面切换（设置页懒加载） ----------
 
@@ -201,10 +210,12 @@ class MainWindow(QWidget):
         if self._settings_page is None:
             self._settings_page = SettingsPage()
             # 设置保存后：刷新主界面默认启动参数 + 实时应用语言/主题
-            self._settings_page.saved.connect(self.main_page.reload_from_config)
-            self._settings_page.saved.connect(self.apply_gui_prefs)
+            self._settings_page.apply_requested.connect(self._apply_configuration)
             if self._brightness_overlay is not None:
                 self._settings_page.brightness_mode_changed.connect(self._brightness_overlay.apply_mode)
+                self._brightness_overlay.mode_applied.connect(self._settings_page.on_brightness_mode_applied)
+            else:
+                self._settings_page.brightness_mode_changed.connect(self._brightness_mode_unavailable)
             self.stack.addWidget(self._settings_page)
         return self._settings_page
 
@@ -217,6 +228,38 @@ class MainWindow(QWidget):
         self.stack.setCurrentIndex(index)
 
     # ---------- 语言 / 主题 ----------
+
+    def _brightness_mode_unavailable(self, mode):
+        supported = get_platform() == 'Windows'
+        message = tr('亮度界面管理器不可用，无法热应用；请检查日志并重启应用。',
+                     'Brightness GUI manager unavailable; live application failed. Check logs and restart the application.') if supported else tr(
+                         '当前平台不支持此亮度模式；重启不会增加设备支持。',
+                         'This platform does not support this brightness mode; restarting will not add support.')
+        _brightness_log(message)
+        self._settings_page.on_brightness_mode_applied(Config.Brightness.committed()[0], dict(message=message, restart=supported))
+
+    def _application_log(self, text):
+        _brightness_log(text.rstrip())
+
+    def _resolve_service(self, operation_id, error):
+        if self._settings_page is not None:
+            try:
+                self._settings_page.resolve_service(operation_id, error)
+            except Exception as failure:
+                self._application_log(f'[error] configuration result display failed: {failure}')
+
+    def _apply_configuration(self, request):
+        try:
+            self.main_page.sync_config_bind(request['previous'], request['target'])
+            self.apply_gui_prefs()
+        except Exception as error:
+            self._application_log(f'[error] GUI configuration application failed: {error}')
+            self._settings_page.application_error(request['operation'], error)
+        try:
+            self._service_apply.apply(request['previous'], request['target'], request['operation'])
+        except Exception as error:
+            self._application_log(f'[error] service application failed: {error}')
+            self._resolve_service(request['operation'], str(error))
 
     @Slot()
     def apply_gui_prefs(self):
@@ -267,14 +310,36 @@ class MainWindow(QWidget):
 
     # ---------- 服务控制 ----------
 
+    def _queue_server_start(self, host, port):
+        if self._really_quit:
+            return 0
+        request_id = self.worker.prepare_start()
+        self.main_page._set_busy(True, 'starting')
+        self.server_start_requested.emit(host, port, request_id)
+        return request_id
+
+    def _stop_for_apply(self):
+        auto_cancel = (self._service_apply.restart is not None and self._service_apply.wanted
+                       and not self._really_quit)
+        self.main_page._set_busy(True, 'stopping', auto_cancel=auto_cancel)
+        self.worker.stop_server()
+
+    @Slot(str, int)
+    def _on_start_requested(self, host, port):
+        if not self._really_quit:
+            self._service_apply.manual_start(host, port)
+
     @Slot()
     def _on_stop_requested(self):
-        self.worker.stop_server()
+        self._service_apply.manual_stop()
 
     @Slot(object)
     def on_state_changed(self, st: ServerState):
+        self.main_page.on_state_changed(st)
         self._last_state = st
         self._update_tray_tooltip()
+        if not self._really_quit:
+            self._service_apply.on_state(st)
 
     # ---------- 托盘相关 ----------
 
@@ -294,7 +359,6 @@ class MainWindow(QWidget):
         if app is not None:
             # 先关闭窗口（会触发 closeEvent 停 worker）
             self.close()
-            app.quit()
 
     @Slot("QSystemTrayIcon.ActivationReason")
     def on_tray_activated(self, reason):
@@ -306,6 +370,13 @@ class MainWindow(QWidget):
                 self.show_from_tray()
 
     # ---------- 关闭事件 ----------
+
+    def _cancel_restart_on_quit(self):
+        self._really_quit = True
+        try:
+            self._service_apply.quit()
+        except Exception as error:
+            self._application_log(f'[error] quit cancellation failed: {error}')
 
     def closeEvent(self, event):
         """
@@ -327,17 +398,31 @@ class MainWindow(QWidget):
             )
         else:
             # 真正退出：停掉 worker / 线程 / 托盘
-            if self._brightness_overlay is not None:
-                self._brightness_overlay.shutdown()
-            try:
-                self.worker.stop_server()
-            except Exception:
-                pass
-
-            self.thread.quit()
-            self.thread.wait(5000)
+            if not self._quit_waiting:
+                self._quit_waiting = True
+                self.thread.finished.connect(self.close)
+                try:
+                    self._service_apply.quit()
+                except Exception as error:
+                    self._application_log(f'[error] service quit cancellation failed: {error}')
+                try:
+                    if self._brightness_overlay is not None:
+                        self._brightness_overlay.shutdown()
+                except Exception as error:
+                    self._application_log(f'[error] brightness shutdown cleanup failed: {error}')
+                try:
+                    self.worker.stop_server()
+                except Exception as error:
+                    self._application_log(f'[error] server shutdown failed: {error}')
+                self.thread.quit()
+            if self.thread.isRunning():
+                event.ignore()  # Keep Qt alive; finished will close again without a GUI wait.
+                return
 
             if self.tray_icon is not None:
                 self.tray_icon.hide()
 
             event.accept()
+            app = QApplication.instance()
+            if app is not None:
+                app.quit()

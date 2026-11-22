@@ -58,9 +58,12 @@ flowchart LR
 - [x] Directional pad
 - [x] Keyboard input and text paste
 - [x] System volume control
-- [x] Display brightness control (Windows only; requires supported system backlight control or DDC/CI)
+- [x] Display brightness control (Windows hardware-first with GUI overlay fallback; overlay-only and experimental Gamma modes)
 
 ## 2 Usage
+
+See [configuration application and automatic listener restart](docs/configuration-apply.md)
+for save/reload results, live settings, failures and recovery.
 
 ### 2.1 Windows
 

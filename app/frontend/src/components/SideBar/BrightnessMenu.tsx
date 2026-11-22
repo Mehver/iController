@@ -14,28 +14,49 @@ interface BrightnessMenuState {
     value: number;
 }
 
-class BrightnessMenu extends Component<object, BrightnessMenuState> {
+class BrightnessMenu extends Component<{drawerOpen: boolean; expanded: boolean}, BrightnessMenuState> {
     static contextType = Context;
     declare context: AppContextType;
 
     private _isMounted: boolean = false;
+    private _requestId = 0;
+    private _editVersion = 0;
+    private _lastWrite: Promise<void> = Promise.resolve();
 
     state: BrightnessMenuState = {value: 0};
 
     componentDidMount() {
         this._isMounted = true;
-        this.fetchBrightness();
+        if (this.props.drawerOpen) void this.fetchBrightness();
+    }
+
+    componentDidUpdate(previous: {drawerOpen: boolean; expanded: boolean}) {
+        if (!this.props.drawerOpen) {
+            if (previous.drawerOpen) this.invalidateRead();
+            return;
+        }
+        if (!previous.drawerOpen || previous.expanded !== this.props.expanded) void this.fetchBrightness();
+    }
+
+    private invalidateRead() {
+        this._requestId++;
+        this.debouncedHandleCommit.cancel();
     }
 
     componentWillUnmount() {
         this._isMounted = false;
-        this.debouncedHandleCommit.cancel();
+        this.invalidateRead();
     }
 
-    fetchBrightness = () => {
-        api_brightness_get()
+    fetchBrightness = async () => {
+        if (!this._isMounted || !this.props.drawerOpen) return;
+        this.invalidateRead();
+        const requestId = this._requestId, editVersion = this._editVersion;
+        await this._lastWrite;
+        if (!this._isMounted || !this.props.drawerOpen || requestId !== this._requestId || editVersion !== this._editVersion) return;
+        return api_brightness_get()
             .then(data => {
-                if (this._isMounted) {
+                if (this._isMounted && this.props.drawerOpen && requestId === this._requestId && editVersion === this._editVersion) {
                     this.setState({value: data.brightness});
                 }
             })
@@ -45,16 +66,19 @@ class BrightnessMenu extends Component<object, BrightnessMenuState> {
     };
 
     handleChange = (_event: Event, newValue: number | number[]) => {
+        if (!this._isMounted || !this.props.drawerOpen) return;
+        this._editVersion++;
         const value = Array.isArray(newValue) ? newValue[0] : newValue;
         this.setState({value});
         this.debouncedHandleCommit(value);
     };
 
     debouncedHandleCommit = debounce((newValue: number) => {
-        api_brightness_set(String(newValue))
+        const write = api_brightness_set(String(newValue))
             .catch(error => {
                 console.error("Failed to set brightness:", error);
             });
+        this._lastWrite = Promise.all([this._lastWrite, write]).then(() => undefined);
     }, 300);
 
     render() {

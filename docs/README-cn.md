@@ -58,9 +58,11 @@ flowchart LR
 - [x] 方向键
 - [x] 键盘输入与文本粘贴
 - [x] 系统音量控制
-- [x] 显示器亮度控制（仅 Windows；需要设备支持系统背光控制或 DDC/CI）
+- [x] 显示器亮度控制（Windows 硬件优先、GUI 遮罩回退；可选仅遮罩及实验性 Gamma）
 
 ## 2 使用方法
+
+保存/重载反馈、热应用、自动重启监听及失败恢复见[配置应用指南](configuration-apply.zh-CN.md)。
 
 ### 2.1 Windows
 

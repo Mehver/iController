@@ -20,7 +20,7 @@ def stub(**values):
 
 def load(name, relative, dependencies):
     module = types.ModuleType(name)
-    with patch.dict(sys.modules, dependencies):
+    with patch.dict(sys.modules, dict(dependencies, **{name: module})):
         exec(compile((BACKEND / relative).read_text(encoding='utf-8'), relative, 'exec'), module.__dict__)
     return module
 
@@ -35,7 +35,7 @@ class NativeHarness(unittest.TestCase):
         self.Unsupported = type('Unsupported', (RuntimeError,), {})
         self.log = Mock()
         self.gamma = stub(get_brightness=Mock(return_value=75), set_brightness=Mock(), restore=Mock(return_value=()))
-        self.sbc = stub(get_brightness=Mock(return_value=[42]), set_brightness=Mock())
+        self.sbc = stub(get_brightness=Mock(return_value=[42]), set_brightness=Mock(return_value=[50]))
         self.monitors = stub(get_monitors=Mock(return_value=[]))
         self.dependencies = {
             'HostCore.brightness_controller.base': stub(BaseBrightnessController=object, BrightnessUnsupportedError=self.Unsupported),
@@ -56,6 +56,149 @@ class NativeHarness(unittest.TestCase):
 
 
 class ControllerTests(NativeHarness):
+    def test_mode0_sbc_readback_empty_is_failure_but_ddc_none_is_success(self):
+        monitor = Mock()
+        monitor.__enter__, monitor.__exit__ = Mock(return_value=monitor), Mock(return_value=False)
+        monitor.set_luminance.return_value = None  # Normal monitorcontrol setter contract.
+        self.monitors.get_monitors.return_value = [monitor]
+        for result in ([], [None], None):
+            with self.subTest(sbc_result=result):
+                self.sbc.set_brightness.return_value = result
+                self.controller().set_brightness(50)
+        self.assertEqual(monitor.set_luminance.call_count, 3)
+        self.assertFalse(self.controller._overlay_active)
+        self.gamma.set_brightness.assert_not_called()
+
+    def test_mode0_partial_hardware_success_never_falls_back(self):
+        self.sbc.set_brightness.return_value = [None, 50]
+        self.controller().set_brightness(50)
+        self.monitors.get_monitors.assert_not_called()
+        self.assertFalse(self.controller._overlay_active)
+        self.gamma.set_brightness.assert_not_called()
+
+    def test_mode0_get_fallback_does_not_select_writer_and_hardware_read_can_recover(self):
+        bridge = stub(call=Mock(return_value=100))
+        self.registry.register_overlay_bridge(bridge)
+        self.sbc.get_brightness.return_value = []
+        self.assertEqual(self.controller().get_current_brightness(), 100)
+        self.assertFalse(self.controller._overlay_active)
+        self.assertEqual(self.controller._active_mode, 0)
+        self.sbc.set_brightness.return_value = [25]
+        self.controller().set_brightness(25)  # Getter still fails; setter must try hardware.
+        self.sbc.set_brightness.assert_called_once_with(25, no_return=False)
+        bridge.call.assert_called_once_with('get', None)
+        self.assertFalse(self.controller._overlay_active)
+        self.sbc.get_brightness.return_value = [42]
+        self.assertEqual(self.controller().get_current_brightness(), 42)
+        self.assertEqual(self.sbc.get_brightness.call_count, 2)
+        bridge.call.assert_called_once_with('get', None)
+        self.gamma.get_brightness.assert_not_called()
+        self.gamma.set_brightness.assert_not_called()
+
+    def test_mode0_actual_overlay_set_stays_sticky_when_hardware_recovers(self):
+        target = [100]
+        def call(kind, value=None):
+            if kind == 'set':
+                target[0] = value
+            elif kind == 'clear':
+                target[0] = 100
+            return target[0]
+        bridge = stub(call=Mock(side_effect=call))
+        self.registry.register_overlay_bridge(bridge)
+        self.sbc.set_brightness.side_effect = OSError('hardware setter unavailable')
+        self.controller().set_brightness(25)
+        self.assertTrue(self.controller._overlay_active)
+        self.assertEqual(self.controller._active_mode, 0)
+        self.sbc.set_brightness.side_effect = None
+        self.sbc.get_brightness.return_value = [42]  # Hardware recovers; do not mix sources.
+        self.assertEqual(self.controller().get_current_brightness(), 25)
+        self.controller().set_brightness(50)
+        self.assertEqual(self.controller().get_current_brightness(), 50)
+        self.assertTrue(self.controller._overlay_active)
+        self.sbc.get_brightness.assert_not_called()
+        self.sbc.set_brightness.assert_called_once_with(25, no_return=False)
+        self.assertEqual(sum('using GUI overlay fallback' in c.args[0] for c in self.log.call_args_list), 1)
+        self.gamma.get_brightness.assert_not_called()
+        self.gamma.set_brightness.assert_not_called()
+
+    def test_mode0_overlay_set_failure_or_timeout_keeps_possible_active_until_cleanup(self):
+        failure = [RuntimeError('overlay set failed')]
+        def call(kind, value=None):
+            if kind == 'set':
+                self.assertTrue(self.controller._overlay_active)  # Before a possible commit.
+                raise failure[0]
+            return 100
+        bridge = stub(call=Mock(side_effect=call))
+        self.registry.register_overlay_bridge(bridge)
+        self.sbc.set_brightness.side_effect = OSError('hardware setter unavailable')
+        for target, error in ((0, RuntimeError('overlay set failed')),
+                              (25, RuntimeError('Overlay GUI request timed out; committed operations may complete before rollback.'))):
+            with self.subTest(target=target, error=error):
+                self.config.Brightness.MODE = 0
+                bridge.call.reset_mock()
+                failure[0] = error
+                with self.assertRaises(self.Unsupported):
+                    self.controller().set_brightness(target)
+                bridge.call.assert_called_once_with('set', target)
+                self.assertTrue(self.controller._overlay_active)
+                self.assertEqual(self.controller().get_current_brightness(), 100)
+                self.assertTrue(self.controller._overlay_active)  # Get must not clear an existing flag.
+                self.sbc.get_brightness.assert_not_called()
+                self.config.Brightness.MODE = 2
+                self.controller.apply_mode()
+                self.assertEqual([c.args[0] for c in bridge.call.call_args_list], ['set', 'get', 'clear'])
+                self.assertFalse(self.controller._overlay_active)
+        self.gamma.get_brightness.assert_not_called()
+        self.gamma.set_brightness.assert_not_called()
+
+    def test_mode0_cli_failure_reports_fallback_unavailable_once(self):
+        self.sbc.get_brightness.return_value = []
+        self.sbc.set_brightness.side_effect = OSError('no hardware')
+        for operation in (self.controller().get_current_brightness, lambda: self.controller().set_brightness(50)):
+            with self.assertRaises(self.Unsupported):
+                operation()
+        self.assertEqual(sum('unavailable in CLI' in c.args[0] for c in self.log.call_args_list), 1)
+        self.gamma.get_brightness.assert_not_called()
+        self.gamma.set_brightness.assert_not_called()
+
+    def test_mode0_fallback_cleanup_blocks_new_mode_until_confirmed(self):
+        bridge = stub(call=Mock(return_value=100))
+        self.registry.register_overlay_bridge(bridge)
+        self.sbc.set_brightness.side_effect = OSError('hardware setter unavailable')
+        self.controller().set_brightness(50)
+        bridge.call.side_effect = RuntimeError('overlay clear failed')
+        self.config.Brightness.MODE = 2
+        with self.assertRaises(self.Unsupported):
+            self.controller().get_current_brightness()
+        self.assertEqual(self.controller._active_mode, 0)
+        self.assertTrue(self.controller._overlay_active)
+        self.gamma.get_brightness.assert_not_called()
+
+    def test_mode0_fallback_is_cleared_before_only_overlay_gamma_and_shutdown(self):
+        events = []
+        def call(kind, value=None):
+            events.append(kind)
+            return 100 if kind == 'clear' else 50
+        bridge = stub(call=Mock(side_effect=call))
+        self.registry.register_overlay_bridge(bridge)
+        self.sbc.set_brightness.side_effect = OSError('no hardware')
+        self.controller().set_brightness(50)
+        self.assertTrue(self.controller._overlay_active)
+        self.config.Brightness.MODE = 1
+        self.controller.apply_mode()
+        self.assertEqual(events, ['set', 'clear'])
+        self.config.Brightness.MODE = 0
+        self.controller().set_brightness(50)
+        self.config.Brightness.MODE = 2
+        self.controller.apply_mode()
+        self.assertEqual(events[-1], 'clear')
+        self.assertFalse(self.controller._overlay_active)
+        self.config.Brightness.MODE = 0
+        self.controller().set_brightness(50)
+        self.controller.shutdown()
+        self.assertEqual(events[-1], 'clear')
+        self.assertFalse(self.controller._overlay_active)
+
     def test_default_hardware_and_ddc_failure_never_use_gamma(self):
         self.assertEqual(self.controller().get_current_brightness(), 42)
         self.controller().set_brightness(50)
@@ -219,6 +362,8 @@ class ConfigTests(unittest.TestCase):
                      'parse_ip_list': lambda text: ([], None)}
         exec(compile(ast.Module(body=[function], type_ignores=[]), 'settings_save', 'exec'), namespace)
         page = Mock()
+        from tests.test_config_application import attach_feedback
+        attach_feedback(page, config, self)
         page._collect_errors.return_value = []
         page.brightness_mode.currentData.return_value = 0
         with patch('builtins.print'):
@@ -301,6 +446,17 @@ class QtFakes:
                 env.qobjects.append(self)
             def deleteLater(self):
                 self.deleted = True
+        class Timer:
+            def __init__(self, parent):
+                self.timeout, self.active = BoundSignal(), False
+            def setInterval(self, interval):
+                self.interval = interval
+            def start(self):
+                if threading.get_ident() != env.main:
+                    raise AssertionError('QTimer started outside Qt main thread')
+                self.active = True
+            def stop(self):
+                self.active = False
         class Window:
             def __init__(self, parent, flags):
                 self.parent, self.flags = parent, flags
@@ -350,7 +506,7 @@ class QtFakes:
         self.app = stub(screens=lambda: list(env.screens), thread=lambda: env.main,
                         screenAdded=BoundSignal(), screenRemoved=BoundSignal(), aboutToQuit=BoundSignal())
         self.modules = {
-            'PySide6.QtCore': stub(QObject=QObject, Qt=self.qt, QThread=stub(currentThread=threading.get_ident),
+            'PySide6.QtCore': stub(QObject=QObject, Qt=self.qt, QThread=stub(currentThread=threading.get_ident), QTimer=Timer,
                                   Signal=Signal, Slot=lambda *args: lambda function: function),
             'PySide6.QtGui': stub(QColor=lambda *args: args, QPainter=Mock()),
             'PySide6.QtWidgets': stub(QApplication=stub(instance=lambda: env.app), QWidget=Window),
@@ -376,8 +532,8 @@ class OverlayTests(NativeHarness):
         self.manager.shutdown()
         self.manager._executor.shutdown(wait=True)
 
-    def set_from_worker(self, value):
-        self.config.Brightness.MODE = 1
+    def set_from_worker(self, value, mode=1):
+        self.config.Brightness.MODE = mode
         with ThreadPoolExecutor(max_workers=1) as executor:
             future = executor.submit(self.controller().set_brightness, value)
             self.assertTrue(self.qt.queued.wait(1))
@@ -389,6 +545,103 @@ class OverlayTests(NativeHarness):
         self.assertEqual(self.controller().get_current_brightness(), 100)
         self.assertEqual(self.qt.windows, [])
         self.assertEqual(self.qt.events, [])
+
+    def test_mode0_set_fallback_clears_on_rapid_gamma_then_hardware_intents(self):
+        self.sbc.set_brightness.side_effect = OSError('no hardware')
+        self.set_from_worker(50, mode=0)
+        self.assertEqual(self.controller._active_mode, 0)
+        self.assertTrue(self.controller._overlay_active)
+        self.controller._mode_lock.acquire()
+        try:
+            self.config.Brightness.MODE = 2
+            self.manager.apply_mode(2)
+            self.config.Brightness.MODE = 0
+            self.manager.apply_mode(0)
+        finally:
+            self.controller._mode_lock.release()
+        self.assertTrue(self.qt.queued.wait(1))
+        self.qt.drain()
+        for job in self.manager._jobs:
+            job.result(timeout=1)
+        self.assertFalse(self.controller._overlay_active)
+        self.assertTrue(all(not w.visible for w in self.qt.windows))
+        self.gamma.get_brightness.assert_not_called()
+        self.gamma.set_brightness.assert_not_called()
+
+    def settings_peer(self):
+        tree = ast.parse((BACKEND / 'HostDesktopGUI/settings_page.py').read_text())
+        cls = next(n for n in tree.body if isinstance(n, ast.ClassDef) and n.name == 'SettingsPage')
+        methods = [n for n in cls.body if isinstance(n, ast.FunctionDef) and n.name in ('save', 'on_brightness_mode_applied')]
+        for method in methods:
+            method.decorator_list = []
+        namespace = {'Config': self.config, 'QMessageBox': Mock(), 'tr': lambda zh, en: en,
+                     'parse_ip_list': lambda value: ([], None)}
+        exec(compile(ast.Module(body=methods, type_ignores=[]), 'settings_mode_feedback', 'exec'), namespace)
+        page = Mock()
+        page._collect_errors.return_value = []
+        page.saved = type(self.qt.app.screenAdded)()
+        page.brightness_mode_changed = type(self.qt.app.screenAdded)()
+        page.save = lambda: namespace['save'](page)
+        page.on_brightness_mode_applied = lambda generation, error: namespace['on_brightness_mode_applied'](page, generation, error)
+        from tests.test_config_application import attach_feedback
+        attach_feedback(page, self.config, self)
+        # Use MainWindow's real signal wiring, not a copied hot-apply algorithm.
+        window_tree = ast.parse((BACKEND / 'HostDesktopGUI/main_window.py').read_text())
+        window = next(n for n in window_tree.body if isinstance(n, ast.ClassDef) and n.name == 'MainWindow')
+        settings = next(n for n in window.body if isinstance(n, ast.FunctionDef) and n.name == 'settings_page')
+        wiring = next(n for n in ast.walk(settings) if isinstance(n, ast.If) and
+                      isinstance(n.test, ast.Compare) and isinstance(n.test.left, ast.Attribute) and
+                      n.test.left.attr == '_brightness_overlay')
+        owner = stub(_settings_page=page, _brightness_overlay=self.manager)
+        exec(compile(ast.Module(body=[wiring], type_ignores=[]), 'main_mode_wiring', 'exec'), {'self': owner})
+        self.config.save.__globals__['yaml'] = stub(safe_dump=Mock())
+        return page, namespace
+
+    def test_save_signal_executor_and_generation_feedback_hot_apply_without_restart(self):
+        self.config.Brightness.MODE = 2
+        self.controller().set_brightness(20)
+        page, _ = self.settings_peer()
+        page.brightness_mode.currentData.return_value = 1
+        self.controller._mode_lock.acquire()
+        try:
+            with patch('builtins.open', mock_open()), patch('builtins.print'):
+                page.save()  # Must return while the worker is waiting on the native lock.
+            self.assertIn('applying', page.hint_label.setText.call_args.args[0])
+        finally:
+            self.controller._mode_lock.release()
+        self.manager._jobs[-1].result(timeout=1)
+        self.manager._mode_timer.timeout.emit()
+        self.assertEqual(self.controller._active_mode, 1)
+        self.assertIn('no application restart required', page.hint_label.setText.call_args.args[0])
+        self.assertEqual(self.qt.windows, [])  # No forced brightness write in the new mode.
+
+    def test_restore_failure_reaches_settings_hint_and_old_generation_cannot_overwrite_it(self):
+        self.config.Brightness.MODE = 2
+        self.controller().set_brightness(20)
+        self.gamma.restore.return_value = ('display1',)
+        page, namespace = self.settings_peer()
+        page.brightness_mode.currentData.return_value = 0
+        with patch('builtins.open', mock_open()), patch('builtins.print'):
+            page.save()
+        self.manager._jobs[-1].result(timeout=1)
+        self.manager._mode_timer.timeout.emit()
+        self.assertIn('application restart required', page.hint_label.setText.call_args.args[0])
+        self.assertIn('Gamma restore failed', page.hint_label.setToolTip.call_args.args[0])
+        namespace['QMessageBox'].critical.assert_not_called()
+        previous = page.hint_label.setText.call_count
+        page.on_brightness_mode_applied(self.config.Brightness.committed()[0] - 1, None)
+        self.assertEqual(page.hint_label.setText.call_count, previous)
+
+    def test_poll_discards_old_apply_results_after_new_save(self):
+        from concurrent.futures import Future
+        stale = Future()
+        stale.set_result((self.config.Brightness.committed()[0], 'old failure'))
+        self.manager._jobs.append(stale)
+        self.config.Brightness.MODE = 2
+        observed = Mock()
+        self.manager.mode_applied.connect(observed)
+        self.manager._poll_mode_results()
+        observed.assert_not_called()
 
     def test_per_screen_coordinates_flags_safety_opacity_and_hidden_100(self):
         self.set_from_worker(0)

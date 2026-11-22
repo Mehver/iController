@@ -15,11 +15,14 @@ interface VolumeMenuState {
     lastSuccessfulValue: number;
 }
 
-class VolumeMenu extends Component<object, VolumeMenuState> {
+class VolumeMenu extends Component<{drawerOpen: boolean; expanded: boolean}, VolumeMenuState> {
     static contextType = Context;
     declare context: AppContextType;
 
     private _isMounted: boolean = false;
+    private _requestId = 0;
+    private _editVersion = 0;
+    private _lastWrite: Promise<void> = Promise.resolve();
 
     state: VolumeMenuState = {
         value: 0,
@@ -28,18 +31,37 @@ class VolumeMenu extends Component<object, VolumeMenuState> {
 
     componentDidMount() {
         this._isMounted = true;
-        this.fetchVolume();
+        if (this.props.drawerOpen) void this.fetchVolume();
+    }
+
+    componentDidUpdate(previous: {drawerOpen: boolean; expanded: boolean}) {
+        if (!this.props.drawerOpen) {
+            if (previous.drawerOpen) this.invalidateRead();
+            return;
+        }
+        // One refresh for a render that both opens the drawer and changes the Collapse.
+        if (!previous.drawerOpen || previous.expanded !== this.props.expanded) void this.fetchVolume();
+    }
+
+    private invalidateRead() {
+        this._requestId++;
+        this.debouncedHandleCommit.cancel();
     }
 
     componentWillUnmount() {
         this._isMounted = false;
-        this.debouncedHandleCommit.cancel();
+        this.invalidateRead();
     }
 
-    fetchVolume = () => {
-        api_volume_get()
+    fetchVolume = async () => {
+        if (!this._isMounted || !this.props.drawerOpen) return;
+        this.invalidateRead(); // A closed/opened drawer must not send an old draft.
+        const requestId = this._requestId, editVersion = this._editVersion;
+        await this._lastWrite; // Includes every already-sent write, even overlapping POSTs.
+        if (!this._isMounted || !this.props.drawerOpen || requestId !== this._requestId || editVersion !== this._editVersion) return;
+        return api_volume_get()
             .then(data => {
-                if (this._isMounted) {
+                if (this._isMounted && this.props.drawerOpen && requestId === this._requestId && editVersion === this._editVersion) {
                     this.setState({
                         value: data.volume,
                         lastSuccessfulValue: data.volume,
@@ -52,21 +74,25 @@ class VolumeMenu extends Component<object, VolumeMenuState> {
     };
 
     handleChange = (_event: Event, newValue: number | number[]) => {
+        if (!this._isMounted || !this.props.drawerOpen) return;
+        this._editVersion++;
         const val = Array.isArray(newValue) ? newValue[0] : newValue;
         this.setState({value: val});
         this.debouncedHandleCommit(val);
     };
 
     debouncedHandleCommit = debounce((newValue: number) => {
-        api_volume_set(String(newValue))
+        const requestId = this._requestId, editVersion = this._editVersion;
+        const write = api_volume_set(String(newValue))
             .then(_data => {
-                if (this._isMounted) {
+                if (this._isMounted && this.props.drawerOpen && requestId === this._requestId && editVersion === this._editVersion) {
                     this.setState({lastSuccessfulValue: newValue});
                 }
             })
             .catch(error => {
                 console.error("Failed to set volume:", error);
             });
+        this._lastWrite = Promise.all([this._lastWrite, write]).then(() => undefined);
     }, 300);
 
     render() {

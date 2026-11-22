@@ -77,6 +77,8 @@ class SideBar extends Component {
             SettingMenu: 7,
             BrightnessMenu: 8,
         };
+        const volumeExpanded = this.context.autoCollapse ? this.context.openMenuSW === MenuIndex.VolumeMenu : this.context.sidebarVolumeMenu;
+        const brightnessExpanded = this.context.autoCollapse ? this.context.openMenuSW === MenuIndex.BrightnessMenu : this.context.sidebarBrightnessMenu;
 
         const textStyle: React.CSSProperties = {
             fontSize: '1rem',
@@ -270,8 +272,8 @@ class SideBar extends Component {
                         </ListItemButton>
                     </ListItem>
                     <Collapse
-                        in={this.context.autoCollapse ? this.context.openMenuSW === MenuIndex.VolumeMenu : this.context.sidebarVolumeMenu}>
-                        <VolumeMenu/>
+                        in={volumeExpanded}>
+                        <VolumeMenu drawerOpen={this.context.drawerOpen} expanded={volumeExpanded}/>
                     </Collapse>
                     <ListItem>
                         <ListItemButton onClick={() => {
@@ -300,8 +302,8 @@ class SideBar extends Component {
                         </ListItemButton>
                     </ListItem>
                     <Collapse
-                        in={this.context.autoCollapse ? this.context.openMenuSW === MenuIndex.BrightnessMenu : this.context.sidebarBrightnessMenu}>
-                        <BrightnessMenu/>
+                        in={brightnessExpanded}>
+                        <BrightnessMenu drawerOpen={this.context.drawerOpen} expanded={brightnessExpanded}/>
                     </Collapse>
                     <ListItem>
                         <ListItemButton onClick={() => {

@@ -24,7 +24,7 @@ def backend_on_path(monkeypatch):
 def brightness_module(monkeypatch):
     fake_sbc = types.ModuleType("screen_brightness_control")
     fake_sbc.get_brightness = Mock()
-    fake_sbc.set_brightness = Mock()
+    fake_sbc.set_brightness = Mock(return_value=[50])
     fake_monitorcontrol = types.ModuleType("monitorcontrol")
     fake_monitorcontrol.get_monitors = Mock(return_value=[])
     monkeypatch.setitem(sys.modules, "screen_brightness_control", fake_sbc)
